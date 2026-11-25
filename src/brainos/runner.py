@@ -58,7 +58,9 @@ class _Adapter:
         timing = dict(profile=self.profile, provider=spec["id"], compute_ns=compute_ns,
                       serialize_ns=(encoded - started) + (finished - received),
                       transport_ns=max(0, timing["round_trip_ns"] - compute_ns - timing.get("startup_ns", 0)),
-                      startup_ns=timing.get("startup_ns", 0), total_ns=finished - started)
+                      startup_ns=timing.get("startup_ns", 0), total_ns=finished - started,
+                      prepare_ns=message.get("prepare_ns", 0), answer_ns=message.get("answer_ns", compute_ns),
+                      cache_hit=message.get("cache_hit"), state_bytes=message.get("state_bytes", 0))
         if on_timing:
             on_timing(timing)
         return message["result"]
@@ -66,6 +68,12 @@ class _Adapter:
     def _invoke(self, request, timeout):
         """Deliver a verified request; return (raw reply, {round_trip_ns, startup_ns})."""
         raise NotImplementedError
+
+    def clear_prepared(self):
+        """Drop cached prepared structures (measurement control; never changes results)."""
+        spec = providers.specification("sum")
+        request = encode(dict(implementation="sum", artifact=spec["artifact"], value=[], control="clear-prepared"))
+        self._invoke(request, 10)
 
     def close(self):
         pass

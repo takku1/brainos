@@ -133,12 +133,7 @@ class CapabilityPopulation:
         cases = self.contract(capability)["admission_cases"]
         candidate = self.transactor.stage_membership(capability, provider)
         self.transactor.validate(candidate, {capability: cases}, budget=budget, principal=principal)
-        key = self.transactor.commit_membership(candidate)
-        with self.store.transaction():
-            row = self.store.get("member", key)
-            row["admitted_period"] = self.store.get("capability", capability)["period"]
-            self.store.put("member", key, row)
-        return key
+        return self.transactor.commit_membership(candidate)
 
     def members(self, capability, *, include_archived=False, states=("ACTIVE",)):
         with self.store.mutex:

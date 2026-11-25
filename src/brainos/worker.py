@@ -10,7 +10,7 @@ import os
 import sys
 
 from .contracts import PROTOCOL_LIMIT, encode
-from .providers import specification, timed_compute
+from .providers import clear_prepared, specification, timed_compute
 
 
 def answer(raw):
@@ -22,8 +22,11 @@ def answer(raw):
         spec = specification(request["implementation"])
         if request["artifact"] != spec["artifact"]:
             raise ValueError("artifact digest mismatch")
-        result, compute_ns = timed_compute(spec, request["value"])
-        return {"ok": True, "result": result, "compute_ns": compute_ns}
+        if request.get("control") == "clear-prepared":
+            clear_prepared()
+            return {"ok": True, "result": None, "compute_ns": 0}
+        result, timing = timed_compute(spec, request["value"])
+        return dict(timing, ok=True, result=result)
     except Exception as exc:
         return {"ok": False, "error": str(exc)}
 

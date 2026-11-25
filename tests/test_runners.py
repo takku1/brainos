@@ -32,7 +32,8 @@ class RunnerProfiles(unittest.TestCase):
                 with self.subTest(name=name, profile=profile):
                     self.assertEqual(out, expected[name])
                     self.assertEqual(set(timings[0]), {"profile", "provider", "compute_ns", "serialize_ns",
-                                                       "transport_ns", "startup_ns", "total_ns"})
+                                                       "transport_ns", "startup_ns", "total_ns", "prepare_ns",
+                                                       "answer_ns", "cache_hit", "state_bytes"})
                     self.assertEqual(timings[0]["profile"], profile)
         self.assertEqual(expected["range_hash"], [3, 4, 0])   # [0,3]: 1,3,3  [3,9]: 5,9,3,3
 

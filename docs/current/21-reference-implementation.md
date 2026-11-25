@@ -534,3 +534,75 @@ Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 
 | A-38 | performance | The rerun's cost ledgers are measured exactly as preregistered (no change to measurement code) | Fix alters measurement | Diff limited to bookkeeping and exception handling | tests/test_retention.py CostBoundaries | tested |
 | A-39 | operations | All existing suites still pass | Regression | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py tests/test_cumulative.py tests/test_runners.py tests/test_ecology.py | tested |
 | A-40 | maintainability | One lifecycle-bookkeeping path handles every state transition (no per-state assumptions duplicated in the runner) | Runner and service diverge again | EcologyService._apply as the single owner | tests/test_retention.py ServiceLifecycleConsistency | tested |
+
+## 21.13 Bounded assimilation (structural factoring)
+
+Scope: the first ASSIMILATE implementation (Doc 24), using Doc 11 section 11.4's
+*structural factoring* method (shared implementation of a common operation)
+and selection among exact duplicates. It is distinct from COMPOSE: a composite
+needs its parents, whereas an assimilation replaces them, and parents may be
+made dormant only after the union gate passes.
+
+Shared representation. A trusted primitive may declare a `prepare` stage (for
+example a hash index or a sorted index) and an `answer` stage. Workers cache
+prepared structures by (prepare identity, data identity) and report prepare
+time, answer time, cache hits and the encoded size of each structure. Two
+providers with different prepare stages maintain two structures. A factored
+candidate maintains one.
+
+Operation (`assimilation.py`, developmental side):
+1. **Nominate.** Enumerate every admissible consolidation of the parent set from
+   the declared catalogue. A candidate assigns each parent contract a catalogue
+   primitive with that contract's schemas and semantic label. Its non-null
+   prepare stages must be identical (factoring), or the parents must share a
+   contract (duplicate selection). The original-provider and wrapper
+   configurations are carried as controls, never as assimilations.
+2. **Evaluate in isolation.** Run parents and candidates explicitly as pure
+   computation, with no authority and without relying on the wake policy, over
+   the union of parents' observed contexts plus held-out and rare sets. The
+   gate requires all of:
+   - exact output equality with the parents on every evaluated input;
+   - a per-contract answer-latency tolerance declared by the contract owner;
+   - downstream dependents rebuilt and output-equal;
+   - a positive full-cost break-even within the declared horizon (construction,
+     evaluation and validation compute, against per-epoch savings in prepare,
+     answer and maintained state).
+3. **Publish atomically** (`transactor.commit_assimilation`, kernel). All
+   membership and role-binding candidates must be VALIDATED against the same
+   pinned revision, epoch and evidence revision. One transaction then:
+   - admits the replacement memberships;
+   - rebinds every role whose provider depends on a parent (a hidden or
+     unrebound dependent refuses the commit);
+   - moves parents to DORMANT, marked superseded and not retired;
+   - records lineage and advances the epoch.
+4. **Recover** (`transactor.revert_assimilation`, kernel). Rebind roles to
+   parents and reactivate them only with fresh evidence: a parent touched by an
+   impact since the assimilation needs a validated membership candidate, and
+   every rebound role needs a validated binding candidate. The epoch advances,
+   so permits issued under the assimilation are refused and pre-assimilation
+   permits are not revived.
+
+Parent retirement remains a separate, grounded-assessment decision (section 21.12).
+
+Open items carried from X2c (not addressed here): demand-triggered recruitment
+of dormant specialists in previously observed contexts; incremental retention
+assessment; kernel overhead relative to lightweight provider computation;
+adaptation latency under the X2c-H5 criterion; and the lack of reliable
+superiority over conventional uncertainty-aware selection.
+
+## Assurance 21.13
+
+Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 (slo); operations T1 (schema); performance T1 (slo); maintainability T1 (new_boundary); others T0
+
+| ID | Discipline | Claim | Could fail by | Control (owner) | Check | Evidence |
+|---|---|---|---|---|---|---|
+| A-41 | performance | Prepared structures are shared only between identical prepare stages and their time and size are measured, not assumed | Cross-provider sharing of incompatible state; unmeasured savings | Worker cache keyed by prepare identity and data identity; timing fields | tests/test_assimilation.py SharedRepresentation | unknown |
+| A-42 | verification | Nomination enumerates all admissible candidates from the catalogue and never presents wrappers as assimilations | Supplying the answer; wrapper counted as consolidation | assimilation.nominate | tests/test_assimilation.py Nomination | unknown |
+| A-43 | verification | A candidate passes only with exact output equality on union, held-out and rare sets, declared latency tolerance and positive full-cost break-even | Accepting a candidate that loses competence or money | assimilation.evaluate | tests/test_assimilation.py UnionGate | unknown |
+| A-44 | reliability | Publication is atomic and refuses stale evidence, concurrent publication, unvalidated candidates and hidden dependents | Partial publication; dependents left on dormant parents | transactor.commit_assimilation | tests/test_assimilation.py AtomicPublication | unknown |
+| A-45 | reliability | Interrupted assimilation leaves the pre-assimilation organization intact | Crash mid-commit | Single transaction; recovery marks candidates stale | tests/test_assimilation.py InterruptedAssimilation | unknown |
+| A-46 | reliability | After post-publication competence loss, recovery restores parent competence with fresh validation and refuses permits from the assimilation and from before it | Silently restoring obsolete authority | transactor.revert_assimilation | tests/test_assimilation.py Recovery | unknown |
+| A-47 | maintainability | Assimilation runs through the restricted development context; parents are never archived by assimilation itself | Developmental code gaining kernel authority; retirement without assessment | devcontext.py; commit_assimilation sets DORMANT only | tests/test_assimilation.py Boundaries | unknown |
+| A-48 | observability | Every nomination, evaluation, rejection reason, publication and recovery is a durable record | Unexplained acceptance or rejection | assimilation-trial records | tests/test_assimilation.py Boundaries | unknown |
+| A-49 | verification | X3 runs only from a committed, digest-matched preregistration and runner | Post-hoc criteria | verify_frozen in tools/run_assimilation.py | tests/test_assimilation.py FrozenPreregistration | unknown |
+| A-50 | operations | All existing suites still pass | Regression | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py tests/test_cumulative.py tests/test_runners.py tests/test_ecology.py tests/test_retention.py | unknown |
