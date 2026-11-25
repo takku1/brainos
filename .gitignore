@@ -23,3 +23,7 @@ dist/
 src/models/*
 !src/models/README.md
 !src/models/manifest.json
+
+# Live observatory runtime state (SQLite stores, locks). The dashboard and
+# server stay tracked; per-run organizational state never does.
+live/state/
