@@ -1,0 +1,3 @@
+PASS: unique affordable depth<=2 goal path is parser -> compose.
+Hand-supplied transitions; competent symbolic lookahead solves it.
+This verifies the example only, not learned prediction, runtime behavior or adaptive benefit.

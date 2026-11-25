@@ -1,0 +1,14 @@
+# Local agent configuration and Python runtime artifacts.
+.agents/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+tools/skill-backups/
+
+# Local credentials and environment configuration.
+.env
+.env.*
+!.env.example
+*.pem
+*.key

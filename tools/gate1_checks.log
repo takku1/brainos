@@ -1,0 +1,22 @@
+[PASS] yaml-parseable — 37 schemas parsed
+[PASS] schema-count-exact — found 37, want 37
+[PASS] schema-names-unique
+[PASS] types-registry-present — 35 types registered
+[PASS] predicate-catalog-present — 45 predicates catalogued
+[PASS] schema-structure-valid — all 9+1 keys, all fields typed
+[PASS] types-declared — all type refs resolve (declaration only, not runtime typing)
+[PASS] predicates-declared — all predicate refs resolve (declaration only, not enforcement)
+[PASS] predicates-arity-scope-valid — all predicate arities match catalog; all args in schema scope or instruction names
+[PASS] register-ids-unique — 192 IDs checked
+[PASS] register-no-wildcards
+[PASS] register-rows-wellformed — rows + status blocks valid
+[PASS] register-sections-resolve — section refs resolve
+[PASS] doc-refs-resolve — all Doc refs resolve
+[PASS] prose-schemas-cover — every prose-named instruction schematized (coverage only, not semantic equivalence)
+[PASS] act-declares-reauthorization — ACT declares side-effect reauthorization (declaration only; enforcement unverified)
+[PASS] commit-declares-cas — COMMIT declares CAS publish (declaration only; atomicity unverified)
+[PASS] consolidate-declares-ancestry — CONSOLIDATE declares ancestry preservation or labeled repair
+[PASS] all-documents-integrity — all section titles, fences, local links and Doc refs checked
+
+19/19 checks pass
+Scope: declarations and references only. Runtime enforcement, semantic equivalence, and empirical validity are explicitly NOT established here.

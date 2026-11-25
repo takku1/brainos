@@ -1,0 +1,21 @@
+[PASS] H1 two-implementations-one-contract [valid] — calc-v1 == calc-v2 on add/mul
+[PASS] H2 separation-clean [valid] — decision=('permit', 3), accessed=['tier', 'contract', 'version']
+[PASS] H2 separation-defective-caught [defective] — snooping supervisor touched payload bytes
+[SKIP] H3 challenge-not-mid-epoch — deferred, needs epoch model
+[PASS] H4 quarantine-isolates [valid] — quarantined=('refuse', 'quarantined'), peer=('ok', 1)
+[PASS] H5 tiers-enforced [valid] — believed=('deny', 'tier-insufficient'), certified=('permit', 3)
+[PASS] H6 revoke-stops-new [valid] — ('refuse', 'revoked')
+[PASS] H6 existing-invocation-drains [valid]
+[PASS] H6 drain-cannot-create-effect [valid]
+[PASS] H6 completed-cannot-drain [valid]
+[PASS] H6 side-effect-needs-reauth [valid] — ('refuse', 'reauth-required')
+[PASS] H6 reauthorized-side-effect [valid] — ('ok', 3)
+[PASS] H7 no-overdraft [valid] — ledger={'budget': 6}
+[PASS] H7 no-double-spend [defective] — re-allocation refused
+[PASS] H8 registered-artifact-accepted [valid]
+[PASS] H8 version-identity [defective] — admission rejects a version inconsistent with the trusted registry
+[PASS] H8 unlisted-version-denied [valid] — v2 not in manifest pinned to [v1] -> deny
+[PASS] H9 unknown-arg-rejected [defective] — validator flagged: ['source_declared arg out of scope: news_source']
+[INDETERMINATE] H0 nondeterministic-open [valid] — scheduler tie-break unspecified — recorded, not counted
+
+17/17 decisive checks pass; 2 indeterminate (recorded, not counted)

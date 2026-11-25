@@ -1,0 +1,28 @@
+test_cycle_is_valid (test_reference_regressions.ClosureRegressionTests.test_cycle_is_valid) ... ok
+test_no_change_does_not_invalidate_unknown (test_reference_regressions.ClosureRegressionTests.test_no_change_does_not_invalidate_unknown) ... ok
+test_zero_cap_fails_for_growing_closure (test_reference_regressions.ClosureRegressionTests.test_zero_cap_fails_for_growing_closure) ... ok
+test_distinct_sections_accepted (test_reference_regressions.DocumentIntegrityRegressionTests.test_distinct_sections_accepted) ... ok
+test_example_headings_inside_fences_are_ignored (test_reference_regressions.DocumentIntegrityRegressionTests.test_example_headings_inside_fences_are_ignored) ... ok
+test_repeated_unnumbered_section_rejected (test_reference_regressions.DocumentIntegrityRegressionTests.test_repeated_unnumbered_section_rejected) ... ok
+test_boolean_cannot_authorize_effect (test_reference_regressions.PermitRegressionTests.test_boolean_cannot_authorize_effect) ... ok
+test_context_scope (test_reference_regressions.PermitRegressionTests.test_context_scope) ... ok
+test_distinct_instance_binding (test_reference_regressions.PermitRegressionTests.test_distinct_instance_binding) ... ok
+test_drain_only_preexisting_work (test_reference_regressions.PermitRegressionTests.test_drain_only_preexisting_work) ... ok
+test_issued_boundary_permit_allows_effect (test_reference_regressions.PermitRegressionTests.test_issued_boundary_permit_allows_effect) ... ok
+test_modified_issued_permit (test_reference_regressions.PermitRegressionTests.test_modified_issued_permit) ... ok
+test_operation_scope (test_reference_regressions.PermitRegressionTests.test_operation_scope) ... ok
+test_principal_scope (test_reference_regressions.PermitRegressionTests.test_principal_scope) ... ok
+test_provider_binding (test_reference_regressions.PermitRegressionTests.test_provider_binding) ... ok
+test_revoked_boundary_permit_denies_effect (test_reference_regressions.PermitRegressionTests.test_revoked_boundary_permit_denies_effect) ... ok
+test_revoked_same_epoch_cannot_start (test_reference_regressions.PermitRegressionTests.test_revoked_same_epoch_cannot_start) ... ok
+test_unissued_permit (test_reference_regressions.PermitRegressionTests.test_unissued_permit) ... ok
+test_version_binding (test_reference_regressions.PermitRegressionTests.test_version_binding) ... ok
+test_full_pipeline_rejects_duplicate_instruction (test_reference_regressions.StructuralValidatorRegressionTests.test_full_pipeline_rejects_duplicate_instruction) ... ok
+test_mismatched_instruction_rejected (test_reference_regressions.StructuralValidatorRegressionTests.test_mismatched_instruction_rejected) ... ok
+test_unbalanced_type_brackets_rejected (test_reference_regressions.StructuralValidatorRegressionTests.test_unbalanced_type_brackets_rejected) ... ok
+test_unknown_instruction_rejected_by_schema_validator (test_reference_regressions.StructuralValidatorRegressionTests.test_unknown_instruction_rejected_by_schema_validator) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.088s
+
+OK

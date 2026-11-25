@@ -1,0 +1,18 @@
+[PASS] dup-instruction — rejected
+[PASS] dup-yaml-key — rejected
+[PASS] unknown-instruction — rejected
+[PASS] unknown-type — rejected
+[PASS] malformed-type-structure — rejected
+[PASS] unknown-predicate — rejected
+[PASS] malformed-predicate — rejected
+[PASS] wrong-arg-count — rejected
+[PASS] arg-out-of-scope — rejected
+[PASS] missing-required-key — rejected
+[PASS] invalid-field-structure — rejected
+[PASS] duplicate-requirement-id — rejected
+[PASS] missing-requirement-status — rejected
+[PASS] missing-act-reauthorization — rejected
+[PASS] missing-commit-cas — rejected
+
+15/15 negative tests pass (pass = corruption correctly rejected)
+All corruption fixtures are in memory; no temporary filesystem fixture is required.
