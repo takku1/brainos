@@ -885,17 +885,25 @@ def main():
         signal.signal(signal.SIGTERM, stop)
     except (ValueError, OSError):
         pass
-    threading.Thread(target=loop_forever, args=(state_dir, args.tick, args.seed,
-                                                      args.ticks),
-                     daemon=True).start()
     server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     print("BrainOS ecology observatory: open http://127.0.0.1:%d/ in a browser" % args.port,
           flush=True)
+    if args.ticks:
+        # Bounded exploratory run: the HTTP projection stays live while
+        # the loop owns the main thread, so the process exits (and the
+        # terminal result reports) when the tick bound is reached.
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        loop_forever(state_dir, args.tick, args.seed, args.ticks)
+        return 0
+    threading.Thread(target=loop_forever, args=(state_dir, args.tick, args.seed,
+                                                 args.ticks),
+                     daemon=True).start()
     try:
         server.serve_forever()
     finally:
         STATE["stop"] = True
         server.server_close()
+    return 0
 
 
 if __name__ == "__main__":
