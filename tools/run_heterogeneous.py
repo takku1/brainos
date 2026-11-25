@@ -6,7 +6,9 @@ Refuses to run unless the preregistration matches its recorded digest and
 the preregistration, this runner and the freeze manifest are committed
 unchanged at HEAD, and every pinned execution file, artifact identity and
 configuration matches the freeze manifest. Refuses to overwrite seed
-outputs or abort records. Confirmatory execution requires a reviewed
+outputs or abort records; an authorized rerun needs an explicit
+amendment and a separate output location. Infrastructure aborts yield
+a non-zero process status. Confirmatory execution requires a reviewed
 preregistration; this runner executes only a frozen one. Results are
 committed separately and never edited.
 """
@@ -29,7 +31,7 @@ from brainos import ecology  # noqa: E402
 
 RESULTS = ROOT / "docs" / "results" / "2026-11-25T-heterogeneous"
 PREREG = RESULTS / "PREREGISTRATION.md"
-PREREG_SHA256 = "d2364f2d4d4e0c9fa71d5aa82992a758d8b9178549573d41892f896fc3b17660"
+PREREG_SHA256 = "02d20e2a408f69168bebd9a5391cc8a1636f3cd78943beaf9d28fe359e273a12"
 SEEDS = (21, 22, 23)
 PROFILE = "inprocess"
 EXPECTED_ARMS = ("fixed", "neural", "coordinated")
@@ -114,10 +116,11 @@ def current_freeze_state():
     manifest = json.loads((ROOT / "src" / "models" / "manifest.json").read_text(encoding="utf-8"))
     artifact = next(a for a in manifest["artifacts"] if a["id"] == "Qwen3-0.6B")
     model_dir = ROOT / "src" / "models" / "Qwen3-0.6B"
+    model_state = hash_model_dir(model_dir)
+    model_state.update(id="Qwen3-0.6B", digest_sha256=artifact["digest_sha256"])
     return dict(
         files=files,
-        model=dict(id="Qwen3-0.6B", digest_sha256=artifact["digest_sha256"],
-                   dir_files=sorted(p.name for p in model_dir.iterdir())),
+        model=model_state,
         prompt=dict(version=PROMPT_VERSION,
                     sha256=hashlib.sha256(PROMPT_TEXT.encode("utf-8")).hexdigest()),
         sampling=dict(SAMPLING), admission=dict(n=N_ADMIT, k=K_ADMIT),
@@ -216,6 +219,28 @@ def interpret(output, expected):
     return True, "match"
 
 
+def hash_model_dir(model_dir):
+    """Content digests of every execution-relevant artifact (B37).
+
+    Filenames alone cannot detect a swapped tokenizer or configuration:
+    every file under the model directory is hashed and the total byte
+    count recorded. Weight payloads are included; the one-time hashing
+    cost is the price of a falsifiable freeze.
+    """
+    files, total = {}, 0
+    for path in sorted(model_dir.rglob("*")):
+        if not path.is_file():
+            continue
+        digest = hashlib.sha256()
+        with open(path, "rb") as handle:
+            for chunk in iter(lambda: handle.read(1 << 20), b""):
+                digest.update(chunk)
+        rel = path.relative_to(model_dir).as_posix()
+        files[rel] = digest.hexdigest()
+        total += path.stat().st_size
+    return dict(files=files, bytes_total=total)
+
+
 def qwen_launcher():
     manifest = json.loads((ROOT / "src" / "models" / "manifest.json").read_text(encoding="utf-8"))
     digest = next(a["digest_sha256"] for a in manifest["artifacts"] if a["id"] == "Qwen3-0.6B")
@@ -293,6 +318,11 @@ def _run_seed(seed, outdir, status=None):
     path = outdir / f"seed-{seed}.json"
     if path.exists():
         raise SystemExit(f"{path.name} already exists; results are never overwritten")
+    abort_path = outdir / f"seed-{seed}.aborted.json"
+    if abort_path.exists():
+        raise SystemExit(f"{abort_path.name} already exists; abort records are never "
+                         "overwritten. An authorized rerun needs an explicit amendment "
+                         "and a separate output location")
     status = {} if status is None else status
     stream = gen_stream(seed)
     adapters, digest = qwen_launcher()
@@ -647,8 +677,16 @@ def check_hypotheses(out):
     try:
         for arm, data in out.get("meters", {}).items():
             assert set(data["R"]) >= {"compute_ns", "overhead_ns"}
-        assert out["nov"] and all(set(v["costs"]) == set(emergence.NOV_COSTS)
-                                 for v in out["nov"].values())
+        # H2 requires the complete expected NOV arm set, including
+        # explicit nonattainment accounting: a nonattained arm carries
+        # zero costs and its recorded reason, never a silent omission.
+        assert set(out.get("nov", {})) >= set(EXPECTED_ARMS), "incomplete NOV arm set"
+        for arm in EXPECTED_ARMS:
+            entry = out["nov"][arm]
+            assert set(entry["costs"]) == set(emergence.NOV_COSTS)
+            if arm in out.get("nonattainment", {}):
+                assert entry.get("nonattained"), f"{arm} nonattained without marking"
+        assert out["nov"]
         # Every expected demand-arm pair needs an explicit terminal outcome:
         # a runs entry or a skip record (integrity requirement).
         held_ids = [d["idx"] for d in out.get("stream", []) if d["split"] == "held-out"]
@@ -693,23 +731,20 @@ def check_hypotheses(out):
     return checks
 
 
-def main(argv=None):
-    args = list(sys.argv[1:] if argv is None else argv)
-    if args and args[0] == "--verify-only":
-        verify_frozen()
-        print(f"frozen: preregistration {PREREG_SHA256[:12]} manifest {FROZEN.name} ok",
-              flush=True)
-        return 0
-    outdir = Path(args[0]) if args else RESULTS
-    seeds = [int(a) for a in args[1:]] or list(SEEDS)
-    verify_frozen()
-    outdir.mkdir(parents=True, exist_ok=True)
+def run_seeds(outdir, seeds):
+    """Run each seed; returns (completed, aborted).
+
+    A completed result or an abort record for a seed refuses execution
+    outright (SystemExit): an authorized rerun needs an explicit
+    amendment and a separate output location. Infrastructure aborts are
+    recorded and counted so the process status reflects them.
+    """
+    completed, aborted = [], []
     for seed in seeds:
         if seed not in SEEDS:
             raise SystemExit(f"seed {seed} is not preregistered")
         started = time.perf_counter()
         status = {}
-        seed_aborted = False
         try:
             seed_out = _run_seed(seed, outdir, status=status)
         except (SystemExit, KeyboardInterrupt):
@@ -729,15 +764,31 @@ def main(argv=None):
             abort_path.write_text(json.dumps(abort, indent=1), encoding="utf-8")
             print(f"seed {seed} ABORTED in phase {abort['phase']}: "
                   f"{abort['error']}", flush=True)
-            seed_aborted = True
-        if seed_aborted:
+            aborted.append(seed)
             continue
         print(f"seed {seed}: {time.perf_counter() - started:.1f}s "
               f"hypotheses={[k for k, v in seed_out['hypotheses'].items() if v['passed']]} "
               f"verdict={seed_out['verdict'].get('verdict')} "
               f"nov={ {k: round(v['net'], 1) for k, v in seed_out['nov'].items()} } "
               f"oracle={round(seed_out['oracle']['total'], 1)}", flush=True)
-    return 0
+        completed.append(seed)
+    return completed, aborted
+
+
+def main(argv=None):
+    args = list(sys.argv[1:] if argv is None else argv)
+    if args and args[0] == "--verify-only":
+        verify_frozen()
+        print(f"frozen: preregistration {PREREG_SHA256[:12]} manifest {FROZEN.name} ok",
+              flush=True)
+        return 0
+    outdir = Path(args[0]) if args else RESULTS
+    seeds = [int(a) for a in args[1:]] or list(SEEDS)
+    verify_frozen()
+    outdir.mkdir(parents=True, exist_ok=True)
+    _, aborted = run_seeds(outdir, seeds)
+    # Aborted seeds are preserved records, and the process status says so.
+    return 1 if aborted else 0
 
 
 if __name__ == "__main__":

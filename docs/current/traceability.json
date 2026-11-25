@@ -1323,7 +1323,8 @@
     "tests/test_heterogeneous.py::StrictIR",
     "tests/test_heterogeneous.py::Completeness",
     "tests/test_heterogeneous.py::ComparativeEvidence",
-    "tests/test_heterogeneous.py::FreezeManifest"
+    "tests/test_heterogeneous.py::FreezeManifest",
+    "tests/test_heterogeneous.py::RunIntegrity"
    ],
    "gap": "confirmatory execution blocked pending review; runner conformance only"
   },

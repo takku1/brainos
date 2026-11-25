@@ -245,6 +245,27 @@ class Completeness(unittest.TestCase):
         checks = H.check_hypotheses(out)
         self.assertTrue(checks["H2"]["passed"], checks["H2"])
 
+    def test_nov_missing_arm_fails_h2(self):
+        out = full_out()
+        del out["nov"]["neural"]
+        checks = H.check_hypotheses(out)
+        self.assertFalse(checks["H2"]["passed"], checks["H2"])
+
+    def test_nonattained_arm_needs_marking_in_nov(self):
+        out = full_out()
+        del out["meters"]["neural"]
+        out["runs"] = [e for e in out["runs"] if e["arm"] != "neural"]
+        for idx in range(4, 8):
+            out["skipped"].append(dict(idx=idx, arm="neural",
+                                       reason="qwen not admitted"))
+        out["qwen_admitted"] = False
+        out["qwen_admission_error"] = "refused"
+        out["nonattainment"] = H.build_nonattainment(out)
+        out["nov"] = H.nov_by_arm(out)
+        del out["nov"]["neural"]["nonattained"]
+        checks = H.check_hypotheses(out)
+        self.assertFalse(checks["H2"]["passed"], checks["H2"])
+
 
 class ComparativeEvidence(unittest.TestCase):
     """B36: H5 needs valid observations from both families."""
@@ -483,6 +504,95 @@ class FreezeManifest(unittest.TestCase):
         # Untracked extra files cannot alter pinned behavior.
         self.assertEqual(H.check_frozen(subset)["files"][key],
                          state["files"][key])
+
+    def test_model_content_change_detected_without_rename(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "tok.json").write_text('{"a": 1}', encoding="utf-8")
+            before = H.hash_model_dir(root)
+            (root / "tok.json").write_text('{"a": 2}', encoding="utf-8")
+            after = H.hash_model_dir(root)
+            self.assertNotEqual(before["files"]["tok.json"],
+                                after["files"]["tok.json"])
+            self.assertEqual(before["bytes_total"], after["bytes_total"])
+
+    def test_frozen_manifest_hashes_every_model_artifact(self):
+        state = H.current_freeze_state()
+        names = set(state["model"]["files"])
+        self.assertTrue({"model.safetensors", "tokenizer.json", "vocab.json",
+                         "merges.txt", "config.json"}.issubset(names),
+                        names)
+        self.assertGreater(state["model"]["bytes_total"], 10 ** 9)
+
+    def test_model_file_removed_from_manifest_refuses(self):
+        state = copy.deepcopy(H.current_freeze_state())
+        state["model"]["files"].pop(next(iter(state["model"]["files"])))
+        with self.assertRaises(SystemExit):
+            H.check_frozen(state)
+
+
+class RunIntegrity(unittest.TestCase):
+    """Clearance: aborts fail the process; seeds never execute twice."""
+
+    def fake(self, calls, behavior):
+        def run(seed, outdir, status=None):
+            calls.append(seed)
+            if isinstance(behavior, Exception):
+                status["phase"] = "metering"
+                raise behavior
+            return dict(seed=seed, hypotheses={}, verdict={}, nov={},
+                        oracle={"total": 0.0})
+        return run
+
+    def test_abort_writes_record_and_counts_seed(self):
+        import tempfile
+        real = H._run_seed
+        calls = []
+        H._run_seed = self.fake(calls, RuntimeError("boom"))
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                completed, aborted = H.run_seeds(Path(tmp), [21])
+                self.assertEqual((completed, aborted), ([], [21]))
+                abort = json.loads((Path(tmp) / "seed-21.aborted.json")
+                                   .read_text(encoding="utf-8"))
+                self.assertEqual(abort["phase"], "metering")
+                self.assertIn("boom", abort["error"])
+        finally:
+            H._run_seed = real
+
+    def test_existing_abort_refuses_before_execution(self):
+        import tempfile
+        # Real _run_seed: the abort check precedes any Qwen work, so this
+        # exercises the actual refusal path with no model execution.
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "seed-21.aborted.json").write_text("{}", encoding="utf-8")
+            with self.assertRaises(SystemExit):
+                H.run_seeds(Path(tmp), [21])
+
+    def test_existing_result_refuses_before_execution(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "seed-21.json").write_text("{}", encoding="utf-8")
+            with self.assertRaises(SystemExit):
+                H.run_seeds(Path(tmp), [21])
+
+    def test_unknown_seed_refuses(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(SystemExit):
+                H.run_seeds(Path(tmp), [99])
+
+    def test_main_exit_code_reflects_aborts(self):
+        real_verify, real_run = H.verify_frozen, H.run_seeds
+        H.verify_frozen = lambda: None
+        try:
+            H.run_seeds = lambda outdir, seeds: ([21], [])
+            self.assertEqual(H.main([]), 0)
+            H.run_seeds = lambda outdir, seeds: ([22], [21])
+            self.assertEqual(H.main([]), 1)
+        finally:
+            H.verify_frozen, H.run_seeds = real_verify, real_run
 
     def test_committed_freeze_manifest_matches_tree(self):
         expect = json.loads(H.FROZEN.read_text(encoding="utf-8"))

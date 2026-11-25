@@ -264,3 +264,11 @@ Additional integrity rules in force for confirmatory execution:
 - The n=3/k=2 admission remains provisional empirical admission, not
   statistical certification; abstention, malformed, timeout and
   failure outcomes are preserved per draw in the admission evidence.
+- Rerun policy: a seed with a completed result or an abort record is
+  never re-executed in place; the runner refuses and exits non-zero
+  on infrastructure aborts. An authorized rerun requires an explicit
+  amendment recording the cause and a separate output location; the
+  original records stay untouched. H2 additionally requires the
+  complete NOV arm set including nonattainment accounting, and the
+  freeze verifies content digests of every model, tokenizer and
+  configuration artifact rather than filenames alone.
