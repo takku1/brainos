@@ -1,0 +1,71 @@
+{
+ "files": {
+  "tools/run_heterogeneous.py": "7b203aba019b6431c24e682e809b4dcaa77731cd56550ee0609d2249bc5ebced",
+  "src/brainos/__init__.py": "2e1217a5161096bbd7e6a16bd700a8fa98b35db7947e212df22507b599fe6adc",
+  "src/brainos/__main__.py": "7e6967276c64293722455d6a6962dca8188ce1459e399df68e5702eb3e1b83f1",
+  "src/brainos/assimilation.py": "7c6be8f804a7d2c1f774b70d2054320fae44d33786f2ab7804bbb400a2a2e625",
+  "src/brainos/authority.py": "ae0b42f288cee376e286d1a77b2151798fb067c2c5dcb40e280711ad7dd3a9c6",
+  "src/brainos/closure.py": "1b7c5ea0606292d37641f59c909d5020646a8f3f6199cf6e63c72808301e2812",
+  "src/brainos/contracts.py": "93d10fb45e0ed40d07a6f0f5cfe3c7f385e2a2fdd77b4e2586a898940f8b069b",
+  "src/brainos/devcontext.py": "31f80171e7affdad83ef19ec18e54c7238bb8d4f8f87daa01594c9d874bb5d4f",
+  "src/brainos/development.py": "329e20d0ae8ce3c99d8f211391dbcca650aae38906e191e8005de83f5150fbe2",
+  "src/brainos/ecology.py": "c0e7777668a42837be6caae82c7a4dc905fdba6b8e1732724656f3ef0d63fab5",
+  "src/brainos/effects.py": "a577df26f28222ed8e90348137ed4a5a40dfb8ca096e15985600bc2a8ac10018",
+  "src/brainos/emergence.py": "935b74f6da93903cd968f25724912bf55868c9bb80be5ee1cd54d620809f1fb6",
+  "src/brainos/evidence.py": "6cd59f38ad7ee316bf5b21d43e1d8d31fabff47f6afa4d98fdbb576c1c5dd95d",
+  "src/brainos/execution.py": "391589ffa61a59416cfb2407e34d72cd5c5261e2003b5d8fd83af72951ca0807",
+  "src/brainos/fabric.py": "579ef99c6baf4652a686f8ac4c5c9de2e98ed133c8619b816b6e2004431c3f89",
+  "src/brainos/gateways.py": "c88daf7c194c45ede13eac7f7c5bfeb2614775346c5a293be8d0d578987406ed",
+  "src/brainos/graphs.py": "f48fefd9b325a7b903015f9bfadfecbf5b3d86abdb8c0176b4af19e3d2b9dc59",
+  "src/brainos/population.py": "df90651b83547cf4630b01e6df96d874cc6f28ed0065eccc402cb3739288b704",
+  "src/brainos/providers.py": "fec2b3192a660c3a43045a08679a377dcca5f5cb5ebfcb29921cf07dade7784d",
+  "src/brainos/recovery.py": "f8f530674ed6ffd685d25d042d796a423dcd12fe729f49421b19b76c1b05c051",
+  "src/brainos/registry.py": "4a018d4737dadfc57dd40d81777a6b453b5eed8948137fb928707eb47704bedb",
+  "src/brainos/resources.py": "103460473418a7bc603c871110ea245d01126f46729664273dce972dda0bf676",
+  "src/brainos/runner.py": "041d5061681a3199f8682e7f7fcb1df8f6515f0ae12410bbca5b229d8ca070bf",
+  "src/brainos/runtime.py": "82c0736bf0a7c2ca475ef2d7e2d0e6c4ad904f001fd58aac5c16603b16875343",
+  "src/brainos/storage.py": "0f5bb7f866b1918caca8dd010a6adddbef6d85949190290891dfc6c78b0ec41e",
+  "src/brainos/transactor.py": "a9cf011ed2fbac0d0be255f29d97b045c0e33a46e6b2303111e46ec8e56d10c9",
+  "src/brainos/worker.py": "ba23b27cb6c13aee003c7d495bfa51a91c034985b310f547ddaa3d0bdd50633d",
+  "implementations/qwen_adapter.py": "f4d3c557b43c0addedf39d0e06e66165aff0f1b17db368c906b1763115ae2d12",
+  "src/models/manifest.json": "066b374efff5291224bae930732f45e8de871c67b4e12cdbfafd76db62537e89"
+ },
+ "model": {
+  "id": "Qwen3-0.6B",
+  "digest_sha256": "f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b",
+  "dir_files": [
+   "config.json",
+   "generation_config.json",
+   "merges.txt",
+   "model.safetensors",
+   "tokenizer.json",
+   "tokenizer_config.json",
+   "vocab.json"
+  ]
+ },
+ "prompt": {
+  "version": "qwen-probe-sum-v1",
+  "sha256": "4d287bbce20467df425218ee325b7763b8efc7b19bb16606cb0866b68ed72b53"
+ },
+ "sampling": {
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_tokens": 32,
+  "seed": 11
+ },
+ "admission": {
+  "n": 3,
+  "k": 2
+ },
+ "seeds": [
+  21,
+  22,
+  23
+ ],
+ "packages": {
+  "torch": "2.15.0+cpu",
+  "transformers": "5.24.0"
+ },
+ "preregistration_sha256": "d2364f2d4d4e0c9fa71d5aa82992a758d8b9178549573d41892f896fc3b17660",
+ "amendment": "Amendment-1 section of PREREGISTRATION.md"
+}

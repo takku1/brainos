@@ -293,6 +293,7 @@ class Transactor:
         except Exception as exc:
             with self.store.transaction():
                 record["state"] = "REJECTED"
+                record["validation_attempts"] = attempts
                 self.resources.release_tx(holding, principal)
                 self.store.put("candidate", candidate, record)
                 self.store.event("validation-failed", candidate=candidate, attempts=attempts,
@@ -422,6 +423,9 @@ class Transactor:
         except Exception as exc:
             with self.store.transaction():
                 record["state"] = "REJECTED"
+                record["validation_attempts"] = attempts
+                record["validation_compute_ns"] = compute_ns
+                record["validation_total_ns"] = total_ns
                 self.resources.release_tx(holding, principal)
                 self.store.put("candidate", candidate, record)
                 self.store.event("validation-failed", candidate=candidate, attempts=attempts,

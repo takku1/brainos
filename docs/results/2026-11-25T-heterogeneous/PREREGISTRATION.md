@@ -173,3 +173,94 @@ unknown seed.
 - Deterministic parser refuses all irregulars by construction (regex
   over canonical grammar); timeouts, crashes and malformed replies
   were exercised against the mock only.
+
+## Amendment-1 (2026-11-25): runner accounting and evaluation corrections
+
+The original freeze (digest
+`95f7125607a74b09603852306147407d6edcb74c975bd600cfa498c93092be29`,
+commit `695cfb7`) is preserved in history. Static inspection of the
+frozen runner found seven defects (B31-B37), each reproduced with
+synthetic or mock fixtures, each corrected below with a regression
+test in `tests/test_heterogeneous.py`. No workload demand, seed,
+provider configuration, prompt, sampling parameter, admission
+threshold or hypothesis substance is changed by this amendment; the
+frozen question is unchanged. What changes is how the runner
+attributes, accounts and checks: previously silent or misattributed
+cases now produce explicit records, and previously passing-by-default
+checks now fail loudly.
+
+- B31 (arm attribution): served demand is attributed by experimental
+  arm (`fixed`, `neural`, `coordinated`), never by provider name. A
+  coordinated execution served through either member credits the
+  coordinated arm only; no demand is credited twice within an arm and
+  none leaks across arms.
+- B32 (completeness): the complete expected arm set is required.
+  Every expected arm must yield a meter report or an explicit
+  nonattainment record stating why (e.g. rejected admission with its
+  error, empty selection, skipped demands). Silently missing arms
+  fail H1. Admission rejection and an empty organization produce
+  nonattainment outcomes, not silent disappearance.
+- B33 (failed-work accounting): expenditure derives from durable
+  reservations, allocations, invocation records and validation
+  attempts, including failed, timed-out, rejected and cancelled work.
+  Refusal before resource consumption is distinguished from failure
+  after consumption. Rejected admission records its draw count on the
+  candidate; validation spend sums over all membership candidates
+  (admitted, rejected, abstained), so rejected Qwen admission carries
+  its full cost instead of zero. Terminal failed tasks stay in the
+  meter windows with their measured invocations.
+- B34 (economic boundary): admission, calibration, held-out execution
+  and organizational assessment are charged to the arm(s) requiring
+  the evidence. Calibration demands are the selection evidence: fixed
+  and neural pay their own calibration through their metered tasks,
+  while the coordinated arm pays the full calibration table of both
+  members. Shared initialization is not amortized. The runner records
+  this boundary per seed in a `setup` block (calibration demands,
+  compute, overhead and validation attempts per member). The oracle
+  uses held-out demands only, with zero validation/assessment cost.
+- B35 (strict IR): the evaluator requires exactly
+  `{"operation": <alias>, "values": [<int>, ...]}` with a string
+  operation from the frozen alias set and exact-integer operands.
+  Boolean and floating-point operands are rejected even where Python
+  equality would accept them; unhashable operation values cannot
+  satisfy membership and are rejected without crashing. No coercion
+  is applied downstream. Declared abstention (`ABSTAIN`) is recorded
+  separately from malformed output and incorrect interpretation.
+- B36 (comparative evidence): H5 requires valid successful
+  observations from both provider families and a meaningful
+  denominator. Missing deterministic observations, missing neural
+  observations or a zero denominator report
+  `insufficient-comparative-evidence` and fail; they are never
+  counted as a pass.
+- B37 (freeze integrity): the freeze binds the approved
+  execution-relevant source tree (`src/brainos/*.py`,
+  `tools/run_heterogeneous.py`,
+  `implementations/qwen_adapter.py`, `src/models/manifest.json`),
+  the model artifact digest and directory listing, the prompt text
+  and version, sampling, admission, seeds and runtime package
+  versions, recorded in `FROZEN.json`. The runner verifies the
+  manifest before execution, the launcher asserts the model digest
+  at the execution boundary, and any change to a relevant file or
+  identity refuses. Unrelated repository changes remain allowed
+  exactly because they cannot alter the pinned execution boundary.
+
+Additional integrity rules in force for confirmatory execution:
+
+- Served means both correct interpretation and correct deterministic
+  execution; interpretation-only success is not service.
+- Every expected demand-arm pair has an explicit terminal outcome: a
+  `runs` entry or a `skipped` record. H2 verifies this coverage.
+- Infrastructure aborts write `seed-<n>.aborted.json` (phase, error,
+  HEAD, preregistration digest) and never overwrite; results are
+  still never overwritten.
+- The organizational-assessment budget declared above (100 case
+  evaluations) is enforced by the verdict call; budget exhaustion
+  yields `inconclusive-budget` with its spend, which H3 accepts as
+  a produced verdict.
+- Native external-resource measurements (nanosecond compute/total
+  per arm alongside converted units) are recorded in each NOV entry;
+  where no defensible scalar conversion exists, native units stand
+  without conversion.
+- The n=3/k=2 admission remains provisional empirical admission, not
+  statistical certification; abstention, malformed, timeout and
+  failure outcomes are preserved per draw in the admission evidence.

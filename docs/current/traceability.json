@@ -1114,7 +1114,10 @@
     "src/brainos/emergence.py::net_value"
    ],
    "tests": [
-    "tests/test_emergence.py::NetValue"
+    "tests/test_emergence.py::NetValue",
+    "tests/test_heterogeneous.py::ArmAttribution",
+    "tests/test_heterogeneous.py::CoordinatedCharge",
+    "tests/test_heterogeneous.py::OracleBound"
    ],
    "verified": "full"
   },
@@ -1173,7 +1176,8 @@
    ],
    "tests": [
     "tests/test_emergence.py::Verdict",
-    "tests/test_emergence.py::VerdictRange"
+    "tests/test_emergence.py::VerdictRange",
+    "tests/test_heterogeneous.py::AssessmentBudget"
    ],
    "verified": "full"
   },
@@ -1296,9 +1300,20 @@
     "src/brainos/population.py::CapabilityPopulation.admit"
    ],
    "tests": [
-    "tests/test_external.py::NondeterministicAdmission"
+    "tests/test_external.py::NondeterministicAdmission",
+    "tests/test_heterogeneous.py::FailedCostAccounting"
    ],
    "verified": "full"
+  },
+  "R-07-12": {
+   "status": "specified",
+   "tests": [
+    "tests/test_heterogeneous.py::StrictIR",
+    "tests/test_heterogeneous.py::Completeness",
+    "tests/test_heterogeneous.py::ComparativeEvidence",
+    "tests/test_heterogeneous.py::FreezeManifest"
+   ],
+   "gap": "confirmatory execution blocked pending review; runner conformance only"
   }
  }
 }
