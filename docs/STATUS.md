@@ -154,4 +154,7 @@ derived).
 
 2026-11-25 (Track A complete: clearance 35d5182, confirmatory f950f91
 with H1-H5 on all seeds; Track B: B38-B43 policy upgrades, ADR demo
-with disturbance-recovery arc on a separate store, 334 tests green)
+with disturbance-recovery arc, unified live observatory on the ADR
+policy with extended panels and init/resume/--reset, 337 tests green;
+10-min continuous run: 638 decisions over 630 ticks across a restart,
+~98% quiescence, redundant-verdict dormancy, intact journal)
