@@ -1339,7 +1339,8 @@
    ],
    "tests": [
     "tests/test_development_policy.py::TestPolicy",
-    "tests/test_development_policy.py::TestDecisionRecord"
+    "tests/test_development_policy.py::TestDecisionRecord",
+    "tests/test_development_policy.py::TestHomeostasis"
    ],
    "gap": "policy interface unit-tested; live-loop wiring and persistent-environment demo open"
   }

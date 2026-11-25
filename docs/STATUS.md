@@ -4,27 +4,35 @@
 
 W1 is closed: the emergence meter, the organizational-capability test and
 the net-value ledger are implemented and were exercised in the X4
-continuous ecosystem. W2 L2 implementation and conformance testing are
-done; the confirmatory experiment is corrected (Amendment-1), re-frozen
-and blocked pending review — no execution until approved. Track B
-(autonomous developmental runtime) is specified in Doc 33 with its first
-three register rows created; reconciliation with the live observatory
-effort and bounded ADR implementation are next. Not full Core
+continuous ecosystem. W2 L2 confirmatory execution is COMPLETE: all
+five hypotheses passed on all three seeds (f950f91), Qwen admitted
+k-of-n everywhere, coordinated exceeding fixed on held-out demands.
+Track B (autonomous developmental runtime): the replaceable policy
+interface is implemented with stateful homeostatic regulation
+(B38-B43), and a persistent integration demonstration ran the full
+disturbance-recovery arc on a separate store. Not full Core
 conformance; not independently reviewed.
 
 ## Active focus
 
 Two tracks, experimentally isolated. Track A (scientific validation):
-B31-B37 corrected with mock-only/synthetic reproductions and 48
-regression tests; the frozen question, workload, seeds, provider
-configuration, prompt and admission thresholds are unchanged
-(Amendment-1 records the accounting and evaluation corrections only).
+B31-B37 corrected with mock-only/synthetic reproductions and 58
+regression tests; final clearance (NOV arm set in H2, model content
+digests, abort exit codes, seed re-execution refusal) verified, then
+executed in a pinned worktree — H1-H5 pass on seeds 21-23, verdict
+redundant on all seeds, Qwen admitted everywhere. NOV is deeply
+negative for neural/coordinated arms at declared CPU-inference rates
+(descriptive, disclosed pre-freeze). Results committed separately.
 Track B (living organization): Doc 33 specifies the autonomous
 developmental runtime as an integration milestone, not a new subsystem;
-R-25-08 (homeostatic bands), R-02-16 (read-only projector) and R-07-13
-(persistent environment) are created as specified rows. The Qwen probe
-ran disclosed and non-confirmatory (admission passed, irregular demand
-served where the deterministic parser refused).
+R-25-08 and R-07-13 are partial with the coordination core
+(`src/brainos/development_policy.py`), R-02-16 stays specified. The
+ADR demo (tools/run_adr.py) showed demand-triggered construction,
+incompetence-triggered investigation, tiny-grant exhaustion abstain,
+provider-loss recovery through dependency closure, restart persistence
+and sustained quiescence — with unsuccessful adaptations preserved.
+The Qwen probe ran disclosed and non-confirmatory (admission passed,
+irregular demand served where the deterministic parser refused).
 Carried forward:
 demand-triggered recruitment, incremental retention assessment, kernel
 overhead, non-vacuous assimilation validation, organizational fragility,
@@ -68,11 +76,11 @@ specialist dormant in P1.
 | X3 | Correct rejection, state reduction and recovery held. The acceptance rule was unsound (4 incorrect acceptances) and the economics were undercounted. |
 | X4 | 5 seeds, all hypotheses pass. Developing NOV > fixed on every seed; adaptive > developing on every seed (descriptive, declared rates). Coverage 1.0, regret 0.0, retention 1.0 throughout. Verdicts: arith fragile, lookup redundant. Zero assimilation nominations after P1; P1 specialist dormancy on thin samples. |
 
-291 runtime tests pass, drift check reports zero errors, document checks
+334 runtime tests pass, drift check reports zero errors, document checks
 19/19, negatives 15/15, L1 harness 17/17 and dependency closure clean
-(verified 2026-11-25 with the W2 runner corrections B31-B37, Amendment-1
-and re-freeze; test counts are point-in-time, register counts are
-derived).
+(verified 2026-11-25 with the W2 clearance corrections, confirmatory
+seeds 21-23, and the ADR policy/demo work; test counts are
+point-in-time, register counts are derived).
 
 ## Key decisions
 
@@ -109,6 +117,22 @@ derived).
   created as specified rows with ownership and acceptance criteria; the
   live observatory effort is adopted as the ADR baseline, not a
   competing runtime. W3 keeps formal stability results.
+- W2 L2 confirmatory (f950f91): executed in a pinned worktree after
+  clearance; H1-H5 pass on all seeds, verdict redundant (9/100 budget),
+  coordinated > fixed on held-out demands every seed, neural cost
+  premium 30-40x. Fixed NOV +17.6/seed; neural/coordinated deeply
+  negative at declared rates. Original 695cfb7 freeze preserved in
+  history; results embed head 35d5182 and preregistration digest.
+- ADR coordination core (B38-B43): hysteresis flags and cooldowns are
+  stateful with member-snapshot comparison (blocked members count as a
+  changed world); burn measured per step, never cumulative;
+  membership never implies competence (grounded task outcomes required);
+  retention from fresh assessments or youth implication, never counts;
+  churn from member-snapshot deltas; unknown viability blocks
+  unconditional within-bounds verdicts. Demo found and fixed two live
+  defects (id-vs-name member matching; blocked members counted as
+  serving). Dormancy/wake unexercised (drill verdict was retain);
+  arith-neg recovery needs recurring demand after closure block.
 
 ## Deprecated / legacy
 
@@ -121,6 +145,6 @@ derived).
 
 ## Last updated
 
-2026-11-25 (Track A: B31-B37 corrected, Amendment-1, re-freeze eb44620,
-291 tests green, confirmatory execution blocked; Track B: Doc 33
-specified, R-25-08/R-02-16/R-07-13 created, live/ reconciliation next)
+2026-11-25 (Track A complete: clearance 35d5182, confirmatory f950f91
+with H1-H5 on all seeds; Track B: B38-B43 policy upgrades, ADR demo
+with disturbance-recovery arc on a separate store, 334 tests green)

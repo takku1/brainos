@@ -309,3 +309,31 @@ proof of stability.
    restructuring forbidden. The §33.4 variable set stands for the
    bounded implementation; evidence-dependent re-estimation belongs to
    W3, not ADR.
+
+## 33.11 Implementation note (2026-11-25)
+
+The coordination core is implemented (`src/brainos/development_policy.py`,
+R-25-08/R-07-13 partial): declared bands, evidence-grounded observation,
+replaceable policy, hysteresis flags, cooldowns with member-snapshot
+comparison (blocked members count as a changed world), per-step burn
+rates, assessment freshness with youth implication, snapshot-delta
+churn, strict unknown handling, and restart-persistent policy state.
+R-02-16 stays specified (no projector artifact built).
+
+`tools/run_adr.py` demonstrates the integrated loop on a separate
+durable store (state in the system temp dir, never in `live/`): 51
+decisions across stable/novel/recurring/scarcity/disruption/recovery
+regimes, every transformation through kernel gates with recorded
+disposition. Demonstrated: demand-triggered construction (3
+composites), incompetence-triggered investigation of a flaky provider,
+tiny-grant exhaustion abstain, provider-loss recovery through
+dependency closure (re-acquisition of sum and double), restart
+persistence of organization and policy state, sustained quiescence,
+and assimilation surfaced but not published (B21). Unsuccessful
+adaptations are preserved in the demo report, including 6 unresolved
+deficiencies. Not demonstrated: dormancy/wake (assessment drill
+verdict was retain), arith-neg recovery after its dependency-closure
+block (undemanded after the disruption), neural providers, and any
+stability claim. The demo found and fixed two live defects in the
+policy core (capability-id vs name matching; blocked members counted
+as serving). `live/server.py` was not modified.
