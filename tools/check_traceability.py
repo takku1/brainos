@@ -12,6 +12,8 @@ Checked:
   * every cited code symbol and test exists (parsed with ast, never imported)
   * every src/brainos module and every test class is claimed by a requirement
   * every document's `Status:` header is consistent with the rows it owns
+  * docs/STATUS.md carries the required sections, register-derived counts,
+    a live workstream and a dated update (workstream exit check, Doc 08 rule 4)
 """
 from pathlib import Path
 import ast
@@ -25,6 +27,7 @@ MAP = DOCS / "traceability.json"
 REGISTER = DOCS / "31-architectural-audit.md"
 README = DOCS / "README.md"
 DOC21 = DOCS / "21-reference-implementation.md"
+STATUS = ROOT / "docs" / "STATUS.md"
 BEGIN, END = "<!-- traceability:begin -->", "<!-- traceability:end -->"
 
 I_TOKEN = {"implemented": "I✓", "partial": "I∼", "specified": "I✗", "documentary": "I—"}
@@ -123,6 +126,40 @@ def generate_doc21_map(reqs):
     return "\n".join(lines)
 
 
+def check_status(reqs, errors):
+    """Workstream exit check: STATUS.md must reflect the register, not older text."""
+    if not STATUS.exists():
+        errors.append("docs/STATUS.md is missing")
+        return
+    text = STATUS.read_text(encoding="utf-8")
+    lower = text.lower()
+    for section in ("current phase", "active focus", "architecture summary", "key decisions",
+                    "deprecated", "last updated"):
+        if section not in lower:
+            errors.append(f"STATUS.md lacks required section: {section}")
+    counts = {}
+    for entry in reqs.values():
+        counts[entry.get("status", "specified")] = counts.get(entry.get("status", "specified"), 0) + 1
+    match = re.search(r"register:\s*(\d+)\s+requirements\s*\(implemented\s+(\d+),\s*"
+                      r"partial\s+(\d+),\s*specified\s+(\d+),\s*documentary\s+(\d+)\)", lower)
+    if match is None:
+        errors.append("STATUS.md lacks a derived register line "
+                      "'register: N requirements (implemented I, partial P, specified S, documentary D)'")
+    else:
+        total, impl, part, spec, doc = (int(match.group(i)) for i in range(1, 6))
+        want = (len(reqs), counts.get("implemented", 0), counts.get("partial", 0),
+                counts.get("specified", 0), counts.get("documentary", 0))
+        if (total, impl, part, spec, doc) != want:
+            errors.append(f"STATUS.md register line says {(total, impl, part, spec, doc)}, "
+                          f"register has {want}")
+    roadmap = (DOCS / "08-development-roadmap.md").read_text(encoding="utf-8")
+    for token in sorted(set(re.findall(r"W[0-7]", text))):
+        if token not in roadmap:
+            errors.append(f"STATUS.md names {token}, which no Doc 08 workstream defines")
+    if not re.search(r"## Last updated\s+202\d-\d{2}-\d{2}", text):
+        errors.append("STATUS.md needs a dated entry directly under 'Last updated'")
+
+
 def main():
     write = "--write" in sys.argv[1:]
     errors = []
@@ -135,6 +172,7 @@ def main():
         if rid not in rows:
             errors.append(f"map entry {rid} has no register row")
     reqs = {rid: dict(mapping.get(rid, {"status": "specified"})) for rid in rows}
+    check_status(reqs, errors)
     for rid, entry in reqs.items():
         entry.setdefault("status", "specified")
         if entry["status"] not in I_TOKEN:

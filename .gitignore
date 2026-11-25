@@ -17,3 +17,9 @@ dist/
 !.env.example
 *.pem
 *.key
+
+# Frozen integration-testing checkpoints (W2 staging, ~1.5 GB). Payloads must
+# never be committed; the policy files stay tracked.
+src/models/*
+!src/models/README.md
+!src/models/manifest.json

@@ -2,39 +2,50 @@
 
 ## Current phase
 
-Bounded single-authority runtime with developmental mechanisms under
-preregistered study. Not full Core conformance; not independently reviewed.
+W1 is closed: the emergence meter, the organizational-capability test and
+the net-value ledger are implemented and were exercised in the X4
+continuous ecosystem. The next major workstream is W2 (real-ecosystem
+integration); its adapter design note is due before any implementation.
+Not full Core conformance; not independently reviewed.
 
 ## Active focus
 
-Workstream W0 (Doc 08): keep documents and code in lockstep, and carry the
-X3 corrections and X2c open items. Next: W1, an emergence meter.
+W2: bring one external provider family (frozen checkpoints staged in
+`src/models/`) behind the existing contracts, with nondeterministic
+validation. Design the adapter first — contracts, authority boundaries,
+resource accounting, acceptance criteria — with no separate neural kernel
+and no special authority rules for language models. Carried forward:
+demand-triggered recruitment, incremental retention assessment, kernel
+overhead, non-vacuous assimilation validation, organizational fragility,
+adaptation latency, and economic comparison against independently
+initialized adaptive controls.
 
 ## Architecture summary
 
-`docs/current` is one consolidated specification, with each rule owned by one
-document. `src/brainos` implements a standard-library Python runtime: durable
-SQLite authority, scoped permits and epochs, transactor publication, an effect
-gateway, typed lowered graphs, capability populations with a grounded
-lifecycle, and bounded composition and assimilation. The Doc 31 register is
-the source of truth for what is built. Its cells derive from
-`docs/current/traceability.json` and are checked against code and tests by
-`tools/check_traceability.py`. Doc 21 section 21.0 is the generated
-module-to-requirement map.
+`docs/current` is one consolidated specification with each rule owned by
+one document. The Doc 31 register is the source of truth — register: 215
+requirements (implemented 44, partial 70, specified 86, documentary 15),
+derived from `docs/current/traceability.json`, never copied from older
+status text. `src/brainos` implements a standard-library Python runtime:
+durable SQLite authority, scoped permits and epochs, transactor
+publication, an effect gateway, typed lowered graphs, capability
+populations with a grounded lifecycle, and bounded composition and
+assimilation. W1 added kernel-side measurement (`src/brainos/emergence.py`:
+meter, capability test, value ledger); X4 ran one persistent developing
+organization per seed against fixed, adaptive and oracle controls.
 
-## Key decisions
+## Implementation vs validation
 
-- Drift control (Doc 31 section 31.12): no claim of implementation without
-  cited code and tests, no unclaimed code, and document status derived from
-  register rows. Of 211 rows: 41 implemented, 70 partial, 85 specified,
-  15 documentary.
-- Experiments run only from committed, pushed, digest-matched
-  preregistrations. Results are committed separately and never edited.
-- Developmental code receives a restricted context; the kernel verifies every
-  lifecycle, publication and recovery request.
-- Workstream order (Doc 08): integrity, emergence meter, real-ecosystem
-  adapter, stability theory, mechanism design, kernel as protocol, governance,
-  publication arc.
+Implemented means built and tested, not validated. X4's confirmatory
+claims cover instrumentation integrity, complete cost accounting and
+operational discipline — not the economics. The ordering adaptive >
+developing > fixed held on all five seeds but is descriptive, conditional
+on declared and uncalibrated resource exchange rates. No arith capability
+is robust (all compositional-but-fragile); lookup is redundant: resilient
+emergent organizational competence is not demonstrated. Assimilation
+publication never occurred, so live gate enforcement is untested (X3b
+remains experimentally unresolved). Thin per-phase samples drove a true
+specialist dormant in P1.
 
 ## Evidence so far
 
@@ -44,14 +55,41 @@ module-to-requirement map.
 | X2, X2b | Ecology failed coexistence or retention discipline, and adaptation. |
 | X2c | 5 of 6 passed. Dormancy cut specialist loss; it does not beat plain uncertainty-aware selection reliably. Adaptation failed. |
 | X3 | Correct rejection, state reduction and recovery held. The acceptance rule was unsound (4 incorrect acceptances) and the economics were undercounted. |
+| X4 | 5 seeds, all hypotheses pass. Developing NOV > fixed on every seed; adaptive > developing on every seed (descriptive, declared rates). Coverage 1.0, regret 0.0, retention 1.0 throughout. Verdicts: arith fragile, lookup redundant. Zero assimilation nominations after P1; P1 specialist dormancy on thin samples. |
+
+212 runtime tests pass, drift check reports zero errors, document checks
+19/19 and negatives 15/15 (verified 2026-11-25 on the X4 results commit;
+test counts are point-in-time, register counts are derived).
+
+## Key decisions
+
+- Drift control (Doc 31 section 31.12): no claim of implementation without
+  cited code and tests, no unclaimed code, and document status derived from
+  register rows. STATUS.md synchronization is a mandatory workstream exit
+  check, verified by the same gate.
+- W1 closed: R-25-06 (meter), R-25-07 (capability test) and R-20-07
+  (net-value ledger) implemented with positive and negative controls.
+- Store.journal() root fix: an event body carrying `seq` crashed every
+  journal reader; the journal sequence now wins, with a regression test.
+- Model payloads are optional external assets: `src/models/` payloads are
+  git-ignored, a tracked manifest records identity, version, digest,
+  license, provenance, requirements and contract compatibility, and Core
+  never depends on a model, framework, accelerator or model directory.
+- Experiments run only from committed, pushed, digest-matched
+  preregistrations. Results are committed separately and never edited.
+- Developmental code receives a restricted context; the kernel verifies
+  every lifecycle, publication and recovery request.
 
 ## Deprecated / legacy
 
-- Pre-31.12 register cells (all rows marked I✗) are replaced by derived cells.
+- Pre-31.12 register cells (all rows marked I…) are replaced by derived cells.
 - Doc 21 sections 21.9-21.13 are an increment log, kept because results cite them.
+- The frozen X3 runner reproduces only at 6c83409 by design: the kernel now
+  refuses publication without a selection record.
 - The original DOCX is archived as superseded in docs/archive/.
 - Predecessor Z:\newbrain results are historical only.
 
 ## Last updated
 
-2026-11-25 (drift control, X3 recorded, gate corrections, roadmap W0-W7)
+2026-11-25 (W1 closed and exercised in X4; STATUS.md is a drift-checked
+exit gate; model-payload decision recorded)

@@ -1,0 +1,48 @@
+{
+ "artifacts": [
+  {
+   "dependencies": [
+    "safetensors container",
+    "external inference runtime (not BrainOS Core)"
+   ],
+   "digest_sha256": "f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b",
+   "expected_contracts": {
+    "input": "text",
+    "note": "candidate reasoning/perception specialist; exact BrainOS capability binding is W2 adapter work",
+    "output": "text"
+   },
+   "id": "Qwen3-0.6B",
+   "kind": "language-model",
+   "license": "as published by the upstream source; no license text is vendored here, verify before redistribution",
+   "provenance": "Qwen/Qwen3-0.6B via huggingface_hub.snapshot_download on 2026-11-23",
+   "runtime_requirements": [
+    "1503300328-byte safetensors payload",
+    "Qwen3ForCausalLM architecture (qwen3, 28 layers, hidden 1024, vocab 151936)"
+   ],
+   "version": "upstream snapshot 2026-11-23"
+  },
+  {
+   "dependencies": [
+    "numpy .npz container"
+   ],
+   "digest_sha256": "222c4814325ee569bf735941eaa0b27fdfdd49dfb8a3d7fb43c5dbd5747a13a5",
+   "expected_contracts": {
+    "action": "29-dim vector (w2/b2 heads)",
+    "input": "125-dim observation vector (normalized by obs_mean/obs_std)",
+    "note": "candidate frozen motor specialist; retention passed, acquisition unproven",
+    "output": "29-dim action"
+   },
+   "id": "charactertest-closedloop-64167936-policy",
+   "kind": "motor-policy",
+   "license": "own artifact (charactertest lineage)",
+   "provenance": "Z:\\charactertest\\runs\\continual_v2_closedloop_training\\policy_64167936.npz at 64,167,936 decisions",
+   "runtime_requirements": [
+    "848448-byte npz payload",
+    "dense MLP 125 -> 256 -> 256 -> 29"
+   ],
+   "version": "policy_64167936"
+  }
+ ],
+ "note": "Tracked policy for untracked payloads. Payloads are fetched, never committed; Core never depends on them (substrate independence).",
+ "version": 1
+}

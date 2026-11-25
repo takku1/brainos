@@ -41,6 +41,10 @@ How work proceeds so that documents and code cannot drift (Doc 31 section 31.12)
    rows to `partial` or `implemented`; `tools/check_traceability.py` must pass.
 3. Any empirical claim needs a preregistration that is committed and pushed
    before the run. Results are committed separately and never edited.
+4. A workstream closes by synchronizing `docs/STATUS.md` (phase, focus,
+   register-derived counts, decisions, limitations, and the
+   implementation-vs-validation distinction); the same gate verifies the
+   status file, so a stale STATUS.md is drift.
 
 Historical phases 1A-3B and M1-M3 are summarized by their evidence. Doc 31 holds
 the obligations; this table holds the order.
@@ -56,9 +60,9 @@ the obligations; this table holds the order.
 
 | Workstream | Goal | Entry | Exit evidence | State |
 |---|---|---|---|---|
-| W0 Integrity | Keep docs and code in lockstep. Correct the X3 gate (full nomination cost, early stop, confidence-bounded tolerance, declared internal state). Carry the X2c open items: recruitment of dormant specialists, incremental assessment, kernel overhead, adaptation latency | — | Drift check in acceptance; GateCorrections and DecisionBoundary tests (B21-B25, Doc 21 section 21.14); X3b preregistered before any new assimilation claim | complete, except X3b, which is deferred to the continuous ecosystem (W1) |
-| W1 Emergence meter and continuous ecosystem | Instrument z_t and the organizational-capability test (25 section 25.13); net organizational value (20 section 20.9); one persistent organization running every mechanism (07 section 7.17, X4) | W0 | R-25-06 and R-25-07 implemented with positive and negative controls; R-20-07 ledger; X4 preregistered and pushed, then run per seed | designed (rows specified) |
-| W2 Real-ecosystem adapter | One external provider family (for example a local LLM) behind the existing contracts, outside the standard-library kernel, with nondeterministic validation | W0 | Adapter process; validation that handles nondeterminism; semantic-commensurability gaps (R-02-13) measured rather than declared | specified |
+| W0 Integrity | Keep docs and code in lockstep. Correct the X3 gate (full nomination cost, early stop, confidence-bounded tolerance, declared internal state). Carry the X2c open items: recruitment of dormant specialists, incremental assessment, kernel overhead, adaptation latency | — | Drift check in acceptance; GateCorrections and DecisionBoundary tests (B21-B25, Doc 21 section 21.14); X3b preregistered before any new assimilation claim | complete, except X3b: X4 produced zero admissible nominations, so live gate enforcement is untested and carried forward |
+| W1 Emergence meter and continuous ecosystem | Instrument z_t and the organizational-capability test (25 section 25.13); net organizational value (20 section 20.9); one persistent organization running every mechanism (07 section 7.17, X4) | W0 | R-25-06 and R-25-07 implemented with positive and negative controls; R-20-07 ledger; X4 preregistered and pushed, then run per seed | implemented and exercised in X4 (meter series, verdicts, NOV recorded). The meter exists; resilient emergent competence is not demonstrated |
+| W2 Real-ecosystem adapter | One external provider family (for example a local LLM) behind the existing contracts, outside the standard-library kernel, with nondeterministic validation. Staging: `src/models/` holds the frozen checkpoints (Qwen3-0.6B, closed-loop motor policy) behind slot contracts; payloads git-ignored, manifest tracked | W1 | Adapter design note first (contracts, authority, accounting, acceptance criteria), then adapter process; validation that handles nondeterminism; semantic-commensurability gaps (R-02-13) measured rather than declared | active: design note next; no neural kernel, no special authority rules |
 | W3 Stability of self-modification | Model learn → validate → commit → rebind as a control loop; state assumptions; prove bounded churn and no acquisition/retirement oscillation under them; test against X2c-style churn | W1 | Written result with assumptions; preregistered test; register rows for Doc 25 section 25.5 | specified |
 | W4 Mechanism design | Strategic providers: bonded claims, proper scoring of reported cost and confidence, calibration-based eligibility, collusion detection | W1, W3 | Adversarial providers in the catalogue; preregistered strategic-provider experiment; Doc 20 section 20.6 made normative | specified |
 | W5 Kernel as protocol | Signed claims and attestations across authorities; two-authority federation; Byzantine threat model | W4, design review | Design note reviewed before code; protocol tests with an adversarial peer; R-03-06 and R-32-02 revisited | specified |
