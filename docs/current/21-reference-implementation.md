@@ -41,7 +41,7 @@ do not edit by hand. Status per requirement: implemented (I✓), partial (I∼).
 | population.py | R-17-01, R-25-04 | R-09-05, R-09-RETIRE, R-11-01, R-11-02, R-11-04, R-12-F13, R-12-F6, R-17-04, R-20-03, R-24-ADD, R-24-RETIRE |
 | providers.py | R-21-11 | R-02-01, R-02-02, R-02-09, R-03-04, R-12-F11 |
 | recovery.py | R-09-04, R-32-09 | — |
-| registry.py | — | R-03-01, R-09-CONNECT, R-09-QUARANTINE, R-12-F16, R-19-02, R-29-02, R-29-03 |
+| registry.py | R-02-14 | R-03-01, R-09-CONNECT, R-09-QUARANTINE, R-12-F16, R-19-02, R-29-02, R-29-03 |
 | resources.py | R-09-ALLOCATE, R-09-RELEASE, R-09-RESERVE, R-20-06, R-21-05 | R-11-04, R-12-F19, R-12-F5, R-20-01 |
 | runner.py | R-21-09, R-32-06 | — |
 | runtime.py | R-21-04, R-31-01 | R-08-01, R-21-02, R-21-03 |
@@ -49,7 +49,7 @@ do not edit by hand. Status per requirement: implemented (I✓), partial (I∼).
 | transactor.py | R-09-10, R-09-BIND, R-09-COMMIT, R-09-VALIDATE, R-24-03, R-24-ASSIMILATE-02 | R-02-10, R-09-03, R-09-09, R-09-REBIND, R-12-F10, R-12-F17, R-12-F9, R-21-02, R-24-ASSIMILATE, R-24-REBIND |
 | worker.py | R-21-09 | — |
 
-Register totals: documentary 15, implemented 44, partial 70, specified 89.
+Register totals: documentary 15, implemented 45, partial 70, specified 88.
 
 <!-- traceability:end -->
 

@@ -39,7 +39,7 @@ class Runtime:
         self.control = ControlState(self.store)
         self.resources = ResourceLedger(self.store, clock, operators)
         self.evidence = EvidenceLedger(self.store, self.control, clock)
-        self.registry = ProviderRegistry(self.store)
+        self.registry = ProviderRegistry(self.store, operators)
         self.authority = Authority(self.store, self.control, self.evidence, clock)
         self.runner = make_runner(profile, self.registry, self._runner_event)
         self.tasks = TaskExecutor(self.store, self.control, self.registry, self.runner,

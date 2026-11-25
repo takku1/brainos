@@ -19,7 +19,8 @@
     "1503300328-byte safetensors payload",
     "Qwen3ForCausalLM architecture (qwen3, 28 layers, hidden 1024, vocab 151936)"
    ],
-   "version": "upstream snapshot 2026-11-23"
+   "version": "upstream snapshot 2026-11-23",
+   "location": "Qwen3-0.6B/model.safetensors"
   },
   {
    "dependencies": [
@@ -40,7 +41,8 @@
     "848448-byte npz payload",
     "dense MLP 125 -> 256 -> 256 -> 29"
    ],
-   "version": "policy_64167936"
+   "version": "policy_64167936",
+   "location": "charactertest-closedloop-64167936-policy.npz"
   }
  ],
  "note": "Tracked policy for untracked payloads. Payloads are fetched, never committed; Core never depends on them (substrate independence).",

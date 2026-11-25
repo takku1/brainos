@@ -138,6 +138,18 @@
    ],
    "gap": "exact schema/unit checks; semantic commensurability and uncertainty mapping unimplemented"
   },
+  "R-02-14": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/registry.py::ProviderRegistry.register_external",
+    "tools/verify_models.py::verify_manifest"
+   ],
+   "tests": [
+    "tests/test_external.py::ExternalRegistration",
+    "tests/test_external.py::ManifestVerification"
+   ],
+   "verified": "full"
+  },
   "R-03-01": {
    "status": "partial",
    "code": [
