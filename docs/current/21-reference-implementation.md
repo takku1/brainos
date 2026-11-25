@@ -49,7 +49,7 @@ do not edit by hand. Status per requirement: implemented (I✓), partial (I∼).
 | transactor.py | R-09-10, R-09-BIND, R-09-COMMIT, R-09-VALIDATE, R-24-03, R-24-ASSIMILATE-02 | R-02-10, R-09-03, R-09-09, R-09-REBIND, R-12-F10, R-12-F17, R-12-F9, R-21-02, R-24-ASSIMILATE, R-24-REBIND |
 | worker.py | R-21-09 | — |
 
-Register totals: documentary 15, implemented 44, partial 70, specified 86.
+Register totals: documentary 15, implemented 44, partial 70, specified 89.
 
 <!-- traceability:end -->
 

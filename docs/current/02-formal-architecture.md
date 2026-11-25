@@ -203,3 +203,56 @@ learned latent alignment is a separate experiment.
 Operational ownership: Doc 32 sections 32.3 and 32.11 govern the single-owner
 initial profile and task orchestration. Federation is a future deployment
 profile requiring explicit fencing, not a property of multiple readouts.
+
+## 2.12 External provider adapters (W2 design; specified, not implemented)
+
+One computational ability must be independent of its implementation
+substrate: a neural checkpoint and a deterministic program serve the same
+capability contract through the same kernel paths. No neural kernel is
+built, and language models get no special authority rules. The adapter is
+an ordinary external process; the kernel verifies claims about it, never
+its weights.
+
+- **Registration (R-02-14).** External providers register through an
+  operator-only path that records a pinned artifact digest (see
+  `src/models/manifest.json`), declared schemas, units, cost schedule and
+  endpoint — not through the trusted catalogue, which stays closed to
+  external code. The resulting provider record carries
+  `kind: "external"` and is resolved, blocked, selected, charged and
+  retired through the identical registry, impact, task, ledger and
+  lifecycle paths as any member. Impact `block` enforcement, permit
+  scopes and budget dimensions apply unchanged.
+- **Execution.** The adapter speaks the existing worker wire protocol
+  (verified requests, bounded replies, mandatory timing fields) from
+  outside `src/brainos`. Adapter-reported timings are recorded alongside
+  kernel-measured wall time; persistent disagreement is evidence, never
+  silently corrected. Adapter death, timeout or malformed reply is a
+  provider failure: the task is refused cleanly, the failure is
+  journaled, and selection observes the cost. No new runner authority is
+  created; cancellation and deadlines behave as in Doc 32.
+- **Nondeterministic validation (R-02-15).** Exact output equality is the
+  wrong gate for a sampler. Admission runs each case n times and passes on
+  k-of-n agreement with the expected output (declared n, k per provider);
+  the full sample set digest is recorded as admission evidence.
+  Membership rows flag nondeterministic providers, and every downstream
+  equality check (assimilation union gate, downstream competence) uses
+  the consistency form for flagged providers: agreement of the
+  deterministic output with the recorded sample set, never single-shot
+  equality. Assimilation nominates deterministic providers only;
+  nondeterministic members are excluded from candidacy by rule, and the
+  exclusion is recorded rather than scored as a failure.
+- **Semantic interoperability is measured (R-02-13).** Sharing a contract
+  is the hypothesis, not the proof. The W2 demonstration (§7.18) records
+  admission agreement, output agreement rates on a shared demand sample
+  (deterministic output against the adapter's k-of-n set), ecology
+  substitution in both directions, and the adapter's self-reported
+  confidence calibrated against empirical agreement. Uncertainty that
+  cannot be calibrated is reported unresolved per §2.11.
+- **Isolation.** The adapter process holds no kernel handles: no store,
+  no ledger, no authority. It receives verified requests and returns
+  bounded replies. A compromised or faulty adapter can waste its granted
+  budget and produce wrong outputs — both priced and observed like any
+  provider failure — but cannot mint funding, forge evidence tiers, or
+  bypass admission. Placement: adapter clients live outside
+  `src/brainos` (see `implementations/`); `src/brainos` gains no
+  model-framework imports or accelerator dependencies.

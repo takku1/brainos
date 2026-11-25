@@ -12,9 +12,10 @@ Not full Core conformance; not independently reviewed.
 
 W2: bring one external provider family (frozen checkpoints staged in
 `src/models/`) behind the existing contracts, with nondeterministic
-validation. Design the adapter first — contracts, authority boundaries,
-resource accounting, acceptance criteria — with no separate neural kernel
-and no special authority rules for language models. Carried forward:
+validation. The adapter design is specified (Doc 02 §2.12, Doc 07 §7.18,
+R-02-14, R-02-15, R-07-12); implementation has not started — no separate
+neural kernel and no special authority rules for language models.
+Carried forward:
 demand-triggered recruitment, incremental retention assessment, kernel
 overhead, non-vacuous assimilation validation, organizational fragility,
 adaptation latency, and economic comparison against independently
@@ -23,8 +24,8 @@ initialized adaptive controls.
 ## Architecture summary
 
 `docs/current` is one consolidated specification with each rule owned by
-one document. The Doc 31 register is the source of truth — register: 215
-requirements (implemented 44, partial 70, specified 86, documentary 15),
+one document. The Doc 31 register is the source of truth — register: 218
+requirements (implemented 44, partial 70, specified 89, documentary 15),
 derived from `docs/current/traceability.json`, never copied from older
 status text. `src/brainos` implements a standard-library Python runtime:
 durable SQLite authority, scoped permits and epochs, transactor

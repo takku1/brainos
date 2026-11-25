@@ -341,6 +341,57 @@ X3b (corrected assimilation gate) is folded into X4 rather than run in
 isolation: its acceptance claims are measured inside the ecosystem, where
 their full costs are visible.
 
+## 7.18 W2 mixed-organization demonstration (specified, not run)
+
+First contact between the deterministic core and a neural provider inside
+one organization. Provider family (per `src/models/manifest.json`):
+Qwen3-0.6B behind the §2.12 adapter, paired with a deterministic
+text-to-text primitive added to the trusted catalogue by the ordinary
+reviewed-catalogue path. Capability `text-normalize` (text to text),
+served by both members; the deterministic output is the contract's ground
+truth for agreement measurement, not a privilege.
+
+Design constraints, fixed before any preregistration:
+
+- **Demand stream.** A fixed seed set of normalization demands (declared
+  N, declared seeds); the adapter and the primitive face the identical
+  stream. Nondeterminism is the adapter's property, never a stream excuse:
+  the stream is frozen.
+- **Live organization.** Contextual selection over both members, meter
+  windows per phase, net organizational value against the §20.9 ledger
+  (all six components; adapter spend charged through the same holdings
+  as any task). Text schema has no trusted featurizer, so retention
+  assessment refuses by design and no lifecycle transitions are
+  attempted; substitution is measured by the emergence verdict instead.
+- **Negative results are expected and valid.** If the adapter cannot meet
+  the contract, or costs more than it returns, that bounds where neural
+  providers pay — it does not fail the demonstration.
+
+Acceptance criteria (all must hold; a preregistration freezes the numbers):
+
+- **A1 serving.** The adapter serves demands through member tasks with
+  outputs in its recorded k-of-n agreement set on the declared sample.
+- **A2 accounting.** NOV is computable with all six cost components; no
+  adapter spend travels off-ledger.
+- **A3 validation integrity.** Admission records (n, k) and the sample-set
+  digest; no exact-equality gate is applied to the flagged provider
+  (checked in code review and in the trial records); assimilation
+  nominates deterministic providers only, with the exclusion recorded.
+- **A4 isolation.** Killing the adapter mid-run refuses in-flight tasks
+  cleanly, journals the failures, and the organization continues on the
+  deterministic member; the adapter process never holds a kernel handle
+  (reviewed by placement: nothing neural under `src/brainos`).
+- **A5 reproducibility.** The deterministic member reproduces outputs
+  exactly across stream repeats; adapter agreement stays within its
+  declared (n, k) bound.
+- **A6 semantic gaps measured.** Admission agreement, output agreement
+  rate, bidirectional substitution verdict, and confidence calibration
+  are recorded (R-02-13); uncalibrated uncertainty is reported
+  unresolved, not averaged away.
+- **A7 no privilege.** No new authority rules, permit kinds, or budget
+  dimensions are introduced for language models; the run uses the
+  existing contracts or refuses.
+
 ## Gate registry (canonical)
 
 L1 conformance (universal — every compatible implementation):
