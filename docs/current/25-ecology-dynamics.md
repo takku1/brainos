@@ -222,3 +222,31 @@ Test them separately before combination: sections 7.10/7.11 in Doc 07 cover
 interaction/expansion; section 7.12 covers reuse of intervention knowledge at
 matched horizon and exposure. Equal current competence may hide different
 future construction costs; measure those on declared future workloads.
+
+## 25.12 Bounded organizational repertoire
+
+Retain useful alternative organization artifacts for future construction or
+recovery. An archived organization is distinct from an active instance, a
+TransformationRecord (observed trial), and a reusable macro (library operation).
+References may link them, but their roles and costs remain explicit.
+
+Start with a small preregistered behavioral descriptor, retention budget and
+policy revision. Candidate descriptors include context coverage, resource
+tradeoffs, recovery behavior and measured failure-domain profiles. Graph novelty
+or different names alone establish neither behavioral difference nor resilience.
+Store manifest/artifact/lineage refs, supported contexts, measured descriptor
+and uncertainty, validation expiry, dependencies, retrieval/revalidation costs,
+and retention rationale. Protected critical floors are separate from discretionary
+diversity retention. Archive membership never authorizes execution.
+
+Compare current-best, Pareto-diverse, behavior-diverse and cost-matched random
+retention on the same eligible history and budget. Charge descriptor measurement,
+archive matching, search, storage, maintenance, restoration and revalidation.
+Descriptor revisions change selection and require an explicit policy comparison.
+Retrieval nominates a candidate; current contracts, evidence, resource footprints
+and replacement gates still apply. Stationary workloads can justify a small or
+empty discretionary archive. More entries, novelty and turnover are not success.
+
+[MAP-Elites](https://arxiv.org/abs/1504.04909) motivates behavioral repertoires,
+not a universal descriptor or guaranteed BrainOS advantage. Doc 07 section 7.15
+tests this retention policy independently; Doc 21 owns record/retention rules.

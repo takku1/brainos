@@ -26,7 +26,7 @@ necessarily a neural network.
 | 07 | [Experimental Validation](07-experimental-validation.md) | Matched conditions, metrics, ablations, robotics track |
 | 08 | [Development Roadmap](08-development-roadmap.md) | Canonical implementation sequence, first vertical slice, demos, Experiment 001 |
 | 09 | [Cognitive Instruction Architecture](09-cognitive-instruction-architecture.md) | Typed instruction contract, kernel protocol, conformance |
-| 10 | [Mechanism Network option](10-mechanism-network.md) | Dependency-aware recurrent factor core as one provider family |
+| 10 | [Mechanism Network and Collective Inference](10-mechanism-network.md) | Optional coupled-inference providers, update algebra, contradiction and support withdrawal |
 | 11 | [Developmental ecology (CCCM)](11-developmental-ecology.md) | Developmental providers, operations, layers Core/Plasticity/Morphogenesis |
 | 12 | [Failure Modes](12-failure-modes-and-mitigations.md) | Risks, contracts, residual risks |
 | 13 | [Glossary](13-glossary.md) | Terms, symbols, conventions, rename table |
@@ -43,7 +43,7 @@ necessarily a neural network.
 | 24 | [Transformation Algebra](24-transformation-algebra.md) | Graph-operation primitives, composition, frame rule |
 | 25 | [Ecology Dynamics](25-ecology-dynamics.md) | Stability, endogenous opportunities, coevolution research, cycles, sources |
 | 26 | [Capability Ontology](26-capability-ontology.md) | Specialization, equivalence, dependency, composition, abstraction |
-| 27 | [Candidate Construction](27-candidate-construction.md) | Synthesis, invention boundaries, construction rules, variation, artifact reuse |
+| 27 | [Candidate Construction](27-candidate-construction.md) | Typed search, selected abstraction-learning extension, explicit lowerings and grammar boundaries |
 | 28 | [Credit Assignment](28-credit-assignment.md) | Marginal contribution, synergy, intervention, coalition attribution |
 | 29 | [Dependency & Isolation](29-dependency-interference.md) | Interference classes, closure, isolation levels |
 | 30 | [Evaluation Grounding](30-evaluation-grounding.md) | Trust termination, distance-to-grounding |
@@ -73,6 +73,13 @@ only through the same publication, evaluation, and resource interfaces.
 
 ## Reading order
 
+This directory is one consolidated BrainOS framework. The selected next
+construction extension is typed abstraction learning (developmental compilation),
+supported by organizational planning/prediction and bounded repertoire retention;
+collective inference is an optional provider strategy. Decision: 19 section 19.10.
+The [directions file](../alternative-framework-directions.md) is navigation and
+decision history, not a parallel specification. Experiments: 07 sections 7.13-7.16.
+
 - Overview: 01 -> 02 -> 09 -> 32.
 - Implementation: 21 records -> 32 protocols -> 29 impacts -> 09 signatures
   -> 08 first vertical slice -> 31 open obligations.
@@ -85,10 +92,12 @@ only through the same publication, evaluation, and resource interfaces.
 
 ## Current status and historical evidence
 
-The canonical current architecture is Docs 01-32. There is no src/ runtime.
-tools/ contains structural validators and partial reference models/tests;
-their passing results establish only their stated coverage (21 section 21.3).
-Independent specification review and runtime conformance remain outstanding.
+The canonical current architecture is Docs 01-32. src/brainos now implements
+the bounded single-owner Core slice in Doc 21 section 21.9, with real execution,
+simulated effect reconciliation, restart and replacement tests under tests/.
+tools/ retains structural validators and earlier reference models. Passing either
+suite establishes its stated scope, not full runtime conformance. Independent
+specification review and remaining Core/developmental obligations stay open.
 
 Historical predecessor evidence from Z:\newbrain: 231 tests and selective
 repair at 0.21-0.26x full-retraining cost on corrected error, with retention

@@ -104,3 +104,12 @@ from schema/units, statefulness and effect-policy shifts. Failure of transfer
 narrows the guard; it is not successful generalization or permanent retention
 justification. No causal interpretation exceeds its assignment and interference
 assumptions.
+
+## 28.6 Attribution across construction mechanisms
+
+Keep library learning, proposal prediction, archive retention and inference
+method as separate experimental factors. A better library can improve both
+symbolic and model-guided search; extra archive history can improve prediction;
+a macro can hide more inference work. Use the isolated and joint arms in Doc
+07 sections 7.13-7.16 with full costs. Report interaction estimates rather than
+assigning the combined improvement to the most recently added component.

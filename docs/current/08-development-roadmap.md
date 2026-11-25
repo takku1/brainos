@@ -42,9 +42,9 @@ obligations/evidence against this plan rather than maintaining another roadmap.
 | 1B | Core protocols, records, and reference models | Defined task/permit/recovery/resource semantics; reference regressions; remaining runtime tests explicitly listed |
 | 2 / M4 | Minimal single-authority runtime | Durable ledger/registry -> staged CAS publication -> scoped authority/effect gateway -> bounded task executor -> process/resource enforcement; L1 against actual runtime plus crash/negative tests |
 | 3A | Developmental executable semantics | Impact actions, construction operators, attribution and acquisition policies tied to executable checks |
-| 3B / M5 | One bounded adaptation loop | Typed composition plus depth-two symbolic planning/memoization; record full positive/negative interventions; cost/retention measured against competent controls |
+| 3B / M5 | Typed construction and reusable abstractions | Establish flat search/memoization and intervention traces; then test parameterized abstractions against static macros (07 section 7.13) with expanded primitive bounds |
 | 4 / M6 | Repair, assimilation, and recovery | Fault injection, union-of-context validation, capability restoration, and retained failures |
-| 5 / M7 | Experience-guided organization and broader experiments | Guarded case reuse, then learned forecasts at matched horizon/history (07 section 7.12); H1-H4, interaction/expansion ablations and independent evaluation |
+| 5 / M7 | Experience-guided organization and broader experiments | Guarded cases, learned forecasts on a fixed library (07 section 7.12), then independent-factor combination (7.16); test inference/repertoire separately (7.14-7.15) |
 | 6 | Qualified release | Reproducible build, requirement traceability, deployment limits, no blocking defects for declared profile |
 
 Phase numbers identify work packages, not automatic authorization or a claim
@@ -61,10 +61,11 @@ full task mixture after this smaller slice works through the same interfaces.
 
 Next adaptation slice: pin a transformation record schema (21 section 21.7),
 collect assigned intervention outcomes, and build competent typed symbolic search
-with memoization. Add exact guarded case retrieval before fitting richer outcome
-models. Run 07 section 7.12's matched experiment; select learned prediction only
-if its transfer and complete economics justify it. Broader horizon/model families
-remain research extensions. No new trusted kernel component is needed.
+with memoization. The selected next construction extension is parameterized
+abstraction learning (27 section 27.8). Establish exact guarded case retrieval,
+then test richer outcome models with a fixed library. Combine only under Doc
+07 section 7.16's independent-factor controls. Collective inference and repertoire
+retention are task-specific policies in this same framework, not new kernels.
 
 ## Repository structure (adopted direction)
 

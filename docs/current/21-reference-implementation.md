@@ -73,6 +73,10 @@ admission checks artifact identity independently of provider self-report.
 
 ## 21.3 Conformance coverage matrix
 
+The fixture column below records earlier reference coverage. Actual bounded
+runtime behavior and its tests are described in section 21.9; neither suite
+alone discharges the remaining full-runtime obligations.
+
 | Obligation | Current reference evidence | Still required for runtime conformance |
 |---|---|---|
 | L1-C1 signatures/types | Gate 1 structural validator; calculator fixtures | Resolve/type-check operation records, enforce predicates/effects, fuzz boundaries across independent implementations |
@@ -150,3 +154,137 @@ budget/horizon, predicted outcomes, next executable step and abandon/replan
 conditions. Later-step references are speculative until their prerequisites
 actually hold. History retention/access/deletion follows section 21.6; guard
 broadening creates a new version requiring independent evaluation.
+
+## 21.8 Library and repertoire payloads
+
+These are ordinary versioned DataRef records, not new kernel instructions.
+LibraryEntry: identity/revision, typed parameters and scope guards, functional
+contract, lowering graph, expanded primitive bound, dependency versions,
+construction lineage, validation/expiry, cost model and retirement disposition.
+RepertoireEntry: organization manifest/artifact refs, lineage, measured behavioral
+descriptor/schema revision, context support, uncertainty, validation/expiry,
+dependencies, carrying/reuse costs and retention-policy revision.
+
+A case stores intervention experience; a library entry supplies executable
+abstraction; a repertoire entry preserves an alternative organization. Preserve
+these kinds when cross-linking records. Changing an active search library is
+a staged policy/configuration revision; library membership cannot publish an
+artifact, issue a permit or bypass dependency checks. Record retention and
+deletion use section 21.6; descriptor/guard changes preserve prior revisions.
+
+## 21.9 First executable profile
+
+Implementation scope: a local, trusted-operator Python API with one authority
+owner and a SQLite rollback journal, not the complete eventual Core. No external
+service, learned model, arbitrary provider code or distributed authority is added.
+The selected data engine is reversible prototype infrastructure; records and
+service ports keep storage policy separate from task/provider computation.
+
+| State/responsibility | Owner / source | Actual boundary |
+|---|---|---|
+| Shared data contracts | contracts.py | Typed ProviderRunner/ReceiptEndpoint ports; immutable PermitScope excludes payloads |
+| Durability, ownership, record integrity | storage.py | OS file lock; explicit SQL transactions; FULL synchronous; record checksums and hash-linked events |
+| Budgets/holdings | resources.py | Atomic reserve/convert/charge/release, principal checks, released tombstones |
+| Evidence and adjudication | evidence.py | Expiry, pending challenges, verdict-only verification, scoped restoration without permits |
+| Authority | authority.py | Opaque recorded permit references bound to principal, target, provider, operation, context, digest, epoch/revision and expiry |
+| Artifact identity | registry.py + providers.py | Independently hashed, fixed deterministic catalogue; unknown/different artifacts rejected |
+| Publication | transactor.py | Prepared -> validated -> committed -> published; base/epoch/evidence CAS and bounded validation |
+| Task/invocation state | execution.py | Admission and output checks, task-bound allocations, recorded failure and terminal results |
+| Signal execution adapter | runner.py + worker.py | JSON protocol and subprocess timeout; no authority policy inside provider algorithms |
+| Effect state / external receipt | gateways.py / effects.py | Fresh authorization, persistent intent, UNKNOWN outcomes, separate idempotent local endpoint and reconciliation |
+| Restart | recovery.py | Advance epoch, revoke old starts, settle interrupted invocations, preserve unknown effect holds, finish committed publication |
+| Composition and demonstration | runtime.py / __main__.py | Explicit collaborators; handwritten parse/total workflow and validated replacement |
+
+Source paths are under src/brainos/. Services expose transaction-scoped methods
+with `_tx` suffix where an encompassing storage transaction is required. Store
+writes reject missing transactions. Authority consumes a PermitScope constructed
+by execution/gateway services and does not hash or inspect task signal bytes.
+
+Technology evidence: CPython 3.12.10, bundled SQLite 3.49.1 and build tooling
+setuptools 78.1.0 were inspected locally. The runtime uses standard library only;
+PyYAML remains an existing documentation-validator dependency. SQLite transaction
+and filesystem assumptions are from its [atomic commit documentation](https://www.sqlite.org/atomiccommit.html)
+and Python's [sqlite3 interface](https://docs.python.org/3/library/sqlite3.html).
+Alternatives considered: predecessor JSON/checkpoint files lack the required
+multi-record atomic ledger without additional machinery; a server database adds
+deployment work unnecessary for this single-owner slice. Revisit SQLite if
+distributed writers, remote storage or production-scale concurrency are required.
+
+```json stack
+{
+  "brief": {
+    "outcome": "Durable single-owner task, effect, recovery and replacement slice",
+    "tags": ["local-runtime"],
+    "innovation_budget": 1,
+    "futures": ["Additional provider families", "Concurrent task execution", "Distributed ownership later"]
+  },
+  "layers": {
+    "data": {
+      "status": "accepted", "choice": "SQLite rollback journal",
+      "provides": ["transactional-writes", "embedded-single-writer"],
+      "assumes": {"runtime": ["sqlite-driver"], "platform": ["local-durable-files", "os-file-locks"]},
+      "novel": true,
+      "candidates": [
+        {"name": "SQLite rollback journal", "provides": ["transactional-writes", "embedded-single-writer"], "assumes": {"runtime": ["sqlite-driver"], "platform": ["local-durable-files", "os-file-locks"]}, "novel": true},
+        {"name": "Predecessor checkpoint files", "provides": ["local-file-store"], "assumes": {}, "novel": false}
+      ]
+    },
+    "runtime": {
+      "status": "accepted", "choice": "Python standard library",
+      "provides": ["python", "sqlite-driver", "bounded-subprocesses"], "novel": false,
+      "candidates": [{"name": "Python standard library", "provides": ["python", "sqlite-driver", "bounded-subprocesses"], "novel": false}]
+    },
+    "interface": {
+      "status": "accepted", "choice": "Local Python services and typed process ports",
+      "provides": ["local-api"], "assumes": {"runtime": ["python"]}, "novel": false,
+      "candidates": [{"name": "Local Python services and typed process ports", "provides": ["local-api"], "assumes": {"runtime": ["python"]}, "novel": false}]
+    },
+    "platform": {"status": "keep-current", "choice": "Local Windows filesystem", "provides": ["local-durable-files", "os-file-locks"], "novel": false},
+    "client": {"status": "out-of-scope"},
+    "crosscut": {"status": "keep-current", "choice": "Trusted local host identity; no network authentication", "provides": ["trusted-operator"], "novel": false}
+  },
+  "rules": []
+}
+```
+
+Assurance scope: verification/reliability/operations are raised by durable
+records; security/maintainability by authority and adapter boundaries. There
+are no real external effects, money, personal data, network service or declared
+hard availability target in this profile. Tests match claims, not whole-architecture
+coverage. Selected checks live in tests/test_core.py and tests/test_crash_recovery.py:
+
+| Claim | Failure/control | Executed acceptance evidence |
+|---|---|---|
+| One active authority owner | Second open refused by OS lock | Same-process owner rejection; real child death releases ownership |
+| No stale or wrong-scope starts | Principal/task/content/revision/expiry/revocation checks | Wrong principal/task, forged handle, content tampering, same-epoch revoke and restart tests |
+| No half-published manifest | SQL atomic pointer/journal; recovery completes publication | os._exit before/after manifest commit; stale competing candidate rejected |
+| Validation cannot monopolize authority control | Pin under a short transaction, compute without the store lock, recheck before accepting | Paused runner with concurrent epoch cut; stale validation rejected |
+| No silent double spend/refund | One conversion; durable holding state; tombstones | Concurrent reservations, mixed operation conservation, repeated release, failure/restart charges |
+| No duplicate confirmed simulated effect | Separate endpoint idempotency; UNKNOWN and receipt lookup | Child death before/after target apply; lost acknowledgment; changed-key payload rejected |
+| No model framework in Core | Standard-library dependency boundary | AST import fitness checks; authority excludes signal execution imports |
+| Bounded catalogue worker invocation | Subprocess timeout and input/output size/type checks | Actual deadline, malformed input, worker error and terminal-state tests |
+
+Costs/limits: task/effect resource vectors account for declared work grants;
+latency is recorded, but CPU, RAM, GPU, energy and adversarial process resource
+limits are not enforced. Validation is capped at 64 cases and ten seconds of
+worker budget, with attempts/elapsed time in the journal; it uses a separate
+trusted bootstrap grant, not task-budget charges. Timeouts depend on OS process
+startup/termination and are not certified hard real-time L_rev guarantees.
+Process separation is not a sandbox for hostile code. Host/operator APIs can
+ingest certified evidence and verification verdicts; they do not implement an
+authentication system or independent verifier framework yet.
+
+Arbitrary task DAGs, queues/backpressure, safe cancellation of arbitrary running
+providers, snapshots/freshness across streams, generic footprint enforcement,
+policy/criteria versioning, evidence deletion/GC, all 37 instruction dispatches,
+and learned construction remain open. Unknown effects without a target receipt
+stay UNKNOWN with funds held; no blind retries or fabricated outcomes. Local
+SQLite crash tests do not certify arbitrary network filesystems, power-loss
+hardware behavior, malicious database administrators, or distributed failover.
+
+Predecessor reuse: inspected Z:/newbrain/src/brainos/kernel.py and registry.py
+and tests/integration/test_kernel_txn.py for transaction race/fallback scenarios.
+No neural registry/runtime code or inherited test result was copied into Core;
+those scenarios were reimplemented against current service contracts. Existing
+uncommitted research-document edits were preserved. Schema version 1 is new;
+unsupported versions fail closed, with no destructive migration of old projects.

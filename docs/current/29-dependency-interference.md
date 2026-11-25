@@ -84,3 +84,14 @@ profile; empirical outcome forecasts need current calibration and applicability.
 A learned dependency guess cannot exclude a required member of conservative
 runtime impact computation. Model prediction of an affected set is checked
 against measured effects and audited declarations, not trusted as enforcement.
+
+## 29.6 Lowerings and archived organizations
+
+Macro dependencies include the transitive primitive/adapter/policy versions
+of the lowering, not just the macro name. Library changes produce new revisions;
+pinned old programs remain linked to old dependencies, and affected current
+properties revalidate. A changed behavioral descriptor may require reindexing
+or reevaluating archive retention without making the stored organization itself
+incorrect. Artifact retrieval checks its actual current dependencies; descriptor
+similarity is not compatibility evidence. These impacts follow the same typed
+actions as section 29.2 rather than a separate invalidation mechanism.

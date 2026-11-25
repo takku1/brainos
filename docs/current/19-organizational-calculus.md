@@ -128,10 +128,14 @@ must also solve it; learning is tested only with incomplete models and transfer.
 
 ## 19.7 Implementation order and alternative strategies
 
-1. Record interventions and use typed symbolic planning with ordinary memoization.
-2. Add full successful/failed cases and explicit exact applicability matching.
-3. Test learned guarded outcome prediction and selection of informative probes.
-4. Broaden model families or horizons only as separately measured extensions.
+1. Record interventions and establish typed search/planning with memoization.
+2. Use those traces to test typed abstraction learning (Doc 27 section 27.8),
+   with full cases retained and exact applicability matching available.
+3. Test learned guarded outcome prediction against equally informed planning
+   and case reuse, holding the construction library fixed within that comparison.
+4. Combine abstraction learning and prediction only with independent-factor
+   controls; test repertoire retention and collective inference separately.
+5. Broaden model families or horizons only as separately measured extensions.
 
 No network architecture is prescribed. Case retrieval or an ordinary planner
 can remain the selected strategy if a richer model adds no useful benefit.
@@ -174,3 +178,36 @@ to select strong comparisons, not to establish BrainOS novelty:
 The specific research target is transferable, scoped prediction of acquisition,
 retention and repair interventions across heterogeneous organizations under
 the same execution contract. Both usefulness and novelty remain testable.
+
+## 19.10 Selected development direction within one framework
+
+The recommended next construction mechanism is developmental compilation:
+learn scoped reusable abstractions with explicit lowerings to existing providers
+(Doc 27 section 27.8). It directly extends the current flat typed-search recipe,
+can start in its deterministic domain, and tests construction improvement
+without changing authority or inference semantics. This is an implementation
+priority based on fit and testability, not an experimentally proven global optimum.
+
+| Role in the consolidated framework | Selected mechanism / owner |
+|---|---|
+| Execution, evidence, authority and recovery | Existing Core contracts; Docs 09/21/24/29/32 |
+| Generate reusable computational building blocks | Typed abstraction learning and lowering; Doc 27 |
+| Choose changes, probes and short sequences | Symbolic/case-based planning, then tested outcome models; Docs 19/22 |
+| Retain useful alternative organizations | Budgeted repertoire policy; Doc 25 section 25.12 |
+| Perform coupled reasoning where useful | Optional inference providers; Doc 10, never a mandatory bus |
+
+These are roles within one BrainOS framework, not four alternative architectures
+or new adoption layers. Core remains usable without any developmental strategy.
+Macro learning changes the search vocabulary; prediction changes proposal ranking;
+archive policy changes retained candidates; collective inference changes execution
+inside declared providers. Keep their versions and costs separate so improvements
+can be attributed. Prefer the simpler policy when it meets the same target at
+lower total cost; preserve richer directions as testable candidates.
+
+Primary-source check, 2026-11-24: [DreamCoder](https://arxiv.org/abs/2006.08381)
+learns symbolic abstractions and search guidance; the [propagator report](https://groups.csail.mit.edu/mac/users/gjs/propagators/)
+specifies partial-information computation with algebraic update conditions;
+[MAP-Elites](https://arxiv.org/abs/1504.04909) preserves solutions across behavioral
+descriptors; [Rainbow](https://www.cs.cmu.edu/~able/publications/computer04/)
+provides architecture-based adaptation infrastructure. These motivate candidate
+mechanisms and strong comparisons; none establishes the best BrainOS combination.

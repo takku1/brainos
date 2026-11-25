@@ -139,7 +139,8 @@ Assimilation/parent retirement add replacement coverage obligations. FUSE
 denotes consolidation with its union gate; general composition uses staged
 construction, validation, and COMMIT without that replacement assumption.
 
-Representation: an acyclic typed expression graph with at most L operations,
+Representation: an acyclic typed expression graph with at most L expanded
+primitive operations (macro lowerings follow section 27.8),
 explicit constants, source fields, and output schema. Deterministic best-first
 search orders by declared cost/depth with fixed tie breaks. Operators add or
 replace a type-compatible operation, or reconnect an input without cycles.
@@ -180,3 +181,46 @@ All arms receive the same grammar, horizon, historical access and tuning budget.
 Guard/rule/library changes are versioned construction hypotheses; exact rewrite
 rules require proof within their domain and cannot stand in for uncertain
 replacement evidence. Construction/admission failures remain in the trial ledger.
+
+## 27.8 Developmental compilation: selected next construction mechanism
+
+Learn useful operations for the construction language from validated traces.
+Initially an abstraction is a parameterized macro/composite with a contract and
+an explicit lowering to section 27.6's existing primitives. For example,
+parse -> normalize units -> check consistency can become a scoped
+validated_measurements(schema, units, policy) abstraction. Its contract names
+accepted formats, units, error/failure behavior, and dependencies; the name does
+not imply unrestricted generality.
+
+Start with deterministic, acyclic, effect-free record processing:
+
+1. Collect construction traces and relevant failures using development data only.
+2. Propose repeated typed fragments and parameters through structural matching.
+3. Check type/unit constraints and capture input restrictions and failure paths.
+4. Register a versioned candidate abstraction and exact lowering with lineage.
+5. Evaluate independent structural task families and unrelated retained tasks.
+6. Admit, revise or retire the library entry under measured value/carrying cost.
+
+The lowering preserves dependency identity, evaluation order, failures and resource
+accounting. Similar syntax alone proves no semantic equivalence. Distinguish
+cached outputs, named reusable programs, optimized implementations and new
+primitives. Replacing the lowering with an optimized executable is a separate
+candidate requiring exact equivalence in its domain or independently measured
+contract satisfaction. Generalization of parameter guards requires new tests.
+
+Every trial pins a library revision. Primitive access and expansion semantics
+remain explicit: bound expanded primitive operations, computation, and planning
+horizon, not just macro-token count. Reject recursive/cyclic lowerings in the
+first profile and include transitive dependencies in closure. A two-step
+organizational plan does not acquire extra uncharged work through one macro.
+Changing a library entry versions it; existing pinned programs remain reproducible
+while current uses face dependency/validation checks. Parents stay available
+until replacement/retirement gates are satisfied.
+
+Compare flat search, ordinary memoization, competent handwritten macros and
+learned abstractions (Doc 07 section 7.13). Charge discovery, matching, failed
+abstractions, validation, storage, maintenance and execution. Success is lower
+total cost or better held-out competence/retention, not shorter names or more
+library entries. The compiler lowers to the same instruction contract; it does
+not add trusted opcodes or another framework. Learned search guidance is an
+additional independently ablated mechanism, not a hidden part of the first test.

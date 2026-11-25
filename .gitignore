@@ -5,6 +5,11 @@ __pycache__/
 .venv/
 venv/
 tools/skill-backups/
+.brainos/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
 
 # Local credentials and environment configuration.
 .env

@@ -5,8 +5,9 @@
 One canonical Markdown specification: docs/current/01-32 plus README.
 Core is an execution/authority contract; Plasticity adds recoverable
 adaptation; Morphogenesis adds construction and organizational development.
-No src/ runtime is implemented. Reference models and documentation validators
-exist under tools/; their scope is explicit in Doc 21 section 21.3.
+src/brainos implements the first bounded single-authority runtime profile.
+Reference models and documentation validators remain under tools/. Full Core
+conformance remains open; actual implementation scope is Doc 21 section 21.9.
 
 ## Consolidation disposition
 
@@ -34,22 +35,44 @@ The supplied organizational-world-models.md is now a navigation map, not a
 competing specification. No new numbered document, instruction or trusted
 subsystem was added. Model transfer, causality and performance remain untested.
 
+## Selected construction direction
+
+The alternatives comparison is integrated into the same framework. Doc 19
+section 19.10 selects developmental compilation as the next construction
+experiment: scoped typed abstractions lowering to existing providers (27
+section 27.8). Organizational prediction guides trials; bounded repertoire
+retention supplies alternatives; collective inference remains optional. Each
+has an isolated experiment, with combined attribution only under 07 section
+7.16. Source direction files are navigation, not alternate specifications.
+
 ## Next executable deliverable
 
-Doc 08's vertical slice: handwritten task -> deterministic provider -> scoped
-permit -> recorded result -> simulated idempotent effect -> restart recovery
--> validated provider replacement. Implement durable journal/registry, resource
-enforcement, and the effect gateway before claiming runtime conformance.
-Unimplemented obligations remain in Doc 31; no gate is advanced by this edit.
+The first path is implemented: handwritten parse/sum workflow -> scoped permits
+-> catalogue subprocess execution -> durable simulated effect -> lost-ack and
+process-crash recovery -> validated provider replacement. Modules have separate
+owners for contracts, storage, resources, evidence, authority, publication,
+execution, effect reconciliation and recovery. The runtime has no third-party
+dependencies. Z:/newbrain transaction test scenarios informed this implementation;
+no neural runtime or inherited verification result was imported.
+
+Next: expand actual conformance to generic operation records, dependency/footprint
+enforcement, task graphs/scheduling and safe provider cancellation, plus stronger
+resource isolation before untrusted providers. Typed search/memoization and
+abstraction learning follow that runtime foundation. Full obligations remain
+in Doc 31; no independent gate is advanced by this implementation.
 
 ## Verification scope
 
 Structural checks validate declarations/references. The in-memory behavioral
 harness and regressions cover selected permit, version-admission, and closure
 cases; cross-document integrity checks also cover unnumbered duplicate sections.
-Epoch/lifecycle, crash, concurrent resource, isolation, and timed-stop
-coverage still need real-runtime tests. Current counts belong in retained
-tool logs, not duplicated readiness claims across every document.
+Actual tests under tests/ cover scoped authority, verdict-only verification,
+challenge-at-cut, atomic grants, revision races, process deadlines, corruption,
+and process death before/after durable publication and simulated effects.
+The demo and tests exercise the SQLite stores and provider workers, not just
+in-memory stubs. Hostile-code sandboxing, physical resource caps, full task DAGs,
+distributed fencing, arbitrary external targets and hard real-time stopping
+remain unqualified. See Doc 21 section 21.9 for profile-specific limits.
 
 ## Historical material
 
@@ -61,4 +84,4 @@ will be recorded when experiments run.
 
 ## Last updated
 
-2026-11-24 (organizational-model integration)
+2026-11-24 (construction-direction integration)

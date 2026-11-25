@@ -7,7 +7,7 @@
 [PASS] types-declared — all type refs resolve (declaration only, not runtime typing)
 [PASS] predicates-declared — all predicate refs resolve (declaration only, not enforcement)
 [PASS] predicates-arity-scope-valid — all predicate arities match catalog; all args in schema scope or instruction names
-[PASS] register-ids-unique — 192 IDs checked
+[PASS] register-ids-unique — 202 IDs checked
 [PASS] register-no-wildcards
 [PASS] register-rows-wellformed — rows + status blocks valid
 [PASS] register-sections-resolve — section refs resolve

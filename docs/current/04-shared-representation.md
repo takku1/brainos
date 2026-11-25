@@ -32,3 +32,12 @@ Hallucinated fusion (confident output with weak support), stale reuse
 bypass (critical signal forced through lossy fusion). Mitigations:
 version pinning, freshness preconditions, diversity checks, and direct
 links where latency or fidelity forbids fusion.
+
+## 4.5 Coupled inference versus integration
+
+Doc 10's collective-inference provider may publish successive hypotheses,
+contradictions or unresolved estimates with iteration/support metadata. A readout
+can expose those outputs, but fusing them is not the inference protocol itself.
+Pin compatible versions and distinguish repeated revisions of the same support
+from new observations. A pipeline, conventional solver or direct provider can
+serve the same contract without participating in coupled inference.

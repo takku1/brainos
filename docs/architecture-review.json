@@ -1,7 +1,7 @@
 {
   "review": "BrainOS architecture against design intent",
   "date": "2026-11-24",
-  "status": "Canonical consolidation extended with organizational prediction/planning; runtime and model experiments remain open",
+  "status": "Single canonical framework integrates organizational models and selected typed abstraction learning; runtime/experiments remain open",
   "objective": "Assess whether current architecture supports persistent, heterogeneous computational abilities whose organization can adapt under evidence, authority, resource and recovery constraints.",
   "scope": "Markdown specification and existing reference tooling; no production runtime, no full novelty review, no biological-source validation, no Gate acceptance.",
   "design_intent": {
@@ -106,6 +106,15 @@
       "resolution": "Canonical model/record/planning ownership, enabling-step funding, prediction invalidation, causal limits, and matched Static/Selection/Search/Cases/Model experiment.",
       "acceptance": "Equal horizon/history and complete costs; frozen pretrial predictions; independent step admission; causal/transfer evidence scoped; count non-attainment.",
       "disposition": "Specified; symbolic/case/model implementation and experiment remain open."
+    },
+    {
+      "id": "AR-07",
+      "priority": "Next construction experiment",
+      "classification": "Selected design direction with independent-factor research obligations",
+      "claim": "Typed abstraction learning is the next construction extension; outcome models, repertoire and optional inference have complementary roles in one framework.",
+      "resolution": "Canonical owners and isolated experiments added; fixed-library model test separated from library learning; expanded primitive bounds prevent macro token-count advantage.",
+      "acceptance": "Beat flat/memoized/static macro controls after full costs on structurally held-out tasks; preserve unrelated competence; test joint effects independently.",
+      "disposition": "Specified; runtime/library learner and benefit experiments unimplemented."
     }
   ],
   "existing_solution_screen": [
@@ -125,7 +134,7 @@
       "implication": "Adaptive selection is a substantive baseline, not merely fixed routing"
     }
   ],
-  "next_action": "Complete Doc 08 core vertical slice, then implement typed depth-two search/memoization and transformation records; add exact guarded case reuse, then test learned prediction under Doc 07 section 7.12 at equal horizon/history/cost.",
+  "next_action": "Complete Core vertical slice and flat typed search/memoization. Test scoped abstraction learning against static macros; then equal-horizon/history organizational prediction with fixed library, followed by controlled combination. Test inference and repertoire independently.",
   "owned_changes": [
     "docs/architecture-review.json",
     "docs/current/ (canonical consolidation)",
@@ -208,55 +217,47 @@
     "reference_regressions": {
       "exit_code": 0,
       "summary": [
-        "Ran 23 tests in 0.088s",
+        "Ran 23 tests in 0.080s",
         "OK"
       ],
       "log": "tools/reference_regressions.log"
-    },
-    "lookahead_witness": {
-      "exit_code": 0,
-      "summary": [
-        "PASS: unique affordable depth<=2 goal path is parser -> compose."
-      ],
-      "log": "tools/organizational_planning_witness.log",
-      "scope": "Finite supplied transition table only; no learned-model or runtime claim."
     }
   },
-  "verification_scope": "19 declaration/integrity checks, 15 corruption cases, 23 reference regressions, 17 decisive partial-harness checks (2 deferred/indeterminate), closure model and finite hand-supplied lookahead example. No organizational-model learning/transfer, causal effect, durable runtime or adaptation benefit established.",
+  "verification_scope": "Structural/integrity checks and unchanged reference behaviors only. No abstraction learner, learned prediction, repertoire advantage, collective inference advantage or production runtime is demonstrated.",
   "source_fingerprints_after_consolidation": {
     "docs/current/01-research-proposal.md": "07c11d1c639c750d49bc79ced4f865d154282fba4fc57fc4a3dbcae49ccd6b87",
     "docs/current/02-formal-architecture.md": "4b10cd585decbd65fd70b052e39d2e46a2a30cfa15356d14d114167353787a84",
     "docs/current/03-supervisory-control.md": "d0419d8ae211da0987abb06f52853d5df364f37c824dc583fd10c6c621982cb1",
-    "docs/current/04-shared-representation.md": "2cb562a4dfc6a66eccf3ce17a7ed600002051ef11ad4d3ec580cbc763f46b2de",
+    "docs/current/04-shared-representation.md": "edcdce41c7a16ba3833c8ebb2670623901d3b974e3d5f4c7baea3ecac7192b69",
     "docs/current/05-cross-module-learning.md": "ca0dfc10201ee8af771821d8f48405b4424b7bb951c0147a1b3c481b9295df1f",
     "docs/current/06-temporal-coordination.md": "40762fe4f4417dcc90bd6a33218e35f6e561b8a3b914d89e302c767dd3f44785",
-    "docs/current/07-experimental-validation.md": "4efa143e48a5f99e0e6a953b07a9671823ac38ce78c4ee65fe61827d269fb243",
-    "docs/current/08-development-roadmap.md": "886745a82eceb27fd07dccc174dae1772e3a67fc95eb8f21415085d2356e9900",
+    "docs/current/07-experimental-validation.md": "491e29b93fb004924b37e8640c643a195358e3ccd62498c17b2fa291243cae3d",
+    "docs/current/08-development-roadmap.md": "49113017e29e8172921acc221fcab4027d6ece7201b858a2a6e3dc33f9fedb80",
     "docs/current/09-cognitive-instruction-architecture.md": "ac4487a3c0f0f66b66771a70a326bf5e0b9811eae3f621fdc40426e5a6e0d64b",
-    "docs/current/10-mechanism-network.md": "133b8a558500f7c6bce1bd45be0f561e0a849edeb23156ba3e3fd126ea549ed3",
+    "docs/current/10-mechanism-network.md": "fcf6c35bbfe38aeede8a0f27f7b3c50249cc0102888b6ae48703c3369a420869",
     "docs/current/11-developmental-ecology.md": "2bcfe0c8ef43ca62f151b8e7e170a05d106dd1f597aabfefd8161f7298c47e6a",
     "docs/current/12-failure-modes-and-mitigations.md": "66d1a6d270159706455e17de25e159854dbfbf1d9558b17e0b95e5c4a65fff7d",
-    "docs/current/13-glossary.md": "f9fbe7b87120bde111ebd24d695e9835e8c8146b211b19dbae52860ad69d056f",
+    "docs/current/13-glossary.md": "879d93abab0dda8b812481296dca29193aef33bff48a9c6cc84bdb92870aef10",
     "docs/current/14-game-dev-mapping.md": "0f8768714ff7d57385a764705bb916de7416858e0440620961fff6d7ce53e337",
     "docs/current/15-science-mapping.md": "1b7f8f6c68cd2153203054de90690fd4d53e237ccc51e871615b0d51e6763fae",
     "docs/current/16-evolution-neuroscience-mapping.md": "2952ab095a29077d0c153970a386bfa1180c6cab4f7ce0b3fd80fc8b18d89476",
     "docs/current/17-capability-spec.md": "d394f6f70e098f804cad50c19d3d0b3200d051dfcaff68af4b0eda09a57e8ca6",
     "docs/current/18-capability-demand.md": "88fced6f8850a1cdd0ca0a4c310759f3fa7cd4a2122b28efed7bed24f3934f92",
-    "docs/current/19-organizational-calculus.md": "a3ddaba34978cdb29d01c4554c4e317e6ecced5af503528b6372994e6c14d965",
-    "docs/current/20-computational-economics.md": "2096c25c3888799998aa36ebcc77638f106715463d3484237bfff7a12e8d46c4",
-    "docs/current/21-reference-implementation.md": "ce2caa0b5c68aa568f3ff094c8f98d71a96d2e6f006656cf8315e35d2c3ed551",
+    "docs/current/19-organizational-calculus.md": "2146546bec691c07fec4aea79c858a93ad0d0ad5d97dc4cc99cf6a3b2087a032",
+    "docs/current/20-computational-economics.md": "1b7b99a8c644a20e1c89b895387b7025495198d555ccabdf238043012780648e",
+    "docs/current/21-reference-implementation.md": "efe69530f4940aa9913170659a0a010a2fb1234e06a987b316f8da967798e139",
     "docs/current/22-capability-discovery.md": "6d19d6fa24b25d8c20597d4c291ebc23043dcc721954a4b0cf46a402664a8ce3",
-    "docs/current/23-evaluation-architecture.md": "44053ce6493d2164f8fcde6369fd4663fcd6eb7e2ceb333dc8b8ff14947cbb0f",
+    "docs/current/23-evaluation-architecture.md": "241b8f1b4723abbe98da94eb57b04efbf5461ebc25be05d9dd0f0995aace4abe",
     "docs/current/24-transformation-algebra.md": "44e9293610d1277b0f411725d034faa66d34d14cefd05e9aebf51c14993a07d4",
-    "docs/current/25-ecology-dynamics.md": "d39429ce5d1df822ee1b477f3aadeaef901a02ead58f814cecb0cbee0cba02d9",
+    "docs/current/25-ecology-dynamics.md": "13761058c92b710e17f0ca38f5e7389523821ff03bff0c232a80d079a67eff69",
     "docs/current/26-capability-ontology.md": "565fb263bffaea1237f5d3d892e45211366c2c1ddcd6260f9578b92c97908a5f",
-    "docs/current/27-candidate-construction.md": "4704919f5b929d726a796fbd93ac473b1d3e75e58ff31ebaf0314e5097d847ea",
-    "docs/current/28-credit-assignment.md": "fa301836eb427e8c1345d62ad2aa2ec8c43a9ecb16e662fe4d8bf00de946635c",
-    "docs/current/29-dependency-interference.md": "50eb5adec9ece4eee2981d9a6071b9c6105c4f8a57f6aecfa638a53f8a2aec7d",
+    "docs/current/27-candidate-construction.md": "6cc8ac43096ebe95ec45f5570e85cc4023b4aac21078e144ef0e9bb1fe2e7347",
+    "docs/current/28-credit-assignment.md": "458085705ec2c4d6b67a060319a1d5ff3dff17363cea47ab0c718ac2061ed1ec",
+    "docs/current/29-dependency-interference.md": "f5bf364357f537d78959975249b8ff7dcc19fbe85966862cb2da57b307058be5",
     "docs/current/30-evaluation-grounding.md": "5f5bcb43ea7658107634f9979f21b5819c919f20a8aebaea26ff8cff1e01903f",
-    "docs/current/31-architectural-audit.md": "3b5836ec43d3867d9973bcf2440e21b210b83ae3a6f091bd4f79a5e268e793d8",
+    "docs/current/31-architectural-audit.md": "164119d9bc4410ea82b864139236afb5937fe7691a2595850f21512876e98420",
     "docs/current/32-core-semantics.md": "ec66086187d28d658161b3cb97d29fb50973e7f3309ba018917c8bab4570b579",
-    "docs/current/README.md": "ac07e1632d0278ca0097c7ca49f3e82f325da481548d85999aaaa5942e9117e0"
+    "docs/current/README.md": "4591a742e59224f9dad3b80d87b82a1863b49a139679fe0cb402cacbfab66d28"
   },
   "reference_tool_corrections": [
     "Reject revoked same-epoch starts; bind permits to instance/version/operation/principal/context; reject forged or modified handles; drain only previously started invocation; require issued boundary authorization for effects.",
@@ -328,6 +329,79 @@
       "summary": [
         "32 numbered documents; fences, section uniqueness, local links and Doc references pass"
       ]
+    }
+  },
+  "construction_direction_integration": {
+    "source": "docs/alternative-framework-directions.md",
+    "original_source_sha256": "618b7d36a71f519876bd1a105d21cd305423749a796e162ccc7e8df863ee52f3",
+    "disposition": "Comparison integrated into docs/current as one framework; source is navigation and decision history.",
+    "selected_next_mechanism": "Developmental compilation: learn scoped typed reusable abstractions with explicit lowerings.",
+    "reason": "Direct extension of current typed construction recipe, measurable future construction benefit, no new kernel semantics, deterministic initial domain.",
+    "complementary_roles": {
+      "organizational_world_model": "Change/probe prediction and planning",
+      "repertoire": "Bounded retention of useful alternative organizations",
+      "collective_inference": "Optional computation/provider strategy"
+    },
+    "owners": {
+      "decision": "19 section 19.10",
+      "compiler": "27 section 27.8",
+      "inference": "10 section 10.1",
+      "archive": "25 section 25.12",
+      "experiments": "07 sections 7.13-7.16"
+    },
+    "comparison_limits": "Design priority, not empirical global ranking. Macro-expanded primitive work, learning/search/maintenance, archive exposure and inference iterations must be matched/accounted.",
+    "primary_sources_checked": [
+      "https://arxiv.org/abs/2006.08381",
+      "https://groups.csail.mit.edu/mac/users/gjs/propagators/",
+      "https://arxiv.org/abs/1504.04909",
+      "https://www.cs.cmu.edu/~able/publications/computer04/"
+    ],
+    "current_navigation_sha256": "a186fae8e7bb430cc298556c7c77164fdba168a262cbe495adc7a744e49ce88c"
+  },
+  "verification_before_construction_direction": {
+    "gate1_checks": {
+      "exit_code": 0,
+      "summary": [
+        "19/19 checks pass"
+      ],
+      "log": "tools/gate1_checks.log"
+    },
+    "negative_checks": {
+      "exit_code": 0,
+      "summary": [
+        "15/15 negative tests pass (pass = corruption correctly rejected)"
+      ],
+      "log": "tools/gate1_negatives.log"
+    },
+    "dependency_closure": {
+      "exit_code": 0,
+      "summary": [
+        "ALL PASS"
+      ],
+      "log": "tools/dep_closure.log"
+    },
+    "partial_l1_harness": {
+      "exit_code": 0,
+      "summary": [
+        "17/17 decisive checks pass; 2 indeterminate (recorded, not counted)"
+      ],
+      "log": "tools/l1_harness.log"
+    },
+    "reference_regressions": {
+      "exit_code": 0,
+      "summary": [
+        "Ran 23 tests in 0.088s",
+        "OK"
+      ],
+      "log": "tools/reference_regressions.log"
+    },
+    "lookahead_witness": {
+      "exit_code": 0,
+      "summary": [
+        "PASS: unique affordable depth<=2 goal path is parser -> compose."
+      ],
+      "log": "tools/organizational_planning_witness.log",
+      "scope": "Finite supplied transition table only; no learned-model or runtime claim."
     }
   }
 }

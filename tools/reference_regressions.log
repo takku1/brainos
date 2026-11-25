@@ -23,6 +23,6 @@ test_unbalanced_type_brackets_rejected (test_reference_regressions.StructuralVal
 test_unknown_instruction_rejected_by_schema_validator (test_reference_regressions.StructuralValidatorRegressionTests.test_unknown_instruction_rejected_by_schema_validator) ... ok
 
 ----------------------------------------------------------------------
-Ran 23 tests in 0.088s
+Ran 23 tests in 0.080s
 
 OK

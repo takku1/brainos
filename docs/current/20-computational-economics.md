@@ -149,3 +149,15 @@ separately, then total them once. Compare resource vectors or use an explicitly
 declared scalarization. Report budget-limited non-attainment, not just average
 cost among successful runs. Future usefulness of an organization is relative
 to a specified future demand distribution, not an unbounded option-value bonus.
+
+## 20.8 Abstraction and repertoire economics
+
+Use the existing single-ledger model for abstraction induction, matching,
+validation, maintenance and execution, and archive descriptor measurement,
+storage, retrieval, restoration and revalidation. Link charges to their actual
+library/organization/candidate artifact without double-counting shared costs.
+Cache hits, shorter syntax, macro counts and descriptor coverage are diagnostics;
+justify retention through efficiency, competence or expansion value on declared
+future workloads. A new abstraction can enlarge branching and slow unrelated
+search, which counts against its value. Account expanded primitive work and
+all inference iterations even when one macro/provider invocation hides them.

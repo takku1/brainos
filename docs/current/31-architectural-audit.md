@@ -223,6 +223,19 @@ R-26-02 | 26 §26.4 | only exact equivalence canonicalizes; estimated overlap ha
 
 ## 31.3 Operation inventory (completeness per operation, not per document)
 
+Construction-direction integration (selected policies, not mandatory Core):
+
+R-19-04-M | 19 §19.10 | one framework assigns compiler, predictor, repertoire and inference distinct roles | architecture/ablation review | C✓ S∼ I✗ V✗ E✗ (design selected; benefit untested)
+R-27-05 | 27 §27.8 | learned abstractions have scoped contracts and versioned dependency-preserving lowerings | abstraction/semantic tests | C✓ S∼ I✗ V✗ E✗ (specified; generator unimplemented)
+R-21-08 | 21 §21.8 | case, library and repertoire record kinds are distinct and versioned | record/retention tests | C✓ S∼ I✗ V✗ E✗ (specified; implementation open)
+R-29-05 | 29 §29.6 | transitive lowering dependencies and descriptor-policy impacts remain scoped | invalidation tests | C✓ S∼ I✗ V✗ E✗ (specified; enforcement open)
+R-25-03 | 25 §25.12 | repertoire selection uses measured behavior and full retention/reuse costs | matched archive experiment | C✓ S∼ I✗ V✗ E✗ (specified; experiment unrun)
+R-10-02 | 10 §10.1 | optional coupled inference declares update algebra, termination and support withdrawal | solver/withdrawal comparison | C✓ S∼ I✗ V✗ E✗ (specified; current experiment unrun)
+R-07-06 | 07 §7.13 | macro learning competes with flat/memoized/static macro controls at expanded work bounds | construction experiment | C✓ S∼ I✗ V✗ E✗ (specified; unrun)
+R-07-07 | 07 §7.14 | collective inference competes with pipelines and conventional solvers at matched compute | inference experiment | C✓ S∼ I✗ V✗ E✗ (specified; unrun)
+R-07-08 | 07 §7.15 | archive policies share eligible history, costs and independent shifts | repertoire experiment | C✓ S∼ I✗ V✗ E✗ (specified; unrun)
+R-07-09 | 07 §7.16 | joint construction/prediction uses independent-factor controls and interaction estimates | combined experiment | C✓ S∼ I✗ V✗ E✗ (specified; unrun)
+
 Organizational-model integration requirements (conditional on selecting that
 adaptation policy; Core adoption alone does not require a model):
 
@@ -262,6 +275,7 @@ enforcement. The full current set is Docs 01-32 plus README and STATUS.
 | G-11 evaluation integrity | 23 sections 23.5-23.6 | Adaptive holdout access/refresh, uncertainty calibration and multiplicity controls |
 | G-12 history and budgets | 21 sections 21.5-21.6 | Durable release/GC/deletion/recovery and access-control tests |
 | G-13 organizational prediction/planning | 19 model/strategy; 21 section 21.7 records; 22 planner; 07 section 7.12 experiment | Implement symbolic search/cases before learned forecast; causal/guard transfer, calibration, total-cost and non-attainment evidence |
+| G-14 reusable abstractions and complementary policies | 27 compiler; 10 inference; 25 repertoire; 07 sections 7.13-7.16 | Implement/test compiler first; separate solver/archive trials and joint mechanism attribution; no extra Core layer |
 
 Reference permit/closure regressions cover observed bugs only. Gate 1 checks
 declarations/references, not executable predicate semantics or complete
@@ -297,15 +311,16 @@ The canonical build sequence is Doc 08; remaining evidence is section 31.4.
 
 Doc 08 owns the current implementation sequence and milestones. This register
 owns unresolved obligations and evidence. Historical review rounds are not
-current gates. No source runtime exists yet; reference tools are implemented
-models with deliberately narrower claims. Gate/status decisions require
+current gates. A bounded source runtime now exists (21 section 21.9); reference
+tools retain their deliberately narrower historical claims. Gate/status decisions require
 artifact review, not the number of documents or tests.
 
 ## 31.8 Inventory and verification scope
 
 There are 32 numbered Markdown documents plus README in docs/current and
 docs/STATUS.md. Tools contain structural validators, negative tests, a closure
-model, and partial behavioral fixtures/regressions. No src/ runtime is present.
+model, and partial behavioral fixtures/regressions. src/brainos now contains
+the first executable profile, with integration/crash tests under tests/.
 The architecture docx remains a frozen historical artifact; Markdown is the
 canonical current specification. Machine checks do not certify every prose
 requirement or demonstrate production conformance.
@@ -330,3 +345,20 @@ prediction properties; symbolic planning and case reuse have equal horizon
 and history; no-change and budget non-attainment are reported. The parser
 example is only a finite lookahead witness. Production/model evidence stays
 open under G-13; existing reference tests do not discharge these obligations.
+
+## 31.11 First runtime implementation disposition
+
+src/brainos now contains the bounded single-owner implementation described in
+Doc 21 section 21.9. Earlier register I/V/E cells describe full target obligations;
+they are not blanket statements that no executable code exists. This increment
+provides partial implementation evidence for G-02/G-03/G-04/G-07/G-12 and selected
+L1 boundary behaviors, not full conformance or independent gate acceptance.
+
+Actual tests cover scoped permits, challenge-at-cut behavior, verdict/adjudication
+separation, expiring evidence, atomic budget operations, provider catalogue
+identity, process execution, staged revision CAS, journal integrity, and real
+child-process death at manifest/invocation/effect boundaries. The demo performs
+parsing, summation, receipt reconciliation after lost acknowledgment, restart
+authority rejection, and validated replacement. No model-learning or abstraction
+benefit is claimed. The bounded runtime and remaining requirements are listed
+in Doc 21 section 21.9; do not infer closure from a passing test count.

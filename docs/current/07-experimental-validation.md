@@ -188,6 +188,10 @@ No experiment in this section has been run here.
 
 ## 7.12 Organizational prediction and planning (proposed, Track E)
 
+Hold the construction-library revision fixed across these arms. Learning a
+library is a separate intervention (section 7.13); joint testing uses section
+7.16 so a stronger generator cannot be mistaken for a better outcome model.
+
 Test Doc 19's reusable intervention knowledge using Doc 27 sections 27.6-27.7's
 bounded record-processing domain with immutable providers. Freeze primitives,
 grammar, depth (initially <= 2), branching/trial budgets, task generation,
@@ -236,6 +240,72 @@ or protected-floor violations do not support the proposed advantage. If memoizat
 or case reuse explains the gain, select that mechanism. The hand-supplied
 parser/composition example demonstrates lookahead only. This experiment is
 specified, not run, and establishes no primitive invention or indefinite novelty.
+
+## 7.13 Typed abstraction learning (selected next construction experiment)
+
+Use Doc 27 section 27.8's deterministic effect-free domain. Compare flat
+primitive search, ordinary memoization, a competent handwritten macro library,
+and learned typed abstractions. Share development examples, underlying primitive
+access, tuning opportunities and total resource limits. Library induction uses
+development traces only; freeze each learned revision before independent
+admission/final evaluation. Hold the organizational prediction strategy fixed.
+
+Bound expanded primitive graph size and measured work, not equal macro-token
+depth. Count induction, search/matching, failed abstractions, validation,
+maintenance, storage and execution. Test held-out structural task families,
+semantic/unit restrictions, failures, and unrelated retained tasks. New constants
+in a familiar template alone do not establish abstraction transfer.
+
+Primary endpoint: total resource vector to reach/maintain a fixed external
+coverage/retention target, with budget-limited non-attainment. Also report
+cold-start versus later reuse, failed construction, library size/carrying cost
+and search degradation. No gain over memoization/static macros after complete
+costs, unearned scope generalization, or hidden extra primitive work fails to
+support the advantage. A named macro is composition, not new primitive invention.
+
+## 7.14 Collective inference (separate computation experiment)
+
+Use a bounded relational task with checkable outcomes and controlled ambiguity.
+Compare independent providers, tuned feed-forward pipelines, a conventional
+constraint/factor solver, and Doc 10's coupled inference. Match observations and
+total compute including iterations, scheduling, integration and recovery.
+Include cases where a pipeline is sufficient. Vary graph size, update order,
+staleness, conflicting evidence, support withdrawal and budgets.
+
+Measure correctness, calibration, abstention, time to a valid answer, contradiction
+handling, termination and recovery. Nonconvergence and confident correlated errors
+are failures; extra observations/compute cannot explain an integration benefit.
+If a conventional solver matches the outcome more cheaply, select that provider.
+No global convergence or authority follows from agreement among mechanisms.
+
+## 7.15 Repertoire retention (separate archive experiment)
+
+On the same eligible history and retention budget compare current-best,
+Pareto-diverse, behavior-diverse and cost-matched random archives (25 section
+25.12). Freeze descriptor/policy revisions before task-shift evaluation; final
+workloads remain independent of selection. Test provider losses, resource shifts
+and stationary workloads. Match restored-candidate construction/prediction policy.
+
+Measure time/spend to reacquire or restore required coverage, protected competence,
+joint failure, final held-out coverage and actual reuse. Count descriptor evaluation,
+search, storage, maintenance, restoration and revalidation. Diversity that fails
+to beat simpler archives after costs is not a retention advantage. Archival
+evidence does not authorize reuse without current validation.
+
+## 7.16 Construction/prediction interaction
+
+Only after isolated tests, compare a 2x2 design: ordinary typed search; abstraction
+learning alone; organizational prediction alone; both together. Hold archive
+retention, inference method, primitive access, history/exposure, organizational
+planning horizon, expanded graph bounds, tuning and total resources fixed as
+appropriate to the intervention. Declare any differences caused by learning.
+Charge cumulative training/maintenance and report unused budgets/non-attainment.
+
+Compare the joint arm with each single-mechanism arm. Improvement of the joint
+arm alone is no evidence of positive interaction: estimate the interaction
+contrast on preregistered outcomes with uncertainty and declared scalarization
+if needed. Extra lookahead, hidden macro work or archive exposure are competing
+explanations. None of sections 7.13-7.16 has been run in this repository.
 
 ## Gate registry (canonical)
 

@@ -101,3 +101,18 @@ and model/evaluator shared ancestry independently. Exact schema/type inference,
 memoization and learned outcome prediction are separate explanations of success.
 Model revisions use development/admission/final splits under section 23.5;
 no provider can broaden its own accepted scope from its training performance.
+
+## 23.8 Abstraction, inference and repertoire verdict scope
+
+Abstraction evaluation pins the library and transitive lowering, checks semantic
+parameters/failure behavior, and confirms on structurally held-out tasks. A macro
+expansion has its declared behavior; a different optimized executable separately
+owes equivalence or measured contract satisfaction. Do not infer equality from
+matching syntax or a few examples. Library growth and vocabulary compression
+alone establish no useful construction improvement.
+
+Inference evaluation names update/uncertainty algebra, termination and contradiction
+handling; overlapping support is not counted repeatedly. Archive descriptors
+are measured selection features, not new evidence of authority or independence.
+Descriptor changes version the selection policy. Separate these interventions
+and their costs under Doc 07 sections 7.13-7.16 before attributing combined gains.

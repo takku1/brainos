@@ -57,3 +57,7 @@ Neuroscience/evolution source interpretations belong in Doc 16.
 | Organizational plan | Bounded conditional sequence of transformations; execution remains stepwise and independently admitted (19/22) |
 | Enabling step | Named prerequisite for an external goal or bounded uncertainty reduction, not automatic terminal reward (18/20) |
 | Prediction / intervention effect | Forecast / causally identified measured consequence under stated assignment assumptions (23/28) |
+| Developmental compilation | Learn scoped typed abstractions with explicit lowerings to existing providers (27 section 27.8) |
+| Library entry / cached result | Executable parameterized abstraction / saved output for supported exact input conditions (21/27) |
+| Organizational repertoire | Budgeted organization artifacts indexed by measured behavior; retrieval nominates, not authorizes (25 section 25.12) |
+| Collective inference | Optional coupled hypothesis revision with declared update, support and stopping semantics (10) |
