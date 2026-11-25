@@ -260,6 +260,55 @@ class RecoverableEcology(Population):
             eco.observe("single-wide", "range_scan", False, other)
 
 
+class ServiceLifecycleConsistency(Population):
+    """Run-1 defect: retiring a DORMANT member through EcologyService (A-35, A-36, A-40)."""
+
+    def service(self):
+        # A wide margin makes `redundant` deterministic on any host.
+        self.r.population.set_retention_policy(self.cap, dormancy_first=True, min_dormant_age=0, margin=50.0)
+        eco = EcologyService.create(development_context(self.r), self.cap, self.ids, min_samples=3, margin=0.1,
+                                    seed=4, mode="median", epsilon=0.0)
+        for _ in range(12):
+            member, exploring = eco.choose("single-wide", True)
+            run = run_retention.run_member(self.r, self.cap, self.ids[member], SINGLE, self.budget)
+            eco.observe("single-wide", member, exploring, run["invocation"])
+        return eco
+
+    def test_retire_from_dormancy_keeps_service_and_population_consistent(self):
+        eco = self.service()
+        eco.make_dormant("range_scan")
+        eco.retire("range_scan", "redundant")
+        self.assertEqual(self.r.population.state(self.cap, self.ids["range_scan"]), "ARCHIVED")
+        self.assertIn("range_scan", eco.policy.archived)
+        self.assertNotIn("range_scan", eco.policy.dormant + eco.policy.members)
+        rebuilt = EcologyService(development_context(self.r), eco.id)
+        self.assertEqual((rebuilt.policy.members, rebuilt.policy.dormant, rebuilt.policy.archived),
+                         (eco.policy.members, eco.policy.dormant, eco.policy.archived))
+        eco.regenerate("range_scan", budget=self.val, principal="eco")
+        self.assertIn("range_scan", eco.policy.members)
+        self.assertEqual(self.r.population.state(self.cap, self.ids["range_scan"]), "ACTIVE")
+
+    def test_runner_review_retires_from_dormancy_without_desync(self):
+        eco = self.service()
+        eco.make_dormant("range_scan")
+        out = dict(transitions=[], assessments=0, assessment_wall_ns=0)
+        run_retention.review(eco, run_retention.CONDITIONS["R3"], out, 0)
+        self.assertIn(dict(at=0, op="retire", member="range_scan"), out["transitions"])
+        for member in eco.policy.dormant:                       # every dormant member is still assessable
+            eco.assess(member)
+
+    def test_runner_records_only_population_refusals(self):
+        class Broken:
+            policy = type("P", (), {"members": ["a", "b"], "dormant": ["a"]})()
+            def assess(self, member):
+                return {"verdict": "redundant"}
+            def retire(self, member, reason):
+                raise ValueError("bookkeeping defect")
+        with self.assertRaises(ValueError):
+            run_retention.review(Broken(), run_retention.CONDITIONS["R3"],
+                                 dict(transitions=[], assessments=0, assessment_wall_ns=0), 0)
+
+
 class CostBoundaries(Population):
     def test_invocations_record_compute_and_runner_totals(self):
         run = run_retention.run_member(self.r, self.cap, self.ids["range_bisect"], MANY_WIDE, self.budget)

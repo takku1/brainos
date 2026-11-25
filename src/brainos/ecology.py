@@ -256,7 +256,9 @@ class EcologyService:
             policy.observe(row["context"], row["member"], invocation["compute_ns"], invocation["evidence_revision"])
             self.cited.append(row["invocation"])
         elif row["op"] in ("retire", "dormant"):
-            policy.members.remove(row["member"])
+            # A member may be retired from ACTIVE or (dormancy-first) from DORMANT.
+            holder = policy.members if row["member"] in policy.members else policy.dormant
+            holder.remove(row["member"])
             (policy.archived if row["op"] == "retire" else policy.dormant).append(row["member"])
         elif row["op"] == "wake":
             policy.dormant.remove(row["member"])

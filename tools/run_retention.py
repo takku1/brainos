@@ -21,7 +21,7 @@ from statistics import median
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from brainos import Runtime  # noqa: E402
+from brainos import Refused, Runtime  # noqa: E402
 from brainos.__main__ import install  # noqa: E402
 from brainos.development import CapabilityDemand, CompositionSearch  # noqa: E402
 from brainos.devcontext import development_context  # noqa: E402
@@ -31,6 +31,8 @@ from brainos.population import featurize  # noqa: E402
 RESULTS = ROOT / "docs" / "results" / "2026-11-25T-retention"
 PREREG = RESULTS / "PREREGISTRATION.md"
 PREREG_SHA256 = "53170de81c7a7a0118abd83e3a804bc6d7aa24a30f0a7f970791d95aee086779"
+AMENDMENT = RESULTS / "PREREGISTRATION-AMENDMENT-1.md"
+AMENDMENT_SHA256 = "c630776871fba5b9f2f74da9697d698bb1ea11393607f388276eba429d6d542a"
 
 MEMBERS = ["range_scan", "range_scan_list", "range_bisect", "range_hash"]
 ADMISSION = [({"data": [1, 5, 9], "queries": [[0, 5]]}, [2]), ({"data": [], "queries": [[0, 1]]}, [0]),
@@ -69,11 +71,14 @@ def committed_unchanged(path):
     return head.replace(b"\r\n", b"\n") == Path(path).read_bytes().replace(b"\r\n", b"\n")
 
 
-def verify_frozen(prereg=PREREG, expected=PREREG_SHA256, runner=Path(__file__)):
+def verify_frozen(prereg=PREREG, expected=PREREG_SHA256, runner=Path(__file__),
+                  amendment=AMENDMENT, amendment_expected=AMENDMENT_SHA256):
     actual = digest_of(prereg)
     if actual != expected:
         raise SystemExit(f"preregistration digest {actual} != {expected}; refusing to run")
-    for path in (prereg, runner):
+    if amendment is not None and digest_of(amendment) != amendment_expected:
+        raise SystemExit("preregistration amendment digest changed; refusing to run")
+    for path in (prereg, runner) + ((amendment,) if amendment is not None else ()):
         if not committed_unchanged(path):
             raise SystemExit(f"{Path(path).name} is not committed unchanged at HEAD; refusing to run")
     return actual
@@ -271,7 +276,7 @@ def review(eco, spec, out, i):
                 eco.retire(member, "redundant within margin in every observed context")
                 out["transitions"].append(dict(at=i, op="retire", member=member))
                 break
-            except Exception as exc:          # refused by the population: recorded, not hidden
+            except Refused as exc:            # only population refusals; anything else stops the run
                 out["transitions"].append(dict(at=i, op="retire-refused", member=member, reason=str(exc)))
     if spec["lifecycle"] == "dormancy":
         for member in list(eco.policy.members):
@@ -281,7 +286,7 @@ def review(eco, spec, out, i):
                 try:
                     eco.make_dormant(member)
                     out["transitions"].append(dict(at=i, op="dormant", member=member))
-                except Exception as exc:
+                except Refused as exc:
                     out["transitions"].append(dict(at=i, op="dormant-refused", member=member, reason=str(exc)))
 
 
@@ -498,7 +503,7 @@ def main():
     (out / "coexistence-correction.json").write_text(json.dumps(corrections, indent=1), encoding="utf-8")
     x1b = run_x1b(work)
     x2c = run_x2c(work, seeds)
-    result = dict(preregistration_sha256=digest, commit=subprocess.check_output(["git", "rev-parse", "HEAD"],
+    result = dict(preregistration_sha256=digest, amendment_sha256=AMENDMENT_SHA256, run=2, commit=subprocess.check_output(["git", "rev-parse", "HEAD"],
                   cwd=ROOT, text=True).strip(), started=started, seconds=round(time.time() - started, 1),
                   python=sys.version.split()[0], x1b=x1b, x2c=x2c)
     (out / "experiment-results.json").write_text(json.dumps(result, indent=1), encoding="utf-8")

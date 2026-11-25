@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "Z:\brainos\tools\run_retention.py", line 519, in <module>
+    main()
+  File "Z:\brainos\tools\run_retention.py", line 500, in main
+    x2c = run_x2c(work, seeds)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "Z:\brainos\tools\run_retention.py", line 442, in run_x2c
+    scores = {c: score(replay(measured, seed, c, table, workdir), table) for c in CONDITIONS}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "Z:\brainos\tools\run_retention.py", line 249, in replay
+    review(eco, spec, out, i)
+  File "Z:\brainos\tools\run_retention.py", line 268, in review
+    verdict = assessed(member)["verdict"]
+              ^^^^^^^^^^^^^^^^
+  File "Z:\brainos\tools\run_retention.py", line 260, in assessed
+    a = eco.assess(member)
+        ^^^^^^^^^^^^^^^^^^
+  File "Z:\brainos\src\brainos\ecology.py", line 293, in assess
+    return self.ctx.assess(self.capability, self.providers[member], self.cited)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "Z:\brainos\src\brainos\population.py", line 185, in assess
+    raise Refused("assessment requires a current member")
+brainos.contracts.Refused: assessment requires a current member

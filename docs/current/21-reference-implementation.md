@@ -507,3 +507,22 @@ Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 
 | A-32 | verification | X2c and X1b run only from a committed, digest-matched preregistration and runner | Post-hoc criteria or code | Digest and git-commit check in tools/run_retention.py | tests/test_retention.py FrozenPreregistration | unknown |
 | A-33 | operations | All existing suites, crash recovery, the demo and earlier experiment runners still pass | Regression from contract changes | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py tests/test_cumulative.py tests/test_runners.py tests/test_ecology.py | unknown |
 | A-34 | performance | Retention machinery overhead (assessment, validation, maintenance, regeneration) is measured and reported per condition rather than assumed | Unmeasured overhead hidden in totals | Per-transition timing in population.py; X2c ledgers | tests/test_retention.py CostBoundaries | unknown |
+
+## Assurance 21.12a (X2c run-1 defect fix)
+
+Run 1 of X2c aborted (docs/results/2026-11-25T-retention/RUN1-ABORTED.md). A
+dormant member's retirement left the ecology's bookkeeping inconsistent with the
+population. The runner's broad exception handler masked it. The preregistered
+design, hypotheses and thresholds are unchanged; the fix and rerun are disclosed
+in PREREGISTRATION-AMENDMENT-1.md.
+
+Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 (slo); operations T1 (schema); performance T1 (slo); maintainability T1 (new_boundary); others T0
+
+| ID | Discipline | Claim | Could fail by | Control (owner) | Check | Evidence |
+|---|---|---|---|---|---|---|
+| A-35 | reliability | Retiring a DORMANT or ACTIVE member updates ecology state to match the population, live and on restart | List bookkeeping assumes ACTIVE | EcologyService._apply (ecology.py) | tests/test_retention.py ServiceLifecycleConsistency | unknown |
+| A-36 | observability | The runner records only population refusals as refused transitions; any other error stops the run | Broad exception masks a defect | review() in tools/run_retention.py | tests/test_retention.py ServiceLifecycleConsistency | unknown |
+| A-37 | verification | The rerun executes only from the original preregistration plus a committed, digest-matched amendment | Undisclosed change to frozen experiment | verify_frozen in tools/run_retention.py | tests/test_retention.py FrozenPreregistration | unknown |
+| A-38 | performance | The rerun's cost ledgers are measured exactly as preregistered (no change to measurement code) | Fix alters measurement | Diff limited to bookkeeping and exception handling | tests/test_retention.py CostBoundaries | unknown |
+| A-39 | operations | All existing suites still pass | Regression | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py tests/test_cumulative.py tests/test_runners.py tests/test_ecology.py | unknown |
+| A-40 | maintainability | One lifecycle-bookkeeping path handles every state transition (no per-state assumptions duplicated in the runner) | Runner and service diverge again | EcologyService._apply as the single owner | tests/test_retention.py ServiceLifecycleConsistency | unknown |
