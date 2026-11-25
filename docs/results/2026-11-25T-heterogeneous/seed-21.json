@@ -1,0 +1,1322 @@
+{
+ "seed": 21,
+ "profile": "inprocess",
+ "prompt_version": "qwen-probe-sum-v1",
+ "prompt_text": "Request: \"Add up 4 and 6.\"\n{\"operation\": \"sum\", \"values\": [4, 6]}\nRequest: \"Please add 1 and 9.\"\n{\"operation\": \"sum\", \"values\": [1, 9]}\nRequest: \"{input}\"\n",
+ "sampling": {
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_tokens": 32,
+  "seed": 11
+ },
+ "admission": {
+  "n": 3,
+  "k": 2
+ },
+ "stream": [
+  {
+   "idx": 0,
+   "split": "calibration",
+   "context": "canonical",
+   "value": "Add up 21 and 53.",
+   "expected": {
+    "operation": "sum",
+    "values": [
+     21,
+     53
+    ]
+   }
+  },
+  {
+   "idx": 1,
+   "split": "calibration",
+   "context": "canonical",
+   "value": "Add up 88 and 53.",
+   "expected": {
+    "operation": "sum",
+    "values": [
+     88,
+     53
+    ]
+   }
+  },
+  {
+   "idx": 2,
+   "split": "calibration",
+   "context": "irregular",
+   "value": "Please add 81 and 36 together.",
+   "expected": {
+    "operation": "sum",
+    "values": [
+     81,
+     36
+    ]
+   }
+  },
+  {
+   "idx": 3,
+   "split": "calibration",
+   "context": "irregular",
+   "value": "Can you add 61 to 27?",
+   "expected": {
+    "operation": "sum",
+    "values": [
+     61,
+     27
+    ]
+   }
+  },
+  {
+   "idx": 4,
+   "split": "held-out",
+   "context": "canonical",
+   "value": "add up 60,65",
+   "expected": {
+    "operation": "sum",
+    "values": [
+     60,
+     65
+    ]
+   }
+  },
+  {
+   "idx": 5,
+   "split": "held-out",
+   "context": "canonical",
+   "value": "add up 23,64",
+   "expected": {
+    "operation": "sum",
+    "values": [
+     23,
+     64
+    ]
+   }
+  },
+  {
+   "idx": 6,
+   "split": "held-out",
+   "context": "irregular",
+   "value": "67 + 30 = ?",
+   "expected": {
+    "operation": "sum",
+    "values": [
+     67,
+     30
+    ]
+   }
+  },
+  {
+   "idx": 7,
+   "split": "held-out",
+   "context": "irregular",
+   "value": "Add up the numbers 0, 1 and 47.",
+   "expected": {
+    "operation": "sum",
+    "values": [
+     0,
+     1,
+     47
+    ]
+   }
+  }
+ ],
+ "qwen_provider": "qwen3-lm@ext-989dfc486a25cf8c",
+ "deterministic_admitted": true,
+ "qwen_admitted": true,
+ "qwen_admission_evidence": {
+  "abstain": [],
+  "draws": [
+   {
+    "abstention": false,
+    "case": 0,
+    "compute_ns": 3893970700,
+    "draw": 0,
+    "outcome": "correct",
+    "role": "capability:nl-arith@69d45e0bec476146"
+   },
+   {
+    "abstention": false,
+    "case": 0,
+    "compute_ns": 3707407100,
+    "draw": 1,
+    "outcome": "correct",
+    "role": "capability:nl-arith@69d45e0bec476146"
+   },
+   {
+    "abstention": false,
+    "case": 0,
+    "compute_ns": 3731662100,
+    "draw": 2,
+    "outcome": "correct",
+    "role": "capability:nl-arith@69d45e0bec476146"
+   },
+   {
+    "abstention": false,
+    "case": 1,
+    "compute_ns": 3743893900,
+    "draw": 0,
+    "outcome": "correct",
+    "role": "capability:nl-arith@69d45e0bec476146"
+   },
+   {
+    "abstention": false,
+    "case": 1,
+    "compute_ns": 3723991600,
+    "draw": 1,
+    "outcome": "correct",
+    "role": "capability:nl-arith@69d45e0bec476146"
+   },
+   {
+    "abstention": false,
+    "case": 1,
+    "compute_ns": 3735889300,
+    "draw": 2,
+    "outcome": "correct",
+    "role": "capability:nl-arith@69d45e0bec476146"
+   }
+  ],
+  "identities": {
+   "artifact": "f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b",
+   "artifact_algorithm": "sha256",
+   "identities": {
+    "model": "Qwen/Qwen3-0.6B",
+    "prompt_template": "qwen-probe-sum-v1",
+    "runtime": "qwen-adapter/cpu-torch",
+    "tokenizer": "Qwen3-0.6B"
+   },
+   "implementation": "qwen3-lm",
+   "nondeterministic": true,
+   "provider_digest": "989dfc486a25cf8c3812f86224c0dc2072a80f39bf6a920e516e6a121c4ddcb0",
+   "sampling": {
+    "max_tokens": 32,
+    "seed": 11,
+    "temperature": 0.0,
+    "top_p": 1.0
+   }
+  },
+  "k": 2,
+  "n": 3,
+  "per_case": {
+   "capability:nl-arith@69d45e0bec476146:0": {
+    "agreements": 3,
+    "draws": 3,
+    "wilson": [
+     0.43849391955098227,
+     1.0
+    ]
+   },
+   "capability:nl-arith@69d45e0bec476146:1": {
+    "agreements": 3,
+    "draws": 3,
+    "wilson": [
+     0.43849391955098227,
+     1.0
+    ]
+   }
+  },
+  "wilson_pooled": [
+   0.6096569663469354,
+   0.9999999999999999
+  ]
+ },
+ "selection": {
+  "canonical": "deterministic",
+  "irregular": "qwen"
+ },
+ "runs": [
+  {
+   "idx": 4,
+   "arm": "fixed",
+   "member": "deterministic",
+   "correct": true,
+   "served": true,
+   "output": "{\"operation\": \"sum\", \"values\": [60, 65]}",
+   "eval": "match",
+   "compute_ns": 14300,
+   "total_ns": 119600,
+   "executed": 125,
+   "expected": 125,
+   "late": false
+  },
+  {
+   "idx": 4,
+   "arm": "neural",
+   "member": "qwen",
+   "correct": true,
+   "served": true,
+   "output": "{\"operation\": \"sum\", \"values\": [60, 65]}",
+   "eval": "match",
+   "compute_ns": 3690993300,
+   "total_ns": 3692211200,
+   "executed": 125,
+   "expected": 125,
+   "late": false
+  },
+  {
+   "idx": 4,
+   "arm": "coordinated",
+   "member": "deterministic",
+   "correct": true,
+   "served": true,
+   "output": "{\"operation\": \"sum\", \"values\": [60, 65]}",
+   "eval": "match",
+   "compute_ns": 11600,
+   "total_ns": 110300,
+   "executed": 125,
+   "expected": 125,
+   "late": false
+  },
+  {
+   "idx": 5,
+   "arm": "fixed",
+   "member": "deterministic",
+   "correct": true,
+   "served": true,
+   "output": "{\"operation\": \"sum\", \"values\": [23, 64]}",
+   "eval": "match",
+   "compute_ns": 13500,
+   "total_ns": 116200,
+   "executed": 87,
+   "expected": 87,
+   "late": false
+  },
+  {
+   "idx": 5,
+   "arm": "neural",
+   "member": "qwen",
+   "correct": true,
+   "served": true,
+   "output": "{\"operation\": \"sum\", \"values\": [23, 64]}",
+   "eval": "match",
+   "compute_ns": 3746349100,
+   "total_ns": 3747849900,
+   "executed": 87,
+   "expected": 87,
+   "late": false
+  },
+  {
+   "idx": 5,
+   "arm": "coordinated",
+   "member": "deterministic",
+   "correct": true,
+   "served": true,
+   "output": "{\"operation\": \"sum\", \"values\": [23, 64]}",
+   "eval": "match",
+   "compute_ns": 14500,
+   "total_ns": 127200,
+   "executed": 87,
+   "expected": 87,
+   "late": false
+  },
+  {
+   "idx": 6,
+   "arm": "fixed",
+   "member": "deterministic",
+   "correct": false,
+   "served": false,
+   "reason": "not a canonical sum request",
+   "compute_ns": 0,
+   "total_ns": 0
+  },
+  {
+   "idx": 6,
+   "arm": "neural",
+   "member": "qwen",
+   "correct": true,
+   "served": true,
+   "output": "{\"operation\": \"add\", \"values\": [67, 30]}",
+   "eval": "match",
+   "compute_ns": 3719966700,
+   "total_ns": 3721453100,
+   "executed": 97,
+   "expected": 97,
+   "late": false
+  },
+  {
+   "idx": 6,
+   "arm": "coordinated",
+   "member": "qwen",
+   "correct": true,
+   "served": true,
+   "output": "{\"operation\": \"add\", \"values\": [67, 30]}",
+   "eval": "match",
+   "compute_ns": 3743878700,
+   "total_ns": 3745155700,
+   "executed": 97,
+   "expected": 97,
+   "late": false
+  },
+  {
+   "idx": 7,
+   "arm": "fixed",
+   "member": "deterministic",
+   "correct": false,
+   "served": false,
+   "reason": "not a canonical sum request",
+   "compute_ns": 0,
+   "total_ns": 0
+  },
+  {
+   "idx": 7,
+   "arm": "neural",
+   "member": "qwen",
+   "correct": true,
+   "served": true,
+   "output": "{\"operation\": \"sum\", \"values\": [0, 1, 47]}",
+   "eval": "match",
+   "compute_ns": 3786688200,
+   "total_ns": 3788095800,
+   "executed": 48,
+   "expected": 48,
+   "late": false
+  },
+  {
+   "idx": 7,
+   "arm": "coordinated",
+   "member": "qwen",
+   "correct": true,
+   "served": true,
+   "output": "{\"operation\": \"sum\", \"values\": [0, 1, 47]}",
+   "eval": "match",
+   "compute_ns": 3786917400,
+   "total_ns": 3788322800,
+   "executed": 48,
+   "expected": 48,
+   "late": false
+  }
+ ],
+ "validation_costs": {
+  "deterministic": 2,
+  "qwen": 180
+ },
+ "table": [
+  {
+   "idx": 0,
+   "context": "canonical",
+   "costs": {
+    "deterministic": 12800,
+    "qwen": 3762842200
+   },
+   "overhead": {
+    "deterministic": 50800,
+    "qwen": 1412100
+   },
+   "outputs": {
+    "deterministic": "{\"operation\": \"sum\", \"values\": [21, 53]}",
+    "qwen": "{\"operation\": \"sum\", \"values\": [21, 53]}"
+   },
+   "correct": {
+    "deterministic": true,
+    "qwen": true
+   }
+  },
+  {
+   "idx": 1,
+   "context": "canonical",
+   "costs": {
+    "deterministic": 12900,
+    "qwen": 3724018500
+   },
+   "overhead": {
+    "deterministic": 53800,
+    "qwen": 1454500
+   },
+   "outputs": {
+    "deterministic": "{\"operation\": \"sum\", \"values\": [88, 53]}",
+    "qwen": "{\"operation\": \"sum\", \"values\": [88, 53]}"
+   },
+   "correct": {
+    "deterministic": true,
+    "qwen": true
+   }
+  },
+  {
+   "idx": 2,
+   "context": "irregular",
+   "costs": {
+    "qwen": 3688216700
+   },
+   "overhead": {
+    "qwen": 1562600
+   },
+   "outputs": {
+    "deterministic": "REFUSED: not a canonical sum request",
+    "qwen": "{\"operation\": \"sum\", \"values\": [81, 36]}"
+   },
+   "correct": {
+    "deterministic": false,
+    "qwen": true
+   }
+  },
+  {
+   "idx": 3,
+   "context": "irregular",
+   "costs": {
+    "qwen": 3670497300
+   },
+   "overhead": {
+    "qwen": 1376300
+   },
+   "outputs": {
+    "deterministic": "REFUSED: not a canonical sum request",
+    "qwen": "{\"operation\": \"sum\", \"values\": [61, 27]}"
+   },
+   "correct": {
+    "deterministic": false,
+    "qwen": true
+   }
+  }
+ ],
+ "setup": {
+  "boundary": "admission, calibration, held-out execution and assessment are charged to the arm(s) requiring the evidence; coordinated pays the full calibration table of both members; shared initialization is not amortized; the oracle uses held-out demands only with zero validation/assessment cost",
+  "calibration": {
+   "deterministic": {
+    "demands": 2,
+    "compute_ns": 25700,
+    "overhead_ns": 104600
+   },
+   "qwen": {
+    "demands": 4,
+    "compute_ns": 14845574700,
+    "overhead_ns": 5805500
+   }
+  },
+  "validation_attempts": {
+   "deterministic": 2,
+   "qwen": 6
+  },
+  "validation_costs": {
+   "deterministic": 2,
+   "qwen": 180
+  }
+ },
+ "meters": {
+  "fixed": {
+   "N": {
+    "active": 2,
+    "dormant": 0,
+    "archived": 0,
+    "providers": [
+     "parse_nl_sum@1:7f363af0fed5eb09e300ae8d750dd9872981f9a191475c0b7bbaf26bf2928d00",
+     "qwen3-lm@ext-989dfc486a25cf8c"
+    ],
+    "composites": [],
+    "blocked": []
+   },
+   "C": {
+    "coverage": 0.5,
+    "served": 4,
+    "demanded": 8,
+    "detail": [
+     {
+      "task": "3e1eedcf7dce4158b51f9d7c770d7164",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "cddc92292d5c4c75baade3bd02f8dcf7",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "153e9e18b57a4f4298aaa7613c35dd57",
+      "served": false,
+      "reason": "task was not served"
+     },
+     {
+      "task": "c3235ede02b942cfa882d9ba52fdf153",
+      "served": false,
+      "reason": "task was not served"
+     },
+     {
+      "task": "143728376faa4c06937fe66734fe1804",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "e594427128a642febf1461ff2fd142c3",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "1dd9334811674bdb888f467301355de4",
+      "served": false,
+      "reason": "task was not served"
+     },
+     {
+      "task": "71369c0c776144f594bb047b14f09c98",
+      "served": false,
+      "reason": "task was not served"
+     }
+    ]
+   },
+   "Q": {
+    "mean_regret": 0.0,
+    "served": 4,
+    "unserved": 4
+   },
+   "D": {
+    "*": {
+     "covering": [
+      "parse_nl_sum@1:7f363af0fed5eb09e300ae8d750dd9872981f9a191475c0b7bbaf26bf2928d00"
+     ],
+     "unique": true,
+     "structural_independence": null,
+     "observed_joint_failures": 0
+    }
+   },
+   "L": {
+    "retained": 1.0,
+    "retained_tasks": 8,
+    "demanded_tasks": 8
+   },
+   "V": {
+    "acquisitions": 0,
+    "regenerations": 0,
+    "dormancies": 0,
+    "wakes": 0,
+    "retirements": 0,
+    "assimilations": 0
+   },
+   "R": {
+    "compute_ns": 51700,
+    "overhead_ns": 206300,
+    "construction": {},
+    "validation": {},
+    "assessment_ns": 0,
+    "maintenance_units": 0,
+    "maintenance_spend": {},
+    "execution_spend": {
+     "attempts": 257
+    },
+    "outstanding_holdings": []
+   },
+   "reuse": {
+    "fraction": null,
+    "acquisitions": 0,
+    "mean_depth": null
+   },
+   "complexity": {
+    "transitive_edges": 0,
+    "members": 2,
+    "mean_closure_size": 1.0
+   },
+   "meta": {
+    "capability": "capability:nl-arith@69d45e0bec476146",
+    "window_tasks": [
+     "3e1eedcf7dce4158b51f9d7c770d7164",
+     "cddc92292d5c4c75baade3bd02f8dcf7",
+     "153e9e18b57a4f4298aaa7613c35dd57",
+     "c3235ede02b942cfa882d9ba52fdf153",
+     "143728376faa4c06937fe66734fe1804",
+     "e594427128a642febf1461ff2fd142c3",
+     "1dd9334811674bdb888f467301355de4",
+     "71369c0c776144f594bb047b14f09c98"
+    ],
+    "journal_span": [
+     43,
+     257
+    ],
+    "admission_evaluations": 2,
+    "meter_wall_ns": 7462400,
+    "notes": [
+     "no trusted featurizer: single context"
+    ]
+   }
+  },
+  "neural": {
+   "N": {
+    "active": 2,
+    "dormant": 0,
+    "archived": 0,
+    "providers": [
+     "parse_nl_sum@1:7f363af0fed5eb09e300ae8d750dd9872981f9a191475c0b7bbaf26bf2928d00",
+     "qwen3-lm@ext-989dfc486a25cf8c"
+    ],
+    "composites": [],
+    "blocked": []
+   },
+   "C": {
+    "coverage": 1.0,
+    "served": 8,
+    "demanded": 8,
+    "detail": [
+     {
+      "task": "441fdac2dfa54124891c68a8a284eb92",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "35ed88d4e784450c8cf8bef058e3e9f1",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "e1c4fed0e1894e1691bdac7de873af69",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "2bf35995c8f54ffda71b81e0955bcd0a",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "b3cf299fa21147978ec043f90c22627c",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "4e28ae5c1bde4b7ea4a5e49cdb0b6f2e",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "30977f2b44e64c639054a89ceee064d3",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "3e47b5caaf6149c1a83d4ca483452666",
+      "served": true,
+      "reason": "served"
+     }
+    ]
+   },
+   "Q": {
+    "mean_regret": 0.0,
+    "served": 8,
+    "unserved": 0
+   },
+   "D": {
+    "*": {
+     "covering": [
+      "qwen3-lm@ext-989dfc486a25cf8c"
+     ],
+     "unique": true,
+     "structural_independence": null,
+     "observed_joint_failures": 0
+    }
+   },
+   "L": {
+    "retained": 1.0,
+    "retained_tasks": 8,
+    "demanded_tasks": 8
+   },
+   "V": {
+    "acquisitions": 0,
+    "regenerations": 0,
+    "dormancies": 0,
+    "wakes": 0,
+    "retirements": 0,
+    "assimilations": 0
+   },
+   "R": {
+    "compute_ns": 29789568300,
+    "overhead_ns": 11161700,
+    "construction": {},
+    "validation": {},
+    "assessment_ns": 0,
+    "maintenance_units": 0,
+    "maintenance_spend": {},
+    "execution_spend": {
+     "attempts": 257
+    },
+    "outstanding_holdings": []
+   },
+   "reuse": {
+    "fraction": null,
+    "acquisitions": 0,
+    "mean_depth": null
+   },
+   "complexity": {
+    "transitive_edges": 0,
+    "members": 2,
+    "mean_closure_size": 1.0
+   },
+   "meta": {
+    "capability": "capability:nl-arith@69d45e0bec476146",
+    "window_tasks": [
+     "441fdac2dfa54124891c68a8a284eb92",
+     "35ed88d4e784450c8cf8bef058e3e9f1",
+     "e1c4fed0e1894e1691bdac7de873af69",
+     "2bf35995c8f54ffda71b81e0955bcd0a",
+     "b3cf299fa21147978ec043f90c22627c",
+     "4e28ae5c1bde4b7ea4a5e49cdb0b6f2e",
+     "30977f2b44e64c639054a89ceee064d3",
+     "3e47b5caaf6149c1a83d4ca483452666"
+    ],
+    "journal_span": [
+     51,
+     266
+    ],
+    "admission_evaluations": 2,
+    "meter_wall_ns": 16159359300,
+    "notes": [
+     "no trusted featurizer: single context"
+    ]
+   }
+  },
+  "coordinated": {
+   "N": {
+    "active": 2,
+    "dormant": 0,
+    "archived": 0,
+    "providers": [
+     "parse_nl_sum@1:7f363af0fed5eb09e300ae8d750dd9872981f9a191475c0b7bbaf26bf2928d00",
+     "qwen3-lm@ext-989dfc486a25cf8c"
+    ],
+    "composites": [],
+    "blocked": []
+   },
+   "C": {
+    "coverage": 1.0,
+    "served": 4,
+    "demanded": 4,
+    "detail": [
+     {
+      "task": "25ae0f2f684a49d184e8c2772c35c170",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "8b3cc5929a0b488da04e45c6e598b5e7",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "b6665538192b4920a93da9eb7a3e3759",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "585cbaf0e86a497ab8acae8364403245",
+      "served": true,
+      "reason": "served"
+     }
+    ]
+   },
+   "Q": {
+    "mean_regret": 0.0,
+    "served": 4,
+    "unserved": 0
+   },
+   "D": {
+    "*": {
+     "covering": [
+      "parse_nl_sum@1:7f363af0fed5eb09e300ae8d750dd9872981f9a191475c0b7bbaf26bf2928d00"
+     ],
+     "unique": true,
+     "structural_independence": null,
+     "observed_joint_failures": 0
+    }
+   },
+   "L": {
+    "retained": 1.0,
+    "retained_tasks": 4,
+    "demanded_tasks": 4
+   },
+   "V": {
+    "acquisitions": 0,
+    "regenerations": 0,
+    "dormancies": 0,
+    "wakes": 0,
+    "retirements": 0,
+    "assimilations": 0
+   },
+   "R": {
+    "compute_ns": 7530819100,
+    "overhead_ns": 2672600,
+    "construction": {},
+    "validation": {},
+    "assessment_ns": 0,
+    "maintenance_units": 0,
+    "maintenance_spend": {},
+    "execution_spend": {
+     "attempts": 161
+    },
+    "outstanding_holdings": []
+   },
+   "reuse": {
+    "fraction": null,
+    "acquisitions": 0,
+    "mean_depth": null
+   },
+   "complexity": {
+    "transitive_edges": 0,
+    "members": 2,
+    "mean_closure_size": 1.0
+   },
+   "meta": {
+    "capability": "capability:nl-arith@69d45e0bec476146",
+    "window_tasks": [
+     "25ae0f2f684a49d184e8c2772c35c170",
+     "8b3cc5929a0b488da04e45c6e598b5e7",
+     "b6665538192b4920a93da9eb7a3e3759",
+     "585cbaf0e86a497ab8acae8364403245"
+    ],
+    "journal_span": [
+     144,
+     283
+    ],
+    "admission_evaluations": 4,
+    "meter_wall_ns": 16202017400,
+    "notes": [
+     "no trusted featurizer: single context"
+    ]
+   }
+  }
+ },
+ "sum_meters": {
+  "fixed": {
+   "N": {
+    "active": 1,
+    "dormant": 0,
+    "archived": 0,
+    "providers": [
+     "sum@1:515376ed20976a96885c5c472379436a87c9abe23339d139dd46d8bc6659b6df"
+    ],
+    "composites": [],
+    "blocked": []
+   },
+   "C": {
+    "coverage": 1.0,
+    "served": 2,
+    "demanded": 2,
+    "detail": [
+     {
+      "task": "87fdebf808ef4d4795d5d14fe6dd620e",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "69b4e24ec11f4f5d91d12433bab93cf6",
+      "served": true,
+      "reason": "served"
+     }
+    ]
+   },
+   "Q": {
+    "mean_regret": 0.0,
+    "served": 2,
+    "unserved": 0
+   },
+   "D": {
+    "*": {
+     "covering": [
+      "sum@1:515376ed20976a96885c5c472379436a87c9abe23339d139dd46d8bc6659b6df"
+     ],
+     "unique": true,
+     "structural_independence": null,
+     "observed_joint_failures": 0
+    }
+   },
+   "L": {
+    "retained": 1.0,
+    "retained_tasks": 2,
+    "demanded_tasks": 2
+   },
+   "V": {
+    "acquisitions": 0,
+    "regenerations": 0,
+    "dormancies": 0,
+    "wakes": 0,
+    "retirements": 0,
+    "assimilations": 0
+   },
+   "R": {
+    "compute_ns": 1800,
+    "overhead_ns": 106300,
+    "construction": {},
+    "validation": {},
+    "assessment_ns": 0,
+    "maintenance_units": 0,
+    "maintenance_spend": {},
+    "execution_spend": {
+     "attempts": 35
+    },
+    "outstanding_holdings": []
+   },
+   "reuse": {
+    "fraction": null,
+    "acquisitions": 0,
+    "mean_depth": null
+   },
+   "complexity": {
+    "transitive_edges": 0,
+    "members": 1,
+    "mean_closure_size": 1.0
+   },
+   "meta": {
+    "capability": "capability:w2-sum@dfab26790e3b7adb",
+    "window_tasks": [
+     "87fdebf808ef4d4795d5d14fe6dd620e",
+     "69b4e24ec11f4f5d91d12433bab93cf6"
+    ],
+    "journal_span": [
+     119,
+     174
+    ],
+    "admission_evaluations": 1,
+    "meter_wall_ns": 7738300,
+    "notes": [
+     "no trusted featurizer: single context"
+    ]
+   }
+  },
+  "neural": {
+   "N": {
+    "active": 1,
+    "dormant": 0,
+    "archived": 0,
+    "providers": [
+     "sum@1:515376ed20976a96885c5c472379436a87c9abe23339d139dd46d8bc6659b6df"
+    ],
+    "composites": [],
+    "blocked": []
+   },
+   "C": {
+    "coverage": 1.0,
+    "served": 4,
+    "demanded": 4,
+    "detail": [
+     {
+      "task": "cc85fcc2e13843369ea762ec69cb7cfb",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "65a5a727ee7e42198585f4a58dedb734",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "2b659c0d0d144fd7ba9025ab67fe4eb0",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "ed8a7232806645739ee2cb70c8c73352",
+      "served": true,
+      "reason": "served"
+     }
+    ]
+   },
+   "Q": {
+    "mean_regret": 0.0,
+    "served": 4,
+    "unserved": 0
+   },
+   "D": {
+    "*": {
+     "covering": [
+      "sum@1:515376ed20976a96885c5c472379436a87c9abe23339d139dd46d8bc6659b6df"
+     ],
+     "unique": true,
+     "structural_independence": null,
+     "observed_joint_failures": 0
+    }
+   },
+   "L": {
+    "retained": 1.0,
+    "retained_tasks": 4,
+    "demanded_tasks": 4
+   },
+   "V": {
+    "acquisitions": 0,
+    "regenerations": 0,
+    "dormancies": 0,
+    "wakes": 0,
+    "retirements": 0,
+    "assimilations": 0
+   },
+   "R": {
+    "compute_ns": 3700,
+    "overhead_ns": 256500,
+    "construction": {},
+    "validation": {},
+    "assessment_ns": 0,
+    "maintenance_units": 0,
+    "maintenance_spend": {},
+    "execution_spend": {
+     "attempts": 132
+    },
+    "outstanding_holdings": []
+   },
+   "reuse": {
+    "fraction": null,
+    "acquisitions": 0,
+    "mean_depth": null
+   },
+   "complexity": {
+    "transitive_edges": 0,
+    "members": 1,
+    "mean_closure_size": 1.0
+   },
+   "meta": {
+    "capability": "capability:w2-sum@dfab26790e3b7adb",
+    "window_tasks": [
+     "cc85fcc2e13843369ea762ec69cb7cfb",
+     "65a5a727ee7e42198585f4a58dedb734",
+     "2b659c0d0d144fd7ba9025ab67fe4eb0",
+     "ed8a7232806645739ee2cb70c8c73352"
+    ],
+    "journal_span": [
+     136,
+     274
+    ],
+    "admission_evaluations": 1,
+    "meter_wall_ns": 9671400,
+    "notes": [
+     "no trusted featurizer: single context"
+    ]
+   }
+  },
+  "coordinated": {
+   "N": {
+    "active": 1,
+    "dormant": 0,
+    "archived": 0,
+    "providers": [
+     "sum@1:515376ed20976a96885c5c472379436a87c9abe23339d139dd46d8bc6659b6df"
+    ],
+    "composites": [],
+    "blocked": []
+   },
+   "C": {
+    "coverage": 1.0,
+    "served": 4,
+    "demanded": 4,
+    "detail": [
+     {
+      "task": "56f3f2a1db134a6db8ba5bac14c74569",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "90df9110d01c4a359795dfdfd2282bfb",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "cf1cbe37900d407c9b7493663207b2e7",
+      "served": true,
+      "reason": "served"
+     },
+     {
+      "task": "98b5f0145d934419847d73f200d69a3b",
+      "served": true,
+      "reason": "served"
+     }
+    ]
+   },
+   "Q": {
+    "mean_regret": 0.0,
+    "served": 4,
+    "unserved": 0
+   },
+   "D": {
+    "*": {
+     "covering": [
+      "sum@1:515376ed20976a96885c5c472379436a87c9abe23339d139dd46d8bc6659b6df"
+     ],
+     "unique": true,
+     "structural_independence": null,
+     "observed_joint_failures": 0
+    }
+   },
+   "L": {
+    "retained": 1.0,
+    "retained_tasks": 4,
+    "demanded_tasks": 4
+   },
+   "V": {
+    "acquisitions": 0,
+    "regenerations": 0,
+    "dormancies": 0,
+    "wakes": 0,
+    "retirements": 0,
+    "assimilations": 0
+   },
+   "R": {
+    "compute_ns": 3100,
+    "overhead_ns": 221200,
+    "construction": {},
+    "validation": {},
+    "assessment_ns": 0,
+    "maintenance_units": 0,
+    "maintenance_spend": {},
+    "execution_spend": {
+     "attempts": 161
+    },
+    "outstanding_holdings": []
+   },
+   "reuse": {
+    "fraction": null,
+    "acquisitions": 0,
+    "mean_depth": null
+   },
+   "complexity": {
+    "transitive_edges": 0,
+    "members": 1,
+    "mean_closure_size": 1.0
+   },
+   "meta": {
+    "capability": "capability:w2-sum@dfab26790e3b7adb",
+    "window_tasks": [
+     "56f3f2a1db134a6db8ba5bac14c74569",
+     "90df9110d01c4a359795dfdfd2282bfb",
+     "cf1cbe37900d407c9b7493663207b2e7",
+     "98b5f0145d934419847d73f200d69a3b"
+    ],
+    "journal_span": [
+     152,
+     291
+    ],
+    "admission_evaluations": 1,
+    "meter_wall_ns": 8117000,
+    "notes": [
+     "no trusted featurizer: single context"
+    ]
+   }
+  }
+ },
+ "nonattainment": {},
+ "verdict": {
+  "capability": "capability:nl-arith@69d45e0bec476146",
+  "support": [
+   "parse_nl_sum@1:7f363af0fed5eb09e300ae8d750dd9872981f9a191475c0b7bbaf26bf2928d00",
+   "qwen3-lm@ext-989dfc486a25cf8c"
+  ],
+  "structure_dependence": {
+   "catalogue_primitives": 2,
+   "catalogue_served": true,
+   "store_primitives_served": "parse_nl_sum@1:7f363af0fed5eb09e300ae8d750dd9872981f9a191475c0b7bbaf26bf2928d00",
+   "dependence": false
+  },
+  "substitution": {
+   "parse_nl_sum@1:7f363af0fed5eb09e300ae8d750dd9872981f9a191475c0b7bbaf26bf2928d00": {
+    "served_again": true,
+    "path": "active-member",
+    "reason": "re-served"
+   },
+   "qwen3-lm@ext-989dfc486a25cf8c": {
+    "served_again": true,
+    "path": "active-member",
+    "reason": "re-served"
+   }
+  },
+  "verdict": "redundant",
+  "checks_spent": 9,
+  "development_budget": 100
+ },
+ "nov": {
+  "fixed": {
+   "value": 20.0,
+   "costs": {
+    "compute": 0.053500000000000006,
+    "overhead": 0.3126,
+    "construction": 0.0,
+    "validation": 2.0,
+    "assessment": 0.0,
+    "maintenance": 0.0
+   },
+   "net": 17.6339,
+   "served": 2,
+   "native": {
+    "compute_ns": 27800,
+    "total_ns": 235800,
+    "runs": 4,
+    "skipped": 0
+   }
+  },
+  "neural": {
+   "value": 40.0,
+   "costs": {
+    "compute": 29789.572,
+    "overhead": 11.4182,
+    "construction": 0.0,
+    "validation": 180.0,
+    "assessment": 0.0,
+    "maintenance": 0.0
+   },
+   "net": -29940.9902,
+   "served": 4,
+   "native": {
+    "compute_ns": 14943997300,
+    "total_ns": 14949610000,
+    "runs": 4,
+    "skipped": 0
+   }
+  },
+  "coordinated": {
+   "value": 40.0,
+   "costs": {
+    "compute": 22376.422599999998,
+    "overhead": 8.8039,
+    "construction": 0.0,
+    "validation": 182.0,
+    "assessment": 0.0,
+    "maintenance": 0.0
+   },
+   "net": -22527.226499999997,
+   "served": 4,
+   "native": {
+    "compute_ns": 7530822200,
+    "total_ns": 7533716000,
+    "runs": 4,
+    "skipped": 0
+   }
+  }
+ },
+ "oracle": {
+  "windows": [
+   {
+    "value": 40.0,
+    "costs": {
+     "compute": 7506.68,
+     "overhead": 3.0954,
+     "construction": 0.0,
+     "validation": 0.0,
+     "assessment": 0.0,
+     "maintenance": 0.0
+    }
+   }
+  ],
+  "total": -7469.7754,
+  "demands_covered": 4
+ },
+ "hypotheses": {
+  "H1": {
+   "passed": true,
+   "meter_failures": {},
+   "arms": [
+    "fixed",
+    "neural",
+    "coordinated"
+   ],
+   "nonattained": [],
+   "missing": []
+  },
+  "H2": {
+   "passed": true
+  },
+  "H3": {
+   "passed": true,
+   "verdict": "redundant"
+  },
+  "H4": {
+   "passed": true,
+   "coordinated_correct": 4,
+   "fixed_correct": 2
+  },
+  "H5": {
+   "passed": true,
+   "qwen_mean_ns": 3745798900.0,
+   "det_mean_ns": 13475.0,
+   "ratio": 277981.36549165123
+  }
+ },
+ "head": "35d51826cbab4ab930800738e9179246148af1f0",
+ "preregistration": "02d20e2a408f69168bebd9a5391cc8a1636f3cd78943beaf9d28fe359e273a12"
+}
