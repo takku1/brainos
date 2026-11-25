@@ -97,6 +97,16 @@ class Transactor:
         """
         with self.store.transaction():
             state = self.control.read()
+            lineage = plan.get("lineage", {})
+            # B21: publication is bound to a recorded selection that chose this exact evaluation.
+            selection = next((t for t in self.store.find("assimilation-trial")
+                              if t["id"] == lineage.get("selection") and t["kind"] == "selection"), None)
+            if selection is None or selection.get("chosen") is None or selection["chosen"] != lineage.get("trial"):
+                raise Refused("assimilation plan is not bound to a selection that chose its evaluation")
+            evaluation = next((t for t in self.store.find("assimilation-trial")
+                               if t["id"] == lineage["trial"] and t["kind"] == "evaluation"), None)
+            if evaluation is None or evaluation["assignment"] != lineage.get("assignment"):
+                raise Refused("selected evaluation does not match the plan's assignment")
             parents = {p["provider"] for p in plan["parents"]}
             members = [self.store.get("candidate", c) for c in plan["members"]]
             bindings = [self.store.get("candidate", c) for c in plan["bindings"]]

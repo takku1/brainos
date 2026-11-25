@@ -48,7 +48,7 @@ do not edit by hand. Status per requirement: implemented (I✓), partial (I∼).
 | transactor.py | R-09-10, R-09-BIND, R-09-COMMIT, R-09-VALIDATE, R-24-03, R-24-ASSIMILATE-02 | R-02-10, R-09-03, R-09-09, R-09-REBIND, R-12-F10, R-12-F17, R-12-F9, R-21-02, R-24-ASSIMILATE, R-24-REBIND |
 | worker.py | R-21-09 | — |
 
-Register totals: documentary 15, implemented 41, partial 70, specified 85.
+Register totals: documentary 15, implemented 41, partial 70, specified 89.
 
 <!-- traceability:end -->
 
@@ -660,3 +660,38 @@ Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 
 | A-48 | observability | Every nomination, evaluation, rejection reason, publication and recovery is a durable record | Unexplained acceptance or rejection | assimilation-trial records | tests/test_assimilation.py Boundaries | tested |
 | A-49 | verification | X3 runs only from a committed, digest-matched preregistration and runner | Post-hoc criteria | verify_frozen in tools/run_assimilation.py | tests/test_assimilation.py FrozenPreregistration | tested |
 | A-50 | operations | All existing suites still pass | Regression | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py tests/test_cumulative.py tests/test_runners.py tests/test_ecology.py tests/test_retention.py | tested |
+
+## 21.14 Assimilation decision boundary (W0)
+
+Findings B21-B25 from the fourth review were reproduced on 4bd0f24
+(docs/results/2026-11-25T-w0-gate/baseline-findings.json).
+
+| Finding | Classification | Disposition |
+|---|---|---|
+| B21 a candidate that fails final selection can still be published | Defect | `publish` requires a durable selection record that chose this exact evaluation trial; the kernel commit refuses a plan whose lineage lacks a matching selection |
+| B22 internal-state candidates report 0 maintained bytes | Defect | Internal structures are accounted as unmeasured. A candidate whose state cannot be measured cannot claim state savings and is not competent for structural assimilation |
+| B23 confidence bound pooled across contexts | Design weakness | Upper bounds are computed per evaluation set (observed, held-out, rare); every measurable set must pass, and a set with too few measurable inputs is insufficient evidence |
+| B24 downstream equality checks run uncharged | Defect | Every downstream computation is charged to the evaluation budget and counted in construction cost |
+| B25 nomination grows as a product of per-capability options | Defect | Nomination is bounded by a declared maximum, with a deterministic order and the truncation recorded |
+
+The selection record is developmental evidence written through the restricted
+context. The kernel checks that publication is bound to it; it does not
+re-derive the economics, which remain an assimilation-policy claim. The X3
+verdicts are unchanged by this work; a new assimilation claim requires X3b.
+The frozen X3 runner (`tools/run_assimilation.py`) reproduces only at commit
+6c83409: it publishes without a selection record, which the kernel now refuses
+by design.
+
+## Assurance 21.14
+
+Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 (slo); operations T1 (schema); performance T1 (slo); maintainability T1 (new_boundary); others T0
+
+| ID | Discipline | Claim | Could fail by | Control (owner) | Check | Evidence |
+|---|---|---|---|---|---|---|
+| A-59 | reliability | Only a candidate chosen by a recorded selection can be published, at both the developmental and the kernel boundary (B21) | Publishing on an earlier per-candidate verdict | publish + commit_assimilation lineage check | tests/test_assimilation.py DecisionBoundary | tested |
+| A-60 | verification | Unmeasurable internal state never yields a state-saving claim (B22) | Opaque structures counted as zero bytes | epoch_costs structure accounting | tests/test_assimilation.py DecisionBoundary | tested |
+| A-61 | verification | Latency tolerance holds per evaluation set with a confidence margin (B23) | A pooled bound hides a bad context | Per-set bounds in evaluate | tests/test_assimilation.py DecisionBoundary | tested |
+| A-62 | observability | Every evaluation computation, including downstream checks, is charged and counted (B24) | Uncharged work | Charged downstream runs | tests/test_assimilation.py DecisionBoundary | tested |
+| A-63 | performance | Nomination size is bounded and truncation is recorded (B25) | Combinatorial candidate growth | max_candidates in nominate | tests/test_assimilation.py DecisionBoundary | tested |
+| A-64 | maintainability | Traceability stays at zero drift and all suites pass | Fixes outside the register | tools/check_traceability.py; suites | py -X utf8 tools/check_traceability.py | tested |
+| A-65 | operations | Existing suites, crash recovery and the demo still pass | Regression from boundary changes | Existing suites | py -m unittest discover -s tests | tested |

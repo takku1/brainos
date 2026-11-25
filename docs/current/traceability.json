@@ -649,9 +649,10 @@
     "tests/test_assimilation.py::Nomination",
     "tests/test_assimilation.py::UnionGate",
     "tests/test_assimilation.py::AtomicPublication",
-    "tests/test_assimilation.py::GateCorrections"
+    "tests/test_assimilation.py::GateCorrections",
+    "tests/test_assimilation.py::DecisionBoundary"
    ],
-   "gap": "X3: decision rule unsound before the 31.12 corrections; economics not justified in that domain"
+   "gap": "X3 failed its acceptance rule; corrections (31.12) and decision-boundary fixes B21-B25 (21.14) are implemented and untested by any confirmatory run (X3b not yet preregistered)"
   },
   "R-24-RETIRE": {
    "status": "partial",

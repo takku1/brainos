@@ -74,8 +74,12 @@ class AssimilationSearch:
         return key
 
     # --- nomination ---------------------------------------------------------------
-    def nominate(self, parents):
-        """parents: [{capability, provider}]. Returns (candidates, controls)."""
+    def nominate(self, parents, *, max_candidates=32):
+        """parents: [{capability, provider}]. Returns (candidates, controls).
+
+        Bounded (B25): at most `max_candidates` in deterministic order (structure kind, then
+        catalogue order); any truncation is recorded, never silent.
+        """
         ctx = self.ctx
         caps = sorted({p["capability"] for p in parents})
         contracts = {c: ctx.get("capability", c) for c in caps}
@@ -114,8 +118,10 @@ class AssimilationSearch:
                     rejected.append(dict(entry, reason="does not reduce providers or maintained structures"))
         controls = [dict(kind="originals", assignment={p["capability"]: p["provider"] for p in parents}),
                     dict(kind="wrapper", note="routing wrapper over parents: same providers and structures")]
+        truncated = max(0, len(nominated) - max_candidates)
+        nominated = nominated[:max_candidates]
         self._record("nomination", parents=parents, nominated=nominated, rejected=rejected, controls=controls,
-                     catalogue_size=len(ctx.catalogue()))
+                     catalogue_size=len(ctx.catalogue()), max_candidates=max_candidates, truncated=truncated)
         return nominated, controls
 
     # --- isolated evaluation --------------------------------------------------------
@@ -142,8 +148,10 @@ class AssimilationSearch:
                     runs = {}
                     for key in providers_by_cap[cap]:
                         out, timing = self._run(ctx.resolve(key), value, budget, principal, spent)
+                        spec = ctx.resolve(key)
                         runs[key] = dict(output=out, prepare_ns=timing["prepare_ns"], answer_ns=timing["answer_ns"],
-                                         state_bytes=timing["state_bytes"], prepare=ctx.resolve(key)["prepare"])
+                                         state_bytes=timing["state_bytes"], prepare=spec["prepare"],
+                                         structure=structure_kind(spec))
                     records.append(dict(epoch=e, capability=cap, set=set_name, runs=runs))
                     if reference is not None and gate is not None:
                         ref = reference[len(records) - 1]
@@ -165,15 +173,18 @@ class AssimilationSearch:
         for e in sorted({r["epoch"] for r in records}):
             rows = [r for r in records if r["epoch"] == e]
             answer = sum(r["runs"][choice[r["capability"]]]["answer_ns"] for r in rows)
-            built = {}
+            built, unmeasured = {}, set()
             for r in rows:
                 run = r["runs"][choice[r["capability"]]]
-                if run["prepare"] is not None:
+                kind = run.get("structure", run["prepare"])
+                if kind is not None and kind.startswith("internal:"):
+                    unmeasured.add(kind)          # B22: rebuilt inside answer time; size unknown
+                elif run["prepare"] is not None:
                     built[run["prepare"]] = max(built.get(run["prepare"], 0), run["prepare_ns"])
                     built.setdefault(("bytes", run["prepare"]), run["state_bytes"])
             prepare = sum(v for k, v in built.items() if not isinstance(k, tuple))
             state = sum(v for k, v in built.items() if isinstance(k, tuple))
-            costs[e] = dict(answer_ns=answer, prepare_ns=prepare, state_bytes=state,
+            costs[e] = dict(answer_ns=answer, prepare_ns=prepare, state_bytes=state, unmeasured=sorted(unmeasured),
                             maintenance_ns=state * gate.maintenance_ns_per_byte_epoch,
                             total_ns=answer + prepare + state * gate.maintenance_ns_per_byte_epoch)
         return costs
@@ -238,22 +249,28 @@ class AssimilationSearch:
                 per_cap.setdefault(c, {})[s] = round(ratio, 3)
                 if ratio > gate.tolerance[c]:
                     reasons.append(f"{c} answer latency {ratio:.2f}x parents on {s} exceeds tolerance {gate.tolerance[c]}x")
-            # Confidence margin over all measurable inputs: upper bound of the paired log ratio.
-            logs = []
-            for pr, cr in zip(parent_records, cand_records):
-                if pr["capability"] != c:
+            # Confidence margin per evaluation set (B23): every measurable set must pass on its own.
+            worst = None
+            for s_name in sets:
+                logs = []
+                for pr, cr in zip(parent_records, cand_records):
+                    if pr["capability"] != c or pr["set"] != s_name:
+                        continue
+                    p1 = min(run["answer_ns"] for run in pr["runs"].values())
+                    q1 = cr["runs"][candidate["assignment"][c]]["answer_ns"]
+                    if max(p1, q1) >= gate.resolution_ns:
+                        logs.append(math.log(max(q1, 1) / max(p1, 1)))
+                if not logs:
                     continue
-                p1 = min(run["answer_ns"] for run in pr["runs"].values())
-                q1 = cr["runs"][candidate["assignment"][c]]["answer_ns"]
-                if max(p1, q1) >= gate.resolution_ns:
-                    logs.append(math.log(max(q1, 1) / max(p1, 1)))
-            if logs:
                 mean = sum(logs) / len(logs)
                 sd = max(gate.min_log_sd, math.sqrt(sum((x - mean) ** 2 for x in logs) / max(1, len(logs) - 1)))
                 upper = math.exp(mean + gate.confidence_z * sd / math.sqrt(len(logs)))
-                per_cap.setdefault(c, {})["upper_bound"] = round(upper, 3)
+                per_cap.setdefault(c, {})[f"upper:{s_name}"] = round(upper, 3)
+                worst = upper if worst is None else max(worst, upper)
                 if upper > gate.tolerance[c]:
-                    reasons.append(f"{c} answer-latency upper bound {upper:.2f}x exceeds tolerance {gate.tolerance[c]}x")
+                    reasons.append(f"{c} answer-latency upper bound {upper:.2f}x on {s_name} exceeds tolerance {gate.tolerance[c]}x")
+            if worst is not None:
+                per_cap.setdefault(c, {})["upper_bound"] = round(worst, 3)
         # Downstream dependents: rebuild with the candidate and require equal outputs.
         kept = set(candidate["assignment"].values())
         superseded = [p for p in parents if p["provider"] not in kept]
@@ -275,8 +292,8 @@ class AssimilationSearch:
                 reasons.append(f"downstream role {role!r} has no evaluation inputs")
             spent = []
             for value in inputs:
-                old = ctx.compute(spec, value, 30, on_timing=spent.append)
-                new = ctx.compute(ctx.resolve(new_key), value, 30, on_timing=spent.append)
+                old, _ = self._run(spec, value, budget, principal, spent)           # charged (B24)
+                new, _ = self._run(ctx.resolve(new_key), value, budget, principal, spent)
                 if json_key(old) != json_key(new):
                     reasons.append(f"downstream role {role!r} output changed")
                     break
@@ -302,6 +319,9 @@ class AssimilationSearch:
             reasons.append(f"no per-epoch saving ({mean_savings / 1e3:.1f} us)")
         elif horizon > gate.horizon_epochs:
             reasons.append(f"break-even {horizon:.1f} epochs exceeds horizon {gate.horizon_epochs}")
+        unmeasured = sorted({k for v in after.values() for k in v["unmeasured"]})
+        if unmeasured and candidate["method"] != "duplicate-selection":
+            reasons.append(f"internal state of {unmeasured} cannot be measured; no state-saving claim is possible")
         state_before = sum(v["state_bytes"] for v in before.values()) / len(before)
         state_after = sum(v["state_bytes"] for v in after.values()) / len(after)
         competent = not [r for r in reasons if "saving" not in r and "break-even" not in r]
@@ -311,7 +331,8 @@ class AssimilationSearch:
                        mean_savings_ns=round(mean_savings), upkeep_saving_ns=upkeep, construction_ns=construction_ns,
                        session_construction_ns=self.session["construction_ns"], early_stop=False,
                        break_even_epochs=None if horizon == float("inf") else round(horizon, 2),
-                       state_bytes_before=round(state_before), state_bytes_after=round(state_after),
+                       state_bytes_before=round(state_before),
+                       state_bytes_after=None if unmeasured else round(state_after), unmeasured_state=unmeasured,
                        per_epoch_before=before, per_epoch_after=after,
                        evaluation_wall_ns=time.perf_counter_ns() - started)
         verdict["trial"] = self._record("evaluation", parents=parents, **{k: v for k, v in verdict.items()
@@ -339,15 +360,17 @@ class AssimilationSearch:
                      nomination_break_even_epochs=None if not saving or saving <= 0 else round(total / saving, 2))
             if not reasons and (best is None or saving > best["mean_savings_ns"]):
                 best = v
-        self._record("selection", total_construction_ns=total, chosen=best and best["trial"],
-                     candidates=[dict(trial=v["trial"], selectable=v["selectable"], reasons=v["final_reasons"])
-                                 for v in verdicts])
+        selection = self._record("selection", total_construction_ns=total, chosen=best and best["trial"],
+                                 candidates=[dict(trial=v["trial"], selectable=v["selectable"], reasons=v["final_reasons"])
+                                             for v in verdicts])
+        if best is not None:
+            best["selection"] = selection
         return best
 
     # --- publication and recovery -------------------------------------------------------
     def publish(self, verdict, parents, role_cases, *, budget, principal):
-        if not verdict["accepted"]:
-            raise Refused("only an accepted candidate can be published")
+        if not verdict.get("selectable") or not verdict.get("selection"):
+            raise Refused("only the candidate chosen by a recorded selection can be published")
         ctx = self.ctx
         parent_keys = {p["provider"] for p in parents}
         kept = [dict(capability=c, provider=k) for c, k in sorted(verdict["assignment"].items()) if k in parent_keys]
@@ -357,8 +380,8 @@ class AssimilationSearch:
         bindings = [ctx.prepare_binding(role, item["provider"], role_cases[role], budget, principal)
                     for role, item in sorted(verdict["rebuilt"].items())]
         plan = dict(id=f"assimilation:{uid()}", parents=superseded, kept=kept, members=members, bindings=bindings,
-                    lineage=dict(trial=verdict["trial"], method=verdict["method"], assignment=verdict["assignment"],
-                                 all_parents=parents))
+                    lineage=dict(trial=verdict["trial"], selection=verdict["selection"], method=verdict["method"],
+                                 assignment=verdict["assignment"], all_parents=parents))
         revision = ctx.commit_assimilation(plan)
         self._record("publication", plan=plan, revision=revision)
         return plan["id"]

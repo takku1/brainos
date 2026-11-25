@@ -262,6 +262,10 @@ R-25-04 | 25 §25.12 | provider lifecycle ACTIVE/DORMANT/ARCHIVED; transitions j
 R-25-05 | 25 §25.5 | ecology decisions are durable and replay to identical state and later decisions | L1 | C✓ S✓ I✓ V✓ E✗
 R-07-10 | 07 §7.4 | experiment runners execute only from committed, digest-matched preregistrations; amendments disclosed | process | C✓ S✓ I∼ V∼ E✗
 R-31-01 | 31 §31.12 | register cells, document status and code/test citations are mechanically consistent | L1 | C✓ S✓ I✓ V✓ E✗
+R-25-06 | 25 §25.13 | emergence meter: z_t instantiated per window from kernel records only, ledgers kept separate | L1 + L3 | C✓ S✓ I✗ V✗ E✗
+R-25-07 | 25 §25.13 | organizational-capability test: structure dependence plus substitution robustness, applied to a store copy | L3 | C✓ S✓ I✗ V✗ E✗
+R-20-07 | 20 §20.9 | net organizational value with every cost component, against fixed, conventionally adaptive and oracle organizations | L3 | C✓ S✓ I✗ V✗ E✗
+R-07-11 | 07 §7.17 | continuous developmental ecosystem: one persistent organization, all mechanisms, per-seed analysis, live developmental evidence | preregistered experiment | C✓ S✓ I✗ V✗ E✗
 
 CIA instructions: all 37 schematized in Doc 09 §§9.9–9.10 (LEARN template + 36 in §9.10), each carrying the 9-property template; per-instruction register rows R-09-* above. Developmental transformations: ADD-PROVIDER, REMOVE-PROVIDER, ADD/REMOVE-EDGE, REBIND, COMPOSE, SPLIT, ASSIMILATE, RETIRE/RESTORE — per-primitive contracts in Doc 24 §24.4 with register rows R-24-* above; machine-checked pre/post (proofs, model checks) remain Phase 3A/4 work, explicitly distinguished from these preliminary machine-readable contracts.
 

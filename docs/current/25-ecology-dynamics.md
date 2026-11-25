@@ -252,3 +252,42 @@ empty discretionary archive. More entries, novelty and turnover are not success.
 [MAP-Elites](https://arxiv.org/abs/1504.04909) motivates behavioral repertoires,
 not a universal descriptor or guaranteed BrainOS advantage. Doc 07 section 7.15
 tests this retention policy independently; Doc 21 owns record/retention rules.
+
+## 25.13 Emergence meter (W1 instrument; specified)
+
+The meter instantiates section 25.5's state vector from kernel records only:
+invocations, memberships, impacts, construction runs, assessments, ledgers.
+It never uses provider self-report. It is computed per window W (a fixed
+number of demand epochs) over one persistent organization.
+
+| Quantity | Definition (per window) | Source records |
+|---|---|---|
+| N population | Active and dormant members per capability; providers; composites | member, provider |
+| C coverage | Fraction of demanded contracts served by an active member that passes the contract's admission cases and latency floor | capability, invocation |
+| Q quality | Regret against the per-request oracle over the window, on the compute boundary | invocation |
+| R resources | Compute, end-to-end, construction, validation, assessment and maintenance ledgers, kept separate | ledgers, construction-run, retention-assessment |
+| D diversity | Specialization (contexts whose best member is unique by margin) and failure-domain independence of covering members | evidence, provider footprints |
+| L retention | Competence retention: fraction of demand for which an active or dormant member is near-optimal | member, invocation |
+| V turnover | Acquisitions, dormancies, wakes, retirements, regenerations and assimilations per window | journal |
+| reuse | Fraction of acquisitions whose path uses an earlier acquisition; mean transitive reuse depth | construction, provider |
+| complexity | Transitive dependency edges per capability; mean closure size of a single-provider impact | provider, closure |
+
+**Organizational capability test.** A demanded capability X is
+*organizational* in a window when both of the following hold:
+1. **Structure dependence.** No single catalogue primitive satisfies X's
+   contract and admission cases, and X becomes unattainable when coordination
+   is removed. Removing coordination means restricting the organization to
+   primitive providers with no composition, routing or assimilated providers.
+2. **Substitution robustness.** For every individual provider p in X's current
+   support set, a `block` impact on p is followed, within the window's
+   development budget, by X being served again. This may happen through
+   acquisition, waking or regeneration, without p.
+
+The instrument applies interventions (blocking, removing coordination) to a
+copy of the organization's store, never the live one. It reports per-X
+verdicts with the budget spent. Capabilities that pass only (1) are
+*compositional but fragile*. Capabilities that pass only (2) are *redundant*.
+The test makes "the organization can do what no provider can, and survives
+losing any one of them" a measurement instead of a metaphor. It is necessary
+evidence for emergent organization, not proof of it.
+

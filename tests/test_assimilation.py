@@ -80,9 +80,12 @@ class Organization(unittest.TestCase):
         return next(c for c in nominated if c["implementations"][self.exact] == "exact_sorted")
 
     def accepted(self):
-        verdict = self.search.evaluate(self.sorted_candidate(), self.parents, self.evalset(), self.gate(),
+        gate = self.gate()
+        verdict = self.search.evaluate(self.sorted_candidate(), self.parents, self.evalset(), gate,
                                        budget=self.budget, principal="dev")
         self.assertTrue(verdict["accepted"], verdict["reasons"])
+        chosen = self.search.select([verdict], gate)          # publication requires a recorded selection
+        self.assertIs(chosen, verdict, verdict.get("final_reasons"))
         return verdict
 
     def run_role(self, role, value):
@@ -246,7 +249,8 @@ class AtomicPublication(Organization):
         bindings = [ctx.prepare_binding(role, item["provider"], self.roles[role], self.budget, "dev")
                     for role, item in sorted(roles.items())]
         return dict(id="assimilation:test", parents=[self.parents[0]], kept=[self.parents[1]], members=members,
-                    bindings=bindings)
+                    bindings=bindings, lineage=dict(trial=verdict["trial"], selection=verdict["selection"],
+                                                    assignment=verdict["assignment"]))
 
     def assert_unchanged(self, manifest):
         self.assertEqual(self.r.manifest(), manifest)
@@ -431,6 +435,105 @@ class GateCorrections(Organization):
         self.assertTrue(stateless)
         for c in stateless:
             self.assertFalse({"range_bisect", "range_hash"} & set(c["implementations"].values()), c)
+
+
+class DecisionBoundary(Organization):
+    """W0 findings B21-B25 (docs/results/2026-11-25T-w0-gate)."""
+
+    def test_b21_only_a_recorded_selection_can_be_published(self):
+        verdict = self.search.evaluate(self.sorted_candidate(), self.parents, self.evalset(), self.gate(),
+                                       budget=self.budget, principal="dev")
+        self.assertTrue(verdict["accepted"])
+        with self.assertRaisesRegex(Refused, "recorded selection"):
+            self.search.publish(verdict, self.parents, self.roles, budget=self.budget, principal="dev")
+        verdict["selectable"], verdict["selection"] = True, "forged"
+        with self.assertRaisesRegex(Refused, "not bound to a selection"):
+            self.search.publish(verdict, self.parents, self.roles, budget=self.budget, principal="dev")
+        self.assertEqual(self.r.population.state(self.exact, self.ids["exact_hash"]), "ACTIVE")
+
+    def test_b21_unselectable_candidate_is_not_publishable_even_if_individually_accepted(self):
+        gate = self.gate(maintenance_ns_per_byte_epoch=1000.0)
+        nominated, _ = self.search.nominate(self.parents)
+        evalset = self.evalset()
+        verdicts = [self.search.evaluate(c, self.parents, evalset, gate, budget=self.budget, principal="dev")
+                    for c in nominated]
+        sv = next(v for v in verdicts if v["implementations"][self.exact] == "exact_sorted")
+        own = sv["construction_ns"] / sv["mean_savings_ns"]
+        total = sum(v["construction_ns"] for v in verdicts) / sv["mean_savings_ns"]
+        self.assertIsNone(self.search.select(verdicts, self.gate(maintenance_ns_per_byte_epoch=1000.0,
+                                                                 horizon=(own + total) / 2)))
+        sv["accepted"] = True
+        with self.assertRaisesRegex(Refused, "recorded selection"):
+            self.search.publish(sv, self.parents, self.roles, budget=self.budget, principal="dev")
+
+    def test_b22_unmeasurable_internal_state_never_claims_savings(self):
+        hash_idx = self.r.registry.register("range_hash_index")
+        self.r.population.admit(self.range, hash_idx, budget=self.budget, principal="dev")
+        parents = [dict(capability=self.range, provider=self.ids["range_sorted"]),
+                   dict(capability=self.range, provider=hash_idx)]
+        nominated, _ = self.search.nominate(parents)
+        internal = [c for c in nominated if set(c["implementations"].values()) & {"range_bisect", "range_hash"}]
+        self.assertTrue(internal)
+        epochs = [[e for e in ep if e[0] == self.range] for ep in self.evalset().epochs]
+        for c in internal:
+            v = self.search.evaluate(c, parents, EvaluationSet(epochs=epochs), self.gate(),
+                                     budget=self.budget, principal="dev")
+            self.assertIsNone(v["state_bytes_after"])
+            self.assertFalse(v["accepted"])
+            self.assertTrue(any("cannot be measured" in r for r in v["reasons"]), v["reasons"])
+
+    def test_b23_each_evaluation_set_must_pass_its_own_bound(self):
+        candidate = self.sorted_candidate()
+        sorted_id = candidate["assignment"][self.exact]
+        rng = random.Random(4)
+        epochs = []
+        for e in range(10):
+            data = dataset(rng)
+            name = "observed" if e < 6 else "held-out"
+            epochs.append([(self.exact, {"data": data, "queries": [rng.randrange(5000) for _ in range(20)]}, name),
+                           (self.range, {"data": data, "queries": [[10, 40]]}, name)])
+        evalset = EvaluationSet(epochs=epochs, dependents={"exact-total": [epochs[0][0][1]]})
+        ratios = iter([1.2] * 6 + [1.2, 1.2, 1.2, 6.0])
+        real = self.search._run
+        def scripted(spec, value, budget, principal, timings):
+            out, timing = real(spec, value, budget, principal, timings)
+            timing = dict(timing, answer_ns=100_000)
+            if spec["id"] == sorted_id:
+                timing["answer_ns"] = int(100_000 * next(ratios))
+            return out, timing
+        self.search._run = scripted
+        verdict = self.search.evaluate(candidate, self.parents, evalset, self.gate(exact=3.0),
+                                       budget=self.budget, principal="dev")
+        ratio = verdict["latency_ratio"][self.exact]
+        self.assertLess(ratio["held-out"], 3.0)                       # the point median passes
+        self.assertLess(ratio["upper:observed"], 3.0)
+        self.assertGreater(ratio["upper:held-out"], 3.0)              # ...but its own bound does not
+        self.assertTrue(any("on held-out exceeds tolerance" in r and "upper bound" in r for r in verdict["reasons"]))
+
+    def test_b24_every_evaluation_computation_is_charged(self):
+        charged, computed = [], []
+        ctx = self.search.ctx
+        charge, compute = ctx.charge, ctx.compute
+        ctx.charge = lambda *a: (charged.append(a[3]), charge(*a))[1]
+        ctx.compute = lambda *a, **k: (computed.append(1), compute(*a, **k))[1]
+        self.search.evaluate(self.sorted_candidate(), self.parents, self.evalset(), self.gate(),
+                             budget=self.budget, principal="dev")
+        self.assertEqual(len(computed), len(charged))
+        self.assertGreater(len(computed), 0)
+
+    def test_b25_nomination_is_bounded_and_truncation_recorded(self):
+        extra = {f"exact_sorted_v{i}": providers.Primitive(providers.exact_on_sorted, "exact-batch", "integers",
+                                                           "exact-count", version=str(i + 2),
+                                                           prepare=providers.prepare_sorted) for i in range(5)}
+        extra.update({f"range_sorted_v{i}": providers.Primitive(providers.range_on_sorted, "range-batch", "integers",
+                                                                "range-count", version=str(i + 2),
+                                                                prepare=providers.prepare_sorted) for i in range(5)})
+        with patch.dict(providers.PRIMITIVES, extra):
+            nominated, _ = self.search.nominate(self.parents, max_candidates=10)
+        self.assertEqual(len(nominated), 10)
+        record = next(t for t in self.r.store.find("assimilation-trial") if t["kind"] == "nomination")
+        self.assertGreater(record["truncated"], 0)
+        self.assertEqual(record["max_candidates"], 10)
 
 
 class FrozenPreregistration(unittest.TestCase):

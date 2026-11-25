@@ -163,3 +163,30 @@ justify retention through efficiency, competence or expansion value on declared
 future workloads. A new abstraction can enlarge branching and slow unrelated
 search, which counts against its value. Account expanded primitive work and
 all inference iterations even when one macro/provider invocation hides them.
+
+## 20.9 Net organizational value (specified)
+
+The question governing W1 and later work: *under what conditions does a
+self-developing organization become more valuable than a fixed or
+conventionally adaptive one, after the complete cost of its development?*
+
+```text
+NOV(org, horizon) = sum over windows [ value(served demand) - cost_total ]
+cost_total = compute + kernel overhead (end-to-end minus compute)
+           + construction + validation + assessment + maintenance
+```
+
+`value` is declared per contract by the demand owner before an experiment:
+a value per served request, with zero for unserved demand and a declared
+penalty for latency over the contract floor. Comparisons use the same demand
+stream, value table and ledgers for every organization:
+- **developing**: every mechanism enabled;
+- **fixed**: a handwritten organization built once;
+- **conventionally adaptive**: online algorithm selection over a fixed catalogue
+  of composites, with no construction, lifecycle or assimilation;
+- **oracle**: a lower bound on cost.
+
+No component of cost_total may be omitted. Section 20.1's S(N) and the X3
+finding (development that saved microseconds at the cost of a second)
+are special cases of this ledger.
+

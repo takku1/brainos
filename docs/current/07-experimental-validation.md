@@ -309,6 +309,38 @@ contrast on preregistered outcomes with uncertainty and declared scalarization
 if needed. Extra lookahead, hidden macro work or archive exposure are competing
 explanations. None of sections 7.13-7.16 has been run in this repository.
 
+## 7.17 Continuous developmental ecosystem (X4, proposed)
+
+Purpose: observe the mechanisms as one organism rather than as separate
+demonstrations. One persistent organization runs a long, changing demand
+stream with every developmental mechanism active under one development budget
+per period:
+- composition and cumulative construction;
+- contextual selection with the lifecycle (dormancy, wake, regeneration);
+- assimilation with the corrected gate (Doc 21 sections 21.13-21.14).
+
+Design constraints, fixed before any preregistration:
+- **Demand mixes domains.** Text-derived arithmetic demands exercise
+  construction; lookup demands exercise competition and assimilation. Phases
+  include recurring, rare and novel demands.
+- **Controls** are the section 20.9 organizations on the identical stream:
+  fixed, conventionally adaptive and oracle.
+- **Primary outcome** is net organizational value (section 20.9) over the
+  horizon.
+- **Secondary outcomes** are the section 25.13 meter series, including the
+  organizational-capability verdicts.
+- **Seeds.** At least five independent demand seeds. The analysis is
+  per-seed, with no pooling across seeds that could hide a failing seed.
+- **Live execution.** Developmental decisions use only evidence the
+  organization itself observed; a measured cost table may replay controls,
+  but not the developing organization.
+- **Negative results are expected and valid.** A developing organization that
+  costs more than it returns is a finding about when development pays.
+
+X3b (corrected assimilation gate) is folded into X4 rather than run in
+isolation: its acceptance claims are measured inside the ecosystem, where
+their full costs are visible.
+
 ## Gate registry (canonical)
 
 L1 conformance (universal — every compatible implementation):

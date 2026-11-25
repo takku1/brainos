@@ -1,0 +1,53 @@
+{
+ "B21": {
+  "reproduced": true,
+  "select_result": null,
+  "selectable": false,
+  "publish_result": "assimilation:e6c62e12f36d4998b9c2811c2cea0c3a"
+ },
+ "B22": {
+  "reproduced": true,
+  "internal_candidates": [
+   {
+    "impl": {
+     "capability:range-count@7ef7a85129ab3254": "range_bisect"
+    },
+    "method": "structural-factoring",
+    "state_after": 0,
+    "state_before": 2871
+   },
+   {
+    "impl": {
+     "capability:range-count@7ef7a85129ab3254": "range_hash"
+    },
+    "method": "structural-factoring",
+    "state_after": 0,
+    "state_before": 2871
+   }
+  ],
+  "note": "internal structures are rebuilt inside answer time but reported as 0 maintained bytes"
+ },
+ "B23": {
+  "reproduced": true,
+  "ratios": {
+   "held-out": 3.7,
+   "observed": 1.2,
+   "upper_bound": 2.009
+  },
+  "reasons": [
+   "capability:exact-count@0fade2e0325208ab answer latency 3.70x parents on held-out exceeds tolerance 3.0x",
+   "no per-epoch saving (-33.0 us)"
+  ],
+  "note": "pooled bound over all sets; the held-out set alone is near/over tolerance"
+ },
+ "B24": {
+  "reproduced": true,
+  "computes": 18,
+  "charges": 12
+ },
+ "B25": {
+  "reproduced": true,
+  "nominated": 40,
+  "note": "6 sorted options per capability -> 36 sorted combinations, unbounded by any cap"
+ }
+}
