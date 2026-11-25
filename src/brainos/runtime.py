@@ -11,6 +11,7 @@ from .resources import ResourceLedger
 from .runner import ProcessRunner
 from .storage import Store
 from .transactor import Transactor
+from .fabric import ComputationalFabric
 
 
 class ControlState:
@@ -36,14 +37,22 @@ class Runtime:
         self.evidence = EvidenceLedger(self.store, self.control, clock)
         self.registry = ProviderRegistry(self.store)
         self.authority = Authority(self.store, self.control, self.evidence, clock)
-        self.runner = ProcessRunner()
-        self.transactor = Transactor(self.store, self.control, self.registry, self.runner, failpoint)
+        self.runner = ProcessRunner(self.registry)
         self.tasks = TaskExecutor(self.store, self.control, self.registry, self.runner,
                                   self.resources, self.authority, failpoint)
         self.effects = EffectGateway(self.store, self.control, self.resources,
                                      self.evidence, self.authority, failpoint)
         try:
             RecoveryCoordinator(self.store, self.resources).recover()
+            with self.store.transaction():
+                grants = self.store.find("system")
+                if not any(g.get("kind") == "validation-budget" for g in grants):
+                    budget = self.resources.create_budget_tx("_kernel_validation", {"attempts": 128})
+                    self.store.put("system", "validation-budget", dict(kind="validation-budget", id=budget))
+                budget = self.store.get("system", "validation-budget")["id"]
+            self.transactor: Transactor = Transactor(self.store, self.control, self.registry, self.runner,
+                                         failpoint, self.resources, budget)
+            self.fabric = ComputationalFabric(self.store, self.control, self.registry, self.transactor, self.tasks)
         except BaseException:
             self.store.close()
             raise

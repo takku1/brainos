@@ -16,6 +16,8 @@ class RecoveryCoordinator:
             self.store.put("control", "current", state)
             for candidate in self.store.find("candidate"):
                 if candidate["state"] in ("PREPARED", "VALIDATING", "VALIDATED"):
+                    if candidate.get("validation_holding"):
+                        self.resources.release_tx(candidate["validation_holding"], candidate["validation_principal"])
                     candidate["state"] = "STALE"
                     self.store.put("candidate", candidate["id"], candidate)
                     self.store.event("candidate-stale-on-recovery", candidate=candidate["id"])
@@ -24,7 +26,7 @@ class RecoveryCoordinator:
                 self.store.put("permit", permit["id"], permit)
             for task in self.store.find("task"):
                 if task["state"] == "RUNNING":
-                    self.resources.charge_tx(task["holding"])
+                    self.resources.release_tx(task["holding"], task["principal"])
                     task.update(state="FAILED", error="interrupted execution; no result inferred")
                     self.store.put("task", task["id"], task)
                 elif task["state"] in ("CREATED", "READY"):

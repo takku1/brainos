@@ -1,0 +1,52 @@
+{
+  "base_commit": "08cdd1794191819fb2db8fb2273eb2d87f7dfafc",
+  "working_tree_modified": true,
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "sqlite": "3.49.1",
+  "suites": [
+    {
+      "name": "corrected-demo",
+      "exit": 0,
+      "seconds": 1.104,
+      "log": "corrected-demo.log"
+    },
+    {
+      "name": "runtime-tests",
+      "exit": 0,
+      "seconds": 50.224,
+      "log": "runtime-tests.log"
+    },
+    {
+      "name": "reference-regressions",
+      "exit": 0,
+      "seconds": 0.223,
+      "log": "reference-regressions.log"
+    },
+    {
+      "name": "doc-structural-checks",
+      "exit": 0,
+      "seconds": 0.185,
+      "log": "doc-structural-checks.log"
+    },
+    {
+      "name": "doc-negative-checks",
+      "exit": 0,
+      "seconds": 0.106,
+      "log": "doc-negative-checks.log"
+    },
+    {
+      "name": "l1-harness",
+      "exit": 0,
+      "seconds": 0.119,
+      "log": "l1-harness.log"
+    },
+    {
+      "name": "dependency-closure",
+      "exit": 0,
+      "seconds": 0.046,
+      "log": "dependency-closure.log"
+    }
+  ],
+  "experiment": "composition-experiment.json"
+}

@@ -52,10 +52,10 @@ class CrashRecoveryTests(unittest.TestCase):
                     if point == "before_effect_apply":
                         with self.assertRaises(Unresolved):
                             runtime.effects.reconcile_effect(witness["effect"], "demo", sink)
-                        self.assertEqual(sink.store.journal(), [])
+                        self.assertEqual(sink.applied_events(), [])
                     else:
                         receipt = runtime.effects.reconcile_effect(witness["effect"], "demo", sink)
                         self.assertEqual(receipt["payload"], {"total": 3})
-                        self.assertEqual(len(sink.store.journal()), 1)
+                        self.assertEqual(len(sink.applied_events()), 1)
                         self.assertEqual(runtime.resources.budget(witness["budget"], "demo")["spent"]["attempts"], 2)
                         self.assertEqual(runtime.effects.reconcile_effect(witness["effect"], "demo", sink), receipt)

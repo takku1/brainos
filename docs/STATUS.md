@@ -55,11 +55,18 @@ execution, effect reconciliation and recovery. The runtime has no third-party
 dependencies. Z:/newbrain transaction test scenarios informed this implementation;
 no neural runtime or inherited verification result was imported.
 
-Next: expand actual conformance to generic operation records, dependency/footprint
-enforcement, task graphs/scheduling and safe provider cancellation, plus stronger
-resource isolation before untrusted providers. Typed search/memoization and
-abstraction learning follow that runtime foundation. Full obligations remain
-in Doc 31; no independent gate is advanced by this implementation.
+Corrective pass (Doc 21 section 21.10): review findings B01-B06 were all
+reproduced on 08cdd17 and fixed: derived minimum grants, dispatch-admission
+linearization, ledger-accounted validation, per-primitive artifact identity,
+stable endpoint identity and exactly scoped consequential evidence. A typed
+fabric (bounded unary DAGs, provenance-tracked intermediate results, impact and
+exclusion, node-boundary cancellation) now runs through the same Core. The first
+developmental composition discovered parse_csv -> sum from a demand, validated it
+on independent cases and published it without rebinding parents (docs/results/).
+
+Next: competitive ecology over acquired compositions (needs a cheaper invocation
+path to measure differences), nested graphs/adapters, scheduling/backpressure,
+then abstraction learning (Doc 27 section 27.8). Full obligations remain in Doc 31.
 
 ## Verification scope
 
@@ -77,11 +84,11 @@ remain unqualified. See Doc 21 section 21.9 for profile-specific limits.
 ## Historical material
 
 Predecessor Z:\newbrain results (231 tests; selective-repair cost 0.21-0.26x
-with retention failure) are historical only. The docx remains frozen;
-Markdown is the current specification. Independent artifact/requirement review
+with retention failure) are historical only. The docx is deleted from the working tree
+(not by the implementation work); Markdown is the current specification. Independent artifact/requirement review
 is still outstanding. Research ambition is preserved; empirical outcomes
 will be recorded when experiments run.
 
 ## Last updated
 
-2026-11-24 (construction-direction integration)
+2026-11-25 (corrective pass, typed fabric, first developmental composition)

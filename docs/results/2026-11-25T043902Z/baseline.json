@@ -1,0 +1,38 @@
+{
+  "run": "2026-11-25T043902Z",
+  "commit": "08cdd1794191819fb2db8fb2273eb2d87f7dfafc",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "sqlite": "3.49.1",
+  "results": [
+    {
+      "name": "baseline-demo",
+      "command": [
+        "C:\\Users\\dcarn\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "brainos",
+        "--state-dir",
+        ".brainos\\results\\2026-11-25T043902Z\\baseline"
+      ],
+      "exit": 0,
+      "seconds": 1.04,
+      "log": "baseline-demo.log"
+    },
+    {
+      "name": "baseline-runtime-tests",
+      "command": [
+        "C:\\Users\\dcarn\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit": 0,
+      "seconds": 12.83,
+      "log": "baseline-runtime-tests.log"
+    }
+  ],
+  "scope": "Committed baseline before corrective changes; no model/fabric benefit claimed."
+}

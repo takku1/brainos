@@ -288,3 +288,58 @@ No neural registry/runtime code or inherited test result was copied into Core;
 those scenarios were reimplemented against current service contracts. Existing
 uncommitted research-document edits were preserved. Schema version 1 is new;
 unsupported versions fail closed, with no destructive migration of old projects.
+
+## 21.10 Corrective pass and first developmental composition
+
+Scope: resolves review findings B01-B06 against the committed first profile
+(08cdd17), adds the smallest typed computational fabric, and runs the first
+bounded composition experiment (Doc 27 section 27.6). All six findings were
+reproduced on the baseline before fixing (docs/results/, baseline-findings.json).
+The profile stays trusted-catalogue, single-authority and standard-library only.
+
+| Finding | Contract now enforced | Owner |
+|---|---|---|
+| B01 zero-cost execution | Execution grant derived from the trusted spec `cost`; caller amounts below it are refused; one attempt is spent at invocation start, later graph nodes pay at their boundary, unspent remainder is released | execution.py, resources.py `spend_tx` |
+| B02 effect authorization race | The durable `DISPATCHED` commit is the linearization point. Revocation, challenge or publication committed before it prevents application; after it they cannot recall the admitted effect. `dispatch_admission` (epoch, revision, endpoint) is recorded separately from `CONFIRMED` receipts | gateways.py |
+| B03 validation accounting | Validation reserves `cases x cost` from a durable ledger budget (kernel `_kernel_validation` budget, or a caller budget), spends per case, refunds the rest, and recovery releases interrupted validation holdings | transactor.py, runtime.py, recovery.py |
+| B04 artifact identity | Each primitive is identified by its own code digest, version, declared shared-dependency digests, schema, units, cost and footprint; unrelated catalogue edits keep other identities | providers.py |
+| B05 endpoint identity | Endpoints persist a stable `endpoint:<uid>` identity; effects target it, receipts carry it, and a same-name impostor is refused at dispatch and reconciliation | effects.py, gateways.py |
+| B06 evidence scope | Consequential evidence must carry a support scope equal to {task, target, operation, context, claim digest}; checked at permit issue and at dispatch | evidence.py, authority.py |
+
+Fabric (graphs.py, fabric.py, registry.py): bounded unary DAGs (1-16 primitive
+nodes) with exact schema/unit connections and identity-only adapters; forward,
+cyclic and duplicate references refused; composite identity is a digest of its
+normalized nodes and dependency identities; intermediate results are owned
+records with provenance; `impact` propagates support/resource/failure-domain
+effects to dependent composites and `exclude` blocks dependent use; running
+tasks cancel at the next pure node boundary with terminal `CANCELLED`.
+
+Developmental compilation (development.py): a `CapabilityDemand` (input/output
+schema plus development examples) drives budgeted breadth-first typed search
+over active primitives. Development examples nominate; separate admission cases
+validate through the transactor on a separate budget; the composite is
+published as a new role without rebinding parents. Every trial (rejected,
+nominated, acquired, non-attainment) is a retained `construction` record.
+Baselines: typed search vs memoized search (same nominations, fewer attempts).
+This is bounded composition over a trusted catalogue: no primitive invention,
+open-ended intelligence or superiority claim.
+
+Storage schema is now version 2; version-1 stores are refused (fail closed, no
+migration). Remaining limits from section 21.9 still apply; nested graphs,
+non-identity adapters, scheduling/backpressure and learned abstraction remain open.
+
+## Assurance
+
+Screen: verification T1 (build); reliability T1 (schema); operations T1 (schema); maintainability T1 (new_boundary); others T0
+
+| ID | Discipline | Claim | Could fail by | Control (owner) | Check | Evidence |
+|---|---|---|---|---|---|---|
+| A-1 | verification | No task executes on a zero or below-requirement grant (B01) | Caller-supplied `{"attempts": 0}` amount | Grant derived from trusted spec cost; spend at invocation start (execution.py, resources.py) | tests/test_corrective.py B01MinimumGrant | tested |
+| A-2 | verification | Control changes before durable dispatch admission prevent application; after admission they do not recall it, and admission is recorded apart from confirmation (B02) | Revocation/challenge/publication racing between check and endpoint call | Single-transaction admission commit is the linearization point; `dispatch_admission` record (gateways.py) | tests/test_corrective.py B02DispatchLinearization | tested |
+| A-3 | reliability | Candidate validation spends a durable, bounded grant that survives restart and refunds unspent work (B03) | Validation outside the ledger; holdings leaked on crash | Validation holdings in the ledger; kernel validation budget record; recovery release (transactor.py, recovery.py, runtime.py) | tests/test_corrective.py B03ValidationAccounting | tested |
+| A-4 | maintainability | Changing one primitive does not change other primitives' artifact identities (B04) | Whole-file catalogue hash | Per-function code digest + version + declared dependency digests (providers.py) | tests/test_corrective.py B04ArtifactIdentity | tested |
+| A-5 | reliability | Effects bind to a stable endpoint identity; a same-name endpoint cannot receive or reconcile them (B05) | Name collision between receipt stores | Persisted endpoint identity; receipt carries endpoint (effects.py, gateways.py) | tests/test_corrective.py B05EndpointIdentity | tested |
+| A-6 | verification | Consequential evidence must exactly support task, target, operation, context and claim (B06) | Unrelated Certified evidence accepted | Required support scope checked at issue and dispatch (evidence.py, authority.py) | tests/test_corrective.py B06EvidenceScope | tested |
+| A-7 | maintainability | Graph connections are exactly typed; forward/cyclic/duplicate refs and unsupported adapters are refused; impact propagates to dependents | Loose schema matching; nested graph loops | graphs.specification, registry.exclude, fabric.impact (graphs.py, registry.py, fabric.py) | tests/test_corrective.py TypedFabric | tested |
+| A-8 | verification | A demanded capability is discovered, independently validated and published without altering parents; failures are retained; non-attainment is reported | Development examples reused for admission; parents rebound | Separate admission cases and validation budget; construction records (development.py) | tests/test_corrective.py DevelopmentalCompilation | tested |
+| A-9 | operations | Existing behavior, crash recovery and demo still hold; storage schema v2 fails closed on unknown versions | Regression from contract changes | Existing suites (tests/) | tests/test_core.py tests/test_crash_recovery.py | tested |

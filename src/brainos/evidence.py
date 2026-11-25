@@ -8,7 +8,7 @@ class EvidenceLedger:
         self.control = control
         self.clock = clock
 
-    def record_evidence(self, source, payload, tier="Observed", ttl=3600):
+    def record_evidence(self, source, payload, tier="Observed", ttl=3600, *, support=None):
         """Trusted operator ingestion; a provider cannot assign itself a tier."""
         if not source or tier not in ("Observed", "Believed", "Certified"):
             raise Refused("invalid source or tier")
@@ -16,7 +16,8 @@ class EvidenceLedger:
         key = uid()
         with self.store.transaction():
             self.store.put("evidence", key, dict(id=key, source=source, payload=payload,
-                tier=tier, state="ACTIVE", suspend_epoch=None, expires=self.clock() + ttl))
+                tier=tier, state="ACTIVE", suspend_epoch=None, expires=self.clock() + ttl,
+                support=support))
             self._bump_evidence()
             self.store.event("evidence-recorded", evidence=key, tier=tier)
         return key
@@ -63,7 +64,7 @@ class EvidenceLedger:
             self._bump_evidence()
             self.store.event("restored", evidence=key, proof=proof)
 
-    def check_support(self, refs, *, consequential=False):
+    def check_support(self, refs, *, consequential=False, required_scope=None):
         if not isinstance(refs, (list, tuple)):
             raise Refused("evidence references must be an explicit list or tuple")
         if consequential and not refs:
@@ -74,6 +75,8 @@ class EvidenceLedger:
                 raise Refused("support has expired")
             if consequential and claim["tier"] != "Certified":
                 raise Refused("Certified evidence required")
+            if consequential and (required_scope is None or claim.get("support") != required_scope):
+                raise Refused("evidence does not support this claim, task, target, operation and context")
             if claim["state"] == "CHALLENGED":
                 if consequential or self.control.read()["epoch"] >= claim["suspend_epoch"]:
                     raise Refused("support is challenged")

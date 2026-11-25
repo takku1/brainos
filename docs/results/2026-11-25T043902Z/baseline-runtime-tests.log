@@ -1,0 +1,41 @@
+test_authority_layer_does_not_import_signal_execution (test_core.EndToEndTests.test_authority_layer_does_not_import_signal_execution) ... ok
+test_kernel_imports_no_model_frameworks (test_core.EndToEndTests.test_kernel_imports_no_model_frameworks) ... ok
+test_real_demo (test_core.EndToEndTests.test_real_demo) ... ok
+test_allocated_task_cannot_be_refunded_before_execution (test_core.RuntimeCase.test_allocated_task_cannot_be_refunded_before_execution) ... ok
+test_atomic_concurrent_reservations (test_core.RuntimeCase.test_atomic_concurrent_reservations) ... ok
+test_authority_receives_control_projection_not_signal_payload (test_core.RuntimeCase.test_authority_receives_control_projection_not_signal_payload) ... ok
+test_authorized_task_content_cannot_change (test_core.RuntimeCase.test_authorized_task_content_cannot_change) ... ok
+test_bad_inputs_are_rejected_before_spending (test_core.RuntimeCase.test_bad_inputs_are_rejected_before_spending) ... ok
+test_budget_conservation_across_mixed_reserve_spend_release (test_core.RuntimeCase.test_budget_conservation_across_mixed_reserve_spend_release) ... ok
+test_budget_ownership_reserve_convert_and_release (test_core.RuntimeCase.test_budget_ownership_reserve_convert_and_release) ... ok
+test_budget_rejects_invalid_vectors_and_overdraft (test_core.RuntimeCase.test_budget_rejects_invalid_vectors_and_overdraft) ... ok
+test_challenge_timing_and_verdict_only_restore (test_core.RuntimeCase.test_challenge_timing_and_verdict_only_restore) ... ok
+test_competing_manifests_use_compare_and_swap (test_core.RuntimeCase.test_competing_manifests_use_compare_and_swap) ... ok
+test_effect_requires_certified_current_support_and_exact_endpoint (test_core.RuntimeCase.test_effect_requires_certified_current_support_and_exact_endpoint) ... ok
+test_effect_revocation_and_expired_support_block_at_boundary (test_core.RuntimeCase.test_effect_revocation_and_expired_support_block_at_boundary) ... ok
+test_failed_or_unvalidated_candidates_do_not_publish (test_core.RuntimeCase.test_failed_or_unvalidated_candidates_do_not_publish) ... ok
+test_failed_worker_and_timeout_have_owned_terminal_state (test_core.RuntimeCase.test_failed_worker_and_timeout_have_owned_terminal_state) ... ok
+test_idempotency_keys_and_lost_ack_reconciliation (test_core.RuntimeCase.test_idempotency_keys_and_lost_ack_reconciliation) ... ok
+test_journal_corruption_fails_closed_on_restart (test_core.RuntimeCase.test_journal_corruption_fails_closed_on_restart) ... ok
+test_live_permit_is_stale_after_replacement (test_core.RuntimeCase.test_live_permit_is_stale_after_replacement) ... ok
+test_malformed_provider_content_fails_with_recorded_cost (test_core.RuntimeCase.test_malformed_provider_content_fails_with_recorded_cost) ... ok
+test_missing_receipt_never_becomes_assumed_failure_or_blind_retry (test_core.RuntimeCase.test_missing_receipt_never_becomes_assumed_failure_or_blind_retry) ... ok
+test_only_one_authority_owns_database (test_core.RuntimeCase.test_only_one_authority_owns_database) ... ok
+test_real_subprocess_deadline (test_core.RuntimeCase.test_real_subprocess_deadline) ... ok
+test_registry_does_not_trust_self_reported_artifact (test_core.RuntimeCase.test_registry_does_not_trust_self_reported_artifact) ... ok
+test_reopen_preserves_result_budget_and_revokes_permits (test_core.RuntimeCase.test_reopen_preserves_result_budget_and_revokes_permits) ... ok
+test_revocation_same_epoch_and_expiration (test_core.RuntimeCase.test_revocation_same_epoch_and_expiration) ... ok
+test_scope_forgery_wrong_principal_and_wrong_task (test_core.RuntimeCase.test_scope_forgery_wrong_principal_and_wrong_task) ... ok
+test_slow_validation_does_not_block_epoch_control (test_core.RuntimeCase.test_slow_validation_does_not_block_epoch_control) ... ok
+test_stale_or_negative_proof_does_not_restore (test_core.RuntimeCase.test_stale_or_negative_proof_does_not_restore) ... ok
+test_stale_validation_and_incompatible_replacement (test_core.RuntimeCase.test_stale_validation_and_incompatible_replacement) ... ok
+test_task_runs_only_after_admission_and_preserves_result (test_core.RuntimeCase.test_task_runs_only_after_admission_and_preserves_result) ... ok
+test_validation_has_finite_case_grant_and_records_failed_work (test_core.RuntimeCase.test_validation_has_finite_case_grant_and_records_failed_work) ... ok
+test_atomic_manifest_publication_before_and_after_commit (test_crash_recovery.CrashRecoveryTests.test_atomic_manifest_publication_before_and_after_commit) ... ok
+test_crashed_invocation_has_terminal_state_and_spend (test_crash_recovery.CrashRecoveryTests.test_crashed_invocation_has_terminal_state_and_spend) ... ok
+test_effect_crash_does_not_assume_failure_or_duplicate_application (test_crash_recovery.CrashRecoveryTests.test_effect_crash_does_not_assume_failure_or_duplicate_application) ... ok
+
+----------------------------------------------------------------------
+Ran 36 tests in 12.628s
+
+OK

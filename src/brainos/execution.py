@@ -1,5 +1,5 @@
 """Admitted task execution owns task and invocation lifecycles."""
-from .contracts import Refused, PermitScope, ProviderRunner, digest, positive_time, uid, require_owner
+from .contracts import Cancelled, Refused, PermitScope, ProviderRunner, digest, positive_time, quantities, uid, require_owner
 import time
 from . import providers
 
@@ -25,7 +25,11 @@ class TaskExecutor:
                 raise Refused("role is not active")
             spec = self.registry.resolve(state["bindings"][role])
             providers.check(spec["input"], value)
-            holding = self.resources.reserve_tx(budget, principal, {"attempts": 1} if amount is None else amount, key)
+            required = spec["cost"]
+            grant = required if amount is None else quantities(amount)
+            if set(grant) != set(required) or any(grant[k] < v for k, v in required.items()):
+                raise Refused("execution grant is below trusted operation requirements")
+            holding = self.resources.reserve_tx(budget, principal, grant, key)
             self.store.put("task", key, dict(id=key, principal=principal, role=role,
                 provider=spec["id"], value=value, input_digest=digest(value), context=context,
                 timeout=timeout, holding=holding, state="CREATED"))
@@ -69,30 +73,56 @@ class TaskExecutor:
             if self.store.get("holding", task["holding"])["state"] != "ALLOCATED":
                 raise Refused("allocation is not live")
             spec = self.registry.resolve(task["provider"])
+            self.resources.spend_tx(task["holding"], {"attempts": 1})
             task.update(state="RUNNING", invocation=invocation, epoch=permit["epoch"], revision=permit["revision"])
             self.store.put("task", key, task)
             self.store.put("invocation", invocation, dict(id=invocation, task=key, permit=token, state="RUNNING"))
             self.store.event("invocation-started", task=key, invocation=invocation)
         self.failpoint("after_invocation_start")
         started = time.monotonic()
+        node_index = [0]
+        def cancelled():
+            return self.task(key, principal).get("cancel_requested", False)
+        def on_start(node_spec):
+            if cancelled():
+                raise Cancelled("cancelled at a pure node boundary")
+            # One admission attempt was charged durably above; later nodes pay here.
+            charge = node_spec["cost"]["attempts"] - (1 if node_index[0] == 0 else 0)
+            node_index[0] += 1
+            if charge:
+                with self.store.transaction():
+                    self.resources.spend_tx(task["holding"], {"attempts": charge})
+        produced = []
+        def on_result(record):
+            with self.store.transaction():
+                result_id = uid()
+                result = dict(record, id=result_id, task=key, invocation=invocation, sequence=len(produced),
+                              principal=principal, context=task["context"], manifest_revision=task["revision"])
+                self.store.put("result", result_id, result)
+                produced.append(result_id)
+                self.store.event("intermediate-result", result=result_id, task=key, node=record["node"])
         try:
-            output = self.runner.compute(spec, task["value"], task["timeout"])
+            output = self.runner.compute(spec, task["value"], task["timeout"],
+                                         on_start=on_start, on_result=on_result, cancelled=cancelled)
+            if cancelled():
+                raise Cancelled("cancelled at the final pure boundary")
         except Exception as exc:
-            self._finish(task, invocation, error=str(exc), elapsed=time.monotonic() - started)
+            self._finish(task, invocation, error=str(exc), elapsed=time.monotonic() - started,
+                         cancelled=isinstance(exc, Cancelled))
             raise
         self._finish(task, invocation, output=output, elapsed=time.monotonic() - started)
         return output
 
-    def _finish(self, task, invocation, *, output=None, error=None, elapsed=0):
+    def _finish(self, task, invocation, *, output=None, error=None, elapsed=0, cancelled=False):
         with self.store.transaction():
             current = self.store.get("invocation", invocation)
             if current["state"] != "RUNNING":
                 raise Refused("invocation already terminated")
-            current["state"] = "FAILED" if error else "COMPLETED"
+            current["state"] = "STOPPED" if cancelled else "FAILED" if error else "COMPLETED"
             self.store.put("invocation", invocation, current)
-            task.update(state="FAILED" if error else "SUCCEEDED", result=output,
+            task.update(state="CANCELLED" if cancelled else "FAILED" if error else "SUCCEEDED", result=output,
                         error=error, elapsed_seconds=elapsed)
-            self.resources.charge_tx(task["holding"])
+            self.resources.release_tx(task["holding"], task["principal"])
             self.store.put("task", task["id"], task)
             self.store.event("invocation-finished", invocation=invocation, state=task["state"])
 
@@ -101,7 +131,12 @@ class TaskExecutor:
             task = self.store.get("task", key)
             require_owner(task, principal)
             if task["state"] == "RUNNING":
-                raise Refused("synchronous worker drains within its admitted timeout; revoke its permit")
+                task["cancel_requested"] = True
+                invocation = self.store.get("invocation", task["invocation"])
+                self.authority.revoke_tx(invocation["permit"])
+                self.store.put("task", key, task)
+                self.store.event("task-cancel-requested", task=key)
+                return "STOP_REQUESTED"
             if task["state"] in ("SUCCEEDED", "FAILED", "CANCELLED"):
                 return task["state"]
             task["state"] = "CANCELLED"

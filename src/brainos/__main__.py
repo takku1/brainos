@@ -39,9 +39,11 @@ def demo(directory):
             budget = runtime.resources.create_budget("demo", {"attempts": 8})
             _, _, values = execute(runtime, budget, "parse", "10,20,30")
             task, old_permit, total = execute(runtime, budget, "total", values)
-            support = runtime.evidence.record_evidence("demo-policy-check", {"approved": True}, "Certified")
-            effect, permit = runtime.effects.prepare_effect(task, "demo", sink.name,
-                {"checked_total": total}, budget, [support])
+            payload = {"checked_total": total}
+            support = runtime.evidence.record_evidence("demo-policy-check", {"approved": True}, "Certified",
+                support=runtime.effects.required_support(task, "demo", sink.identity, payload))
+            effect, permit = runtime.effects.prepare_effect(task, "demo", sink.identity,
+                payload, budget, [support])
             try:
                 runtime.effects.dispatch_effect(effect, permit, "demo", sink)
             except Unresolved:

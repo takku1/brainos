@@ -1,5 +1,5 @@
 """A durable simulated external endpoint, independently journaled from Core."""
-from .contracts import Refused, digest
+from .contracts import Refused, digest, uid
 from .storage import Store
 
 
@@ -7,6 +7,17 @@ class LocalReceiptSink:
     def __init__(self, path, name="local-receipts"):
         self.name = name
         self.store = Store(path)
+        with self.store.transaction():
+            identities = self.store.find("endpoint")
+            if identities:
+                self.identity = identities[0]["identity"]
+            else:
+                self.identity = "endpoint:" + uid()
+                self.store.put("endpoint", "identity", {"identity": self.identity})
+                self.store.event("endpoint-initialized", identity=self.identity)
+
+    def applied_events(self):
+        return [event for event in self.store.journal() if event["kind"] == "applied"]
 
     def __enter__(self):
         return self
@@ -22,7 +33,8 @@ class LocalReceiptSink:
                 if record["payload_digest"] != digest(payload):
                     raise Refused("idempotency key reused for another payload")
                 return record
-            record = dict(operation_id=operation_id, payload_digest=digest(payload), payload=payload)
+            record = dict(operation_id=operation_id, endpoint=self.identity,
+                          payload_digest=digest(payload), payload=payload)
             self.store.put("receipt", operation_id, record)
             self.store.event("applied", operation=operation_id, payload_digest=record["payload_digest"])
             return record

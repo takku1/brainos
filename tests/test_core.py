@@ -40,8 +40,12 @@ class RuntimeCase(unittest.TestCase):
         self.assertEqual(self.r.tasks.run_task(task, permit, "alice"), 3)
         return task
 
-    def support(self, tier="Certified", ttl=3600):
-        return self.r.evidence.record_evidence("test-checker", {"pass": True}, tier, ttl)
+    def support(self, tier="Certified", ttl=3600, scope=None):
+        return self.r.evidence.record_evidence("test-checker", {"pass": True}, tier, ttl, support=scope)
+
+    def effect_support(self, task, sink, payload, tier="Certified", ttl=3600):
+        scope = self.r.effects.required_support(task, "alice", sink.identity, payload)
+        return self.support(tier, ttl, scope)
 
     def test_task_runs_only_after_admission_and_preserves_result(self):
         task = self.r.tasks.create_task("alice", "total", [4, 5], self.budget)
@@ -302,31 +306,33 @@ class RuntimeCase(unittest.TestCase):
     def test_effect_requires_certified_current_support_and_exact_endpoint(self):
         task = self.completed()
         with LocalReceiptSink(self.root / "sink.sqlite3") as sink:
-            for refs in ([], [self.support("Believed")]):
+            for refs in ([], [self.effect_support(task, sink, {"x": 3}, "Believed")]):
                 with self.assertRaises(Refused):
-                    self.r.effects.prepare_effect(task, "alice", sink.name, {"x": 3}, self.budget, refs)
-            support = self.support()
-            effect, token = self.r.effects.prepare_effect(task, "alice", sink.name, {"x": 3}, self.budget, [support])
+                    self.r.effects.prepare_effect(task, "alice", sink.identity, {"x": 3}, self.budget, refs)
+            support = self.effect_support(task, sink, {"x": 3})
+            with self.assertRaisesRegex(Refused, "endpoint identity"):
+                self.r.effects.prepare_effect(task, "alice", sink.name, {"x": 3}, self.budget, [support])
+            effect, token = self.r.effects.prepare_effect(task, "alice", sink.identity, {"x": 3}, self.budget, [support])
             self.r.evidence.challenge(support, "pending challenge")
             with self.assertRaisesRegex(Refused, "challenged"):
                 self.r.effects.dispatch_effect(effect, token, "alice", sink)
-            self.assertEqual(sink.store.journal(), [])
+            self.assertEqual(sink.applied_events(), [])
 
     def test_effect_revocation_and_expired_support_block_at_boundary(self):
         task = self.completed()
-        support = self.support(ttl=1)
         with LocalReceiptSink(self.root / "sink.sqlite3") as sink:
-            effect, token = self.r.effects.prepare_effect(task, "alice", sink.name, {}, self.budget, [support])
+            support = self.effect_support(task, sink, {}, ttl=1)
+            effect, token = self.r.effects.prepare_effect(task, "alice", sink.identity, {}, self.budget, [support])
             self.now[0] += 2
             with self.assertRaisesRegex(Refused, "expired"):
                 self.r.effects.dispatch_effect(effect, token, "alice", sink)
-            self.assertEqual(sink.store.journal(), [])
+            self.assertEqual(sink.applied_events(), [])
 
     def test_idempotency_keys_and_lost_ack_reconciliation(self):
         task = self.completed()
-        support = self.support()
         with LocalReceiptSink(self.root / "sink.sqlite3") as sink:
-            effect, token = self.r.effects.prepare_effect(task, "alice", sink.name, {"x": 3}, self.budget, [support])
+            support = self.effect_support(task, sink, {"x": 3})
+            effect, token = self.r.effects.prepare_effect(task, "alice", sink.identity, {"x": 3}, self.budget, [support])
             self.r.effects.failpoint = lambda point: (_ for _ in ()).throw(OSError("lost ack")) if point == "after_effect_applied" else None
             with self.assertRaises(Unresolved):
                 self.r.effects.dispatch_effect(effect, token, "alice", sink)
@@ -336,13 +342,14 @@ class RuntimeCase(unittest.TestCase):
             self.assertEqual(sink.apply(effect, {"x": 3}), receipt)
             with self.assertRaises(Refused):
                 sink.apply(effect, {"x": 4})
-            self.assertEqual(len(sink.store.journal()), 1)
+            self.assertEqual(len(sink.applied_events()), 1)
             self.assertEqual(self.r.resources.budget(self.budget, "alice")["spent"]["attempts"], 2)
 
     def test_missing_receipt_never_becomes_assumed_failure_or_blind_retry(self):
         task = self.completed()
         with LocalReceiptSink(self.root / "sink.sqlite3") as sink:
-            effect, _ = self.r.effects.prepare_effect(task, "alice", sink.name, {}, self.budget, [self.support()])
+            effect, _ = self.r.effects.prepare_effect(task, "alice", sink.identity, {}, self.budget,
+                                                      [self.effect_support(task, sink, {})])
             with self.r.store.transaction():
                 record = self.r.store.get("effect", effect)
                 record["state"] = "UNKNOWN"
@@ -392,7 +399,8 @@ class EndToEndTests(unittest.TestCase):
             if isinstance(node, ast.ImportFrom):
                 self.assertNotIn(node.module, forbidden)
         self.assertEqual(set(PermitScope.__dataclass_fields__),
-                         {"kind", "target", "principal", "content_digest", "provider", "context", "operation"})
+                         {"kind", "target", "principal", "content_digest", "provider", "context", "operation",
+                          "subject", "claim"})
 
 
 if __name__ == "__main__":

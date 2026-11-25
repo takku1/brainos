@@ -1,0 +1,28 @@
+{
+  "total": 60,
+  "recovered_receipt": {
+    "endpoint": "endpoint:54f1bc5f527f4625ab7eb2f5f97ce0db",
+    "operation_id": "8a53b601dcbf460a9c15c92864047a7b",
+    "payload": {
+      "checked_total": 60
+    },
+    "payload_digest": "92b64764a74c0cf9cf7e1c5ccac4e7698c53a4bc11d485b2c96e1b6be1ca34cc"
+  },
+  "replacement_result": 60,
+  "epoch_advanced": true,
+  "old_authority_rejected": true,
+  "effect_applications": 1,
+  "budget": {
+    "available": {
+      "attempts": 4
+    },
+    "capacity": {
+      "attempts": 8
+    },
+    "id": "1afc17be2a434b38a51322b49a183295",
+    "principal": "demo",
+    "spent": {
+      "attempts": 4
+    }
+  }
+}

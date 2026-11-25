@@ -1,0 +1,10 @@
+[PASS] P1 transitive — ['A', 'B', 'C']
+[PASS] P2 symmetric — ['X', 'Y']
+[PASS] P3 unknown-conservative — ['X', 'Y', 'ghost']
+[PASS] N1 directional — ['A']
+[PASS] N2 isolation — ['X']
+[PASS] N3 empty-seed
+[PASS] P4 cycle-terminates — iters=1
+[PASS] N4 unknown-strict — ClosureFault raised
+
+ALL PASS

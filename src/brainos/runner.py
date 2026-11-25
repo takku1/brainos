@@ -2,12 +2,27 @@
 import json
 import subprocess
 import sys
-from .contracts import Refused, encode
+from .contracts import Cancelled, Refused, encode
 from . import providers
+from . import graphs
 
 
 class ProcessRunner:
-    def compute(self, spec, value, timeout):
+    def __init__(self, registry=None):
+        self.registry = registry
+
+    def compute(self, spec, value, timeout, *, on_start=None, on_result=None, cancelled=None):
+        if cancelled and cancelled():
+            raise Cancelled("cancelled before primitive execution")
+        if spec.get("kind") == "graph":
+            if self.registry is None:
+                raise Refused("graph execution requires reference resolution")
+            return graphs.execute(spec, value, self.registry.resolve,
+                lambda primitive, data, remaining: self.compute(primitive, data, remaining,
+                    on_start=on_start, cancelled=cancelled), timeout,
+                on_result=on_result, cancelled=cancelled)
+        if on_start:
+            on_start(spec)
         providers.check(spec["input"], value)
         request = encode(dict(implementation=spec["implementation"], artifact=spec["artifact"], value=value))
         if len(request.encode()) > 65536:

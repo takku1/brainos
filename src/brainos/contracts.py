@@ -58,6 +58,7 @@ class ProviderSpec(TypedDict):
 
 class EffectReceipt(TypedDict):
     operation_id: str
+    endpoint: str
     payload_digest: str
     payload: object
 
@@ -68,6 +69,7 @@ class ProviderRunner(Protocol):
 
 class ReceiptEndpoint(Protocol):
     name: str
+    identity: str
 
     def apply(self, operation_id: str, payload: object) -> EffectReceipt: ...
 
@@ -84,3 +86,9 @@ class PermitScope:
     provider: str
     context: str
     operation: str
+    subject: str = ""
+    claim: str = ""
+
+
+class Cancelled(Refused):
+    """Pure computation stopped at a declared node boundary."""

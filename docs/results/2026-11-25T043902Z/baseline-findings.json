@@ -1,0 +1,39 @@
+{
+  "B01": {
+    "reproduced": true,
+    "result": 3,
+    "spent": {
+      "attempts": 0
+    }
+  },
+  "B03": {
+    "reproduced": true,
+    "validated_candidates": 2,
+    "budget_spent": {
+      "attempts": 0
+    },
+    "note": "Validation had no shared ledger grant, only local time/case bounds."
+  },
+  "B02": {
+    "reproduced": true,
+    "note": "Revocation after durable DISPATCHED but before target application did not recall dispatch. Linearization guarantee previously unspecified."
+  },
+  "B05": {
+    "reproduced": true,
+    "note": "Two separate databases with the same display name accepted a substituted target."
+  },
+  "B06": {
+    "reproduced": true,
+    "note": "Unrelated Certified weather evidence admitted a total-result effect."
+  },
+  "B04": {
+    "reproduced": true,
+    "changed_provider_identities": [
+      "parse_csv",
+      "sum",
+      "sum_loop",
+      "count"
+    ],
+    "note": "Simulated an unrelated catalogue edit at the source-read boundary; no source file modified."
+  }
+}

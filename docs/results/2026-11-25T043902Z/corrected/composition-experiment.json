@@ -1,0 +1,84 @@
+{
+  "search-typed": {
+    "status": "ACQUIRED",
+    "path": [
+      "parse_csv@1",
+      "sum@1"
+    ],
+    "search_attempts": 12,
+    "validation_attempts": 8,
+    "seconds": 1.782,
+    "trials": {
+      "ACQUIRED": 1,
+      "NOMINATED": 1,
+      "REJECTED_DEVELOPMENT": 2
+    },
+    "parents_unchanged": true
+  },
+  "search-memoized": {
+    "status": "ACQUIRED",
+    "path": [
+      "parse_csv@1",
+      "sum@1"
+    ],
+    "search_attempts": 11,
+    "validation_attempts": 8,
+    "seconds": 1.683,
+    "trials": {
+      "ACQUIRED": 1,
+      "NOMINATED": 1,
+      "REJECTED_DEVELOPMENT": 2
+    },
+    "parents_unchanged": true
+  },
+  "competition": {
+    "acquired": [
+      "ACQUIRED",
+      "ACQUIRED"
+    ],
+    "repeats": 5,
+    "timing": {
+      "csv-sum": {
+        "composition": "parse_csv+sum",
+        "rows": [
+          {
+            "n": 1,
+            "median_ms": 233.45,
+            "correct": true
+          },
+          {
+            "n": 100,
+            "median_ms": 237.01,
+            "correct": true
+          },
+          {
+            "n": 2000,
+            "median_ms": 240.52,
+            "correct": true
+          }
+        ]
+      },
+      "csv-sum-alt": {
+        "composition": "parse_csv+sum_loop",
+        "rows": [
+          {
+            "n": 1,
+            "median_ms": 239.55,
+            "correct": true
+          },
+          {
+            "n": 100,
+            "median_ms": 241.43,
+            "correct": true
+          },
+          {
+            "n": 2000,
+            "median_ms": 247.48,
+            "correct": true
+          }
+        ]
+      }
+    },
+    "note": "Each run is a fresh provider subprocess per node; process start-up dominates, so differences between sum and sum_loop are within noise unless the measured medians separate clearly."
+  }
+}

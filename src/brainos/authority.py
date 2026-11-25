@@ -15,13 +15,16 @@ class Authority:
             raise Refused("permit lifetime exceeds profile limit")
         if not isinstance(scope, PermitScope) or scope.kind not in ("task", "effect"):
             raise Refused("typed permit scope required")
-        self.evidence.check_support(refs, consequential=scope.kind == "effect")
+        required = (dict(task=scope.subject, target=scope.provider, operation=scope.operation,
+                         context=scope.context, claim=scope.claim) if scope.kind == "effect" else None)
+        self.evidence.check_support(refs, consequential=scope.kind == "effect", required_scope=required)
         state = self.control.read()
         token = uid()
         self.store.put("permit", token, dict(id=token, kind=scope.kind, target=scope.target,
             principal=scope.principal, provider=scope.provider, context=scope.context,
             operation=scope.operation, epoch=state["epoch"], revision=state["revision"],
-            payload_digest=scope.content_digest, evidence=list(refs), expires=self.clock() + ttl, revoked=False))
+            payload_digest=scope.content_digest, evidence=list(refs), evidence_scope=required,
+            expires=self.clock() + ttl, revoked=False))
         self.store.event("authorized", permit=token, target=scope.target, permit_kind=scope.kind)
         return token
 
@@ -38,15 +41,19 @@ class Authority:
                 raise Refused("permit revoked or expired")
             if (permit["epoch"], permit["revision"]) != (state["epoch"], state["revision"]):
                 raise Refused("stale authority epoch or manifest")
-            self.evidence.check_support(permit["evidence"], consequential=kind == "effect")
+            self.evidence.check_support(permit["evidence"], consequential=kind == "effect",
+                                        required_scope=permit.get("evidence_scope"))
         return permit
 
     def revoke(self, token):
         with self.store.transaction():
-            record = self.store.get("permit", token)
-            record["revoked"] = True
-            self.store.put("permit", token, record)
-            self.store.event("revoked", permit=token)
+            self.revoke_tx(token)
+
+    def revoke_tx(self, token):
+        record = self.store.get("permit", token)
+        record["revoked"] = True
+        self.store.put("permit", token, record)
+        self.store.event("revoked", permit=token)
 
     def cut_epoch(self):
         with self.store.transaction():

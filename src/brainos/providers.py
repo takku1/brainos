@@ -1,11 +1,6 @@
-"""Trusted deterministic provider catalogue for the first profile.
-
-No dynamic imports, eval, pickles, model framework, or arbitrary user code.
-Catalogue entries use an artifact digest independent of provider self-report.
-"""
-import hashlib
-from pathlib import Path
-
+"""Independently identified, explicitly versioned trusted primitive artifacts."""
+from dataclasses import dataclass
+import inspect
 from .contracts import Refused, digest
 
 
@@ -29,36 +24,79 @@ def check(kind, value):
         raise Refused("unsupported schema")
 
 
-CATALOG = {
-    "parse_csv": ("text", "integers", "parse-integers"),
-    "sum": ("integers", "integer", "sum-integers"),
-    "sum_loop": ("integers", "integer", "sum-integers"),
-    "count": ("integers", "integer", "count-integers"),
+def parse_csv(value):
+    return [] if not value.strip() else [int(x.strip()) for x in value.split(",")]
+
+
+def sum_builtin(value):
+    return sum(value)
+
+
+def sum_loop(value):
+    result = 0
+    for item in value:
+        result += item
+    return result
+
+
+def count_items(value):
+    return len(value)
+
+
+def text_length(value):
+    return len(value)
+
+
+def negate(value):
+    return -value
+
+
+@dataclass(frozen=True)
+class Primitive:
+    function: object
+    input: str
+    output: str
+    capability: str
+    version: str = "1"
+    attempts: int = 1
+
+
+PRIMITIVES = {
+    "parse_csv": Primitive(parse_csv, "text", "integers", "parse-integers"),
+    "sum": Primitive(sum_builtin, "integers", "integer", "sum-integers"),
+    "sum_loop": Primitive(sum_loop, "integers", "integer", "sum-integers"),
+    "count": Primitive(count_items, "integers", "integer", "count-integers"),
+    "text_length": Primitive(text_length, "text", "integer", "text-length"),
+    "negate": Primitive(negate, "integer", "integer", "negate-integer"),
 }
+CATALOG = {name: (entry.input, entry.output, entry.capability) for name, entry in PRIMITIVES.items()}
+
+
+def code_identity(function):
+    return digest(inspect.getsource(function).replace("\r\n", "\n"))
 
 
 def specification(name):
-    if name not in CATALOG:
+    if name not in PRIMITIVES:
         raise Refused("implementation is not in the trusted catalogue")
-    inp, out, capability = CATALOG[name]
-    source = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
-    artifact = digest([name, source, inp, out, capability])
-    return dict(id=f"{name}:{artifact}", implementation=name, artifact=artifact,
-                input=inp, output=out, capability=capability)
+    entry = PRIMITIVES[name]
+    if type(entry.attempts) is not int or entry.attempts < 1:
+        raise Refused("trusted primitive execution cost must be positive")
+    dependencies = {"schema-check/v1": code_identity(check), "int-list/v1": code_identity(int_list)}
+    core = dict(kind="primitive", implementation=name, version=entry.version,
+                code=code_identity(entry.function), dependencies=dependencies,
+                input=entry.input, output=entry.output, capability=entry.capability,
+                input_unit="utf8" if entry.input == "text" else "dimensionless",
+                output_unit="utf8" if entry.output == "text" else "dimensionless",
+                cost={"attempts": entry.attempts}, engine_abi="trusted-unary/v1",
+                footprint={"resources": ["cpu"], "failure_domains": ["trusted-python"]})
+    artifact = digest(core)
+    return dict(core, artifact=artifact, id=f"{name}@{entry.version}:{artifact}")
 
 
 def compute(name, value):
     spec = specification(name)
     check(spec["input"], value)
-    if name == "parse_csv":
-        result = [] if not value.strip() else [int(x.strip()) for x in value.split(",")]
-    elif name == "sum":
-        result = sum(value)
-    elif name == "sum_loop":
-        result = 0
-        for item in value:
-            result += item
-    else:
-        result = len(value)
+    result = PRIMITIVES[name].function(value)
     check(spec["output"], result)
     return result

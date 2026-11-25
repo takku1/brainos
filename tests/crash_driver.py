@@ -40,8 +40,9 @@ def main():
                 runtime.tasks.run_task(task, token, "demo")
             else:
                 task, _, _ = execute(runtime, budget, "total", [1, 2])
-                support = runtime.evidence.record_evidence("checker", {}, "Certified")
-                effect, token = runtime.effects.prepare_effect(task, "demo", sink.name,
+                support = runtime.evidence.record_evidence("checker", {}, "Certified",
+                    support=runtime.effects.required_support(task, "demo", sink.identity, {"total": 3}))
+                effect, token = runtime.effects.prepare_effect(task, "demo", sink.identity,
                     {"total": 3}, budget, [support])
                 witness.update(effect=effect, token=token)
                 (root / "witness.json").write_text(json.dumps(witness), encoding="utf-8")

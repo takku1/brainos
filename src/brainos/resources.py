@@ -7,12 +7,15 @@ class ResourceLedger:
         self.store = store
 
     def create_budget(self, principal, capacity):
+        with self.store.transaction():
+            return self.create_budget_tx(principal, capacity)
+
+    def create_budget_tx(self, principal, capacity):
         capacity = quantities(capacity)
         key = uid()
-        with self.store.transaction():
-            self.store.put("budget", key, dict(id=key, principal=principal, capacity=capacity,
-                                               available=capacity, spent={k: 0 for k in capacity}))
-            self.store.event("budget-created", budget=key)
+        self.store.put("budget", key, dict(id=key, principal=principal, capacity=capacity,
+                                           available=capacity, spent={k: 0 for k in capacity}))
+        self.store.event("budget-created", budget=key)
         return key
 
     def budget(self, key, principal):
@@ -76,6 +79,9 @@ class ResourceLedger:
                 for record in self.store.find(kind):
                     if record["holding"] == key and record["state"] in ("READY", "RUNNING", "INTENT", "DISPATCHED", "UNKNOWN"):
                         raise Refused("holding belongs to unresolved or active work")
+            if any(row.get("validation_holding") == key and row["state"] == "VALIDATING"
+                   for row in self.store.find("candidate")):
+                raise Refused("holding belongs to active validation")
             return self.release_tx(key, principal)
 
     def charge_tx(self, key):
@@ -89,3 +95,24 @@ class ResourceLedger:
         self.store.put("holding", key, holding)
         self.store.put("budget", budget["id"], budget)
         self.release_tx(key, holding["principal"])
+
+    def spend_tx(self, key, amount):
+        amount = quantities(amount)
+        holding = self.store.get("holding", key)
+        if holding["state"] != "ALLOCATED" or set(amount) != set(holding["remaining"]):
+            raise Refused("spending requires a live compatible allocation")
+        if any(v > holding["remaining"][k] for k, v in amount.items()):
+            raise Refused("allocation exhausted")
+        budget = self.store.get("budget", holding["budget"])
+        for k, value in amount.items():
+            holding["remaining"][k] -= value
+            budget["spent"][k] += value
+        self.store.put("holding", key, holding)
+        self.store.put("budget", budget["id"], budget)
+        self.store.event("spent", holding=key, amount=amount)
+
+    def charge(self, budget, principal, amount, purpose):
+        with self.store.transaction():
+            holding = self.reserve_tx(budget, principal, amount, purpose)
+            self.allocate_tx(holding, principal)
+            self.charge_tx(holding)

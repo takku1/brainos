@@ -5,12 +5,14 @@ from .contracts import Refused, ProviderRunner, digest, encode, uid
 
 
 class Transactor:
-    def __init__(self, store, control, registry, runner: ProviderRunner, failpoint):
+    def __init__(self, store, control, registry, runner: ProviderRunner, failpoint, resources, validation_budget):
         self.store = store
         self.control = control
         self.registry = registry
         self.runner = runner
         self.failpoint = failpoint
+        self.resources = resources
+        self.validation_budget = validation_budget
 
     def stage(self, bindings):
         if not isinstance(bindings, dict) or not bindings:
@@ -32,7 +34,9 @@ class Transactor:
             self.store.event("prepared", candidate=key)
         return key
 
-    def validate(self, candidate, cases):
+    def validate(self, candidate, cases, *, budget=None, principal=None):
+        budget = self.validation_budget if budget is None else budget
+        principal = "_kernel_validation" if principal is None else principal
         # Prepare under a short transaction. Expensive signal work owns no DB lock.
         with self.store.transaction():
             record = self.store.get("candidate", candidate)
@@ -48,6 +52,10 @@ class Transactor:
                 raise Refused("candidate base is stale")
             cases = json.loads(encode(cases))
             resolved = {role: self.registry.resolve(key) for role, key in record["bindings"].items()}
+            amount = sum(len(cases[role]) * spec["cost"]["attempts"] for role, spec in resolved.items())
+            holding = self.resources.reserve_tx(budget, principal, {"attempts": amount}, "validation:" + candidate)
+            self.resources.allocate_tx(holding, principal)
+            record.update(validation_holding=holding, validation_principal=principal)
             record["state"] = "VALIDATING"
             self.store.put("candidate", candidate, record)
             self.store.event("validation-started", candidate=candidate)
@@ -60,6 +68,8 @@ class Transactor:
                     if remaining <= 0:
                         raise Refused("validation exceeded its ten-second grant")
                     attempts += 1
+                    with self.store.transaction():
+                        self.resources.spend_tx(holding, resolved[role]["cost"])
                     if self.runner.compute(resolved[role], value, min(5, remaining)) != expected:
                         raise Refused("candidate failed independent expected-output checks")
             with self.store.transaction():
@@ -68,12 +78,14 @@ class Transactor:
                 if self.store.get("candidate", candidate)["state"] != "VALIDATING":
                     raise Refused("candidate state changed during validation")
                 record.update(state="VALIDATED", cases_digest=digest(cases))
+                self.resources.release_tx(holding, principal)
                 self.store.put("candidate", candidate, record)
                 self.store.event("validated", candidate=candidate, cases=record["cases_digest"],
                                  attempts=attempts, elapsed_seconds=time.monotonic() - started)
         except Exception as exc:
             with self.store.transaction():
                 record["state"] = "REJECTED"
+                self.resources.release_tx(holding, principal)
                 self.store.put("candidate", candidate, record)
                 self.store.event("validation-failed", candidate=candidate, attempts=attempts,
                                  elapsed_seconds=time.monotonic() - started, error=str(exc))

@@ -44,7 +44,7 @@ class Store:
             if self.db.execute("PRAGMA quick_check").fetchone()[0] != "ok":
                 raise Refused("database integrity failure")
             version = self.db.execute("PRAGMA user_version").fetchone()[0]
-            if version not in (0, 1):
+            if version not in (0, 2):
                 raise Refused("unsupported storage schema")
             self.db.executescript("""
                 CREATE TABLE IF NOT EXISTS records (
@@ -53,7 +53,7 @@ class Store:
                 CREATE TABLE IF NOT EXISTS events (
                     seq INTEGER PRIMARY KEY, body TEXT NOT NULL,
                     previous TEXT NOT NULL, checksum TEXT NOT NULL);
-                PRAGMA user_version=1;
+                PRAGMA user_version=2;
             """)
             self.verify()
         except BaseException:
