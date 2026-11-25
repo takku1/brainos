@@ -287,24 +287,23 @@ proof of stability.
    not adopted as evidence; only its layout may inform the §33.6
    projector. The parallel effort's own design doc agrees illustrative
    values must never ship (§6 of `live/OBSERVATORY-DESIGN.md`).
-4. Reconciled read-only 2026-11-25: `live/server.py` is adopted as the
-   ADR observatory baseline; no competing server or runtime is
-   created. Alignments: existing kernel mechanisms only, decisions
-   journaled (including suspensions), bounded development, no LLM
-   controller, no codegen, no self-funding, viability from kernel
-   records. Gaps recorded for bounded implementation: the policy is
-   hardcoded server logic, not a replaceable artifact under the
-   restricted context (ADR-3); forced-vs-scheduled phase transitions
-   are indistinguishable in the journal; bands are inline constants,
-   not declared parameters (ADR-5); the store is wiped on every start
-   (`unlink`), so restart recovery is untested (ADR-1/ADR-7);
-   dormancy/wake/retire/regenerate/assimilation are not exercised
-   (ADR-4); churn-vs-payoff is not computed (ADR-2/ADR-5). The
-   `live/OBSERVATORY-DESIGN.md` §7 fencing ("no edits to
-   `docs/current/` or the register") is superseded for R-25-08,
-   R-02-16 and R-07-13 by explicit authorization, and otherwise
-   respected. `live/state/` databases and lock files were not touched;
-   the port-8137 server was observed live and left running.
+4. Reconciled 2026-11-25 and unified the same day: `live/server.py`
+   runs observe-propose-execute-record through the ADR policy
+   interface; no competing server or runtime is created. Alignments:
+   existing kernel mechanisms only, decisions journaled (including
+   suspensions), bounded development, no LLM controller, no codegen,
+   no self-funding, viability from kernel records. Closed by the
+   unification: replaceable policy (ADR-3), forced-vs-scheduled
+   journaled distinctly, declared bands with hysteresis and cooldowns
+   (ADR-5), store preserved across restarts with explicit --reset
+   (ADR-1), restart recovery demonstrated (ADR-7). Churn is measured
+   from member-snapshot deltas; churn-vs-payoff analysis remains open
+   (ADR-2/ADR-5). The `live/OBSERVATORY-DESIGN.md` §7 fencing ("no
+   edits to `docs/current/` or the register") is superseded for
+   R-25-08, R-02-16 and R-07-13 by explicit authorization, and
+   otherwise respected. Pre-existing `live/state/` databases were not
+   touched or restarted by this workstream; the running :8137
+   instance picks up the unified loop on its next operator restart.
 5. Standing rule kept: periodic observation permitted, periodic forced
    restructuring forbidden. The §33.4 variable set stands for the
    bounded implementation; evidence-dependent re-estimation belongs to
@@ -336,4 +335,14 @@ verdict was retain), arith-neg recovery after its dependency-closure
 block (undemanded after the disruption), neural providers, and any
 stability claim. The demo found and fixed two live defects in the
 policy core (capability-id vs name matching; blocked members counted
-as serving). `live/server.py` was not modified.
+as serving). `live/server.py` is unified on the ADR policy (same
+HTTP/SSE/dashboard contract, extended panels for competence, retention
+freshness, runway, churn, estimated NOV, lineage and unresolved
+deficiencies); its demonstration-specific orchestration is replaced by
+observe-propose-execute-record through the kernel gates, with
+init/resume/--reset semantics, operator-forced phases journaled
+distinctly from the schedule, competitive range providers, and a
+scheduled assessment drill (evidence only). Verified on a scratch
+port/state; the :8137 instance picks it up on its next operator
+restart. Policy-driven dormancy (verified redundant) and recruitment
+(wake after loss) are demonstrated end to end.

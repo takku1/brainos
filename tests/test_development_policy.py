@@ -385,6 +385,37 @@ class TestHomeostasis(PolicyHarness):
         self.assertEqual(state.transitions_in_window(10, 100), 2)
         self.assertEqual(state.transitions_in_window(200, 100), 0)
 
+    def test_verified_redundant_with_alternative_proposes_suspend(self):
+        pol = policy.ViabilityPolicy()
+        ret = dict(status="observed", count=1, providers={
+            "p-bad": dict(state="ACTIVE", verdict="redundant",
+                          freshness="fresh", age_steps=2, assessment="a1"),
+            "p-good": dict(state="ACTIVE", verdict="retain",
+                           freshness="fresh", age_steps=2, assessment="a2")})
+        obs = hand_obs(comp=ok_comp(), retention=ret, runway=funded_runway())
+        decision = pol.propose(obs, self.ctx)
+        self.assertEqual(decision["action"], "suspend")
+        self.assertEqual(decision["evidence"]["suspended"], "p-bad")
+        self.assertEqual(decision["evidence"]["assessment"], "a1")
+
+    def test_dormant_adverse_member_needs_no_suspension(self):
+        pol = policy.ViabilityPolicy()
+        ret = dict(status="observed", count=1, providers={
+            "p-old": dict(state="DORMANT", verdict="redundant",
+                          freshness="fresh", age_steps=2, assessment="a1"),
+            "p-good": dict(state="ACTIVE", verdict="retain",
+                           freshness="fresh", age_steps=2, assessment="a2")})
+        obs = hand_obs(comp=ok_comp(), retention=ret, runway=funded_runway())
+        self.assertNotEqual(pol.propose(obs, self.ctx)["action"], "suspend")
+
+    def test_adverse_without_alternative_stays_investigate(self):
+        pol = policy.ViabilityPolicy()
+        ret = dict(status="observed", count=1, providers={
+            "p-bad": dict(state="ACTIVE", verdict="not-best",
+                          freshness="fresh", age_steps=2, assessment="a1")})
+        obs = hand_obs(comp=ok_comp(), retention=ret, runway=funded_runway())
+        self.assertEqual(pol.propose(obs, self.ctx)["action"], "investigate")
+
     def test_probe_cooldown_defers_identical_reprobe(self):
         pol, state = policy.ViabilityPolicy(), policy.PolicyState()
         obs = hand_obs(comp=ok_comp(n=1), runway=funded_runway(), step=10)

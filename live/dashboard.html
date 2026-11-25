@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BrainOS Ecology Observatory</title>
+<style>
+  body { margin: 0; font-family: -apple-system, "Segoe UI", Verdana, sans-serif;
+         color: #1c2420; background: #fff; }
+  header { background: #123f3b; color: #f2f5f2; padding: 24px 32px; }
+  header h1 { margin: 0; font-size: 26px; display: inline; }
+  #clock { float: right; font-size: 15px; color: #c4d2cc; font-family: Consolas, monospace; }
+  #states { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .state { font-size: 15px; font-weight: 700; padding: 4px 14px; border-radius: 20px;
+           background: #f2f5f2; color: #123f3b; }
+  .state.bad { background: #b91c1c; color: #fff; }
+  .state.warn { background: #b45309; color: #fff; }
+  .state.info { background: #1d4ed8; color: #fff; }
+  header p { margin: 10px 0 0; color: #c4d2cc; font-size: 13px; max-width: 72ch; }
+  #status { display: inline-block; margin-top: 8px; font-size: 12px; font-weight: 700;
+            padding: 2px 10px; border-radius: 20px; background: #dcfce7; color: #15803d; }
+  #status.down { background: #fee2e2; color: #b91c1c; }
+  main { max-width: 960px; margin: 0 auto; padding: 24px 32px 60px; }
+  .row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 20px; }
+  .stat { border: 1px solid #d9ddd6; border-radius: 8px; padding: 12px 14px; background: #eef1ec; }
+  .stat .n { font-size: 22px; font-weight: 700; color: #0b5f59; }
+  .stat .l { font-size: 12px; color: #5b6660; }
+  h2 { font-size: 18px; margin: 28px 0 8px; }
+  .card { border: 1px solid #d9ddd6; border-radius: 10px; padding: 14px 16px; font-size: 13px; }
+  #phasebar { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
+  #phasebar button { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 6px;
+                     border: 1px solid #d9ddd6; background: #fff; cursor: pointer; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 8px; }
+  th, td { text-align: left; padding: 5px 10px; border-bottom: 1px solid #d9ddd6; }
+  th { font-size: 12px; color: #5b6660; }
+  #feed { list-style: none; margin: 0; padding: 0; border: 1px solid #d9ddd6; border-radius: 10px; }
+  #feed li { padding: 8px 14px; border-bottom: 1px solid #d9ddd6; font-size: 12.5px;
+             font-family: Consolas, Menlo, monospace; }
+  #feed li:last-child { border-bottom: none; }
+  .tag { display: inline-block; min-width: 130px; font-weight: 700; }
+  .acquired, .recovered { color: #15803d; }
+  .constructing, .evaluating, .identified, .alternatives, .deficiency { color: #1d4ed8; }
+  .suspended { color: #0b5f59; }
+  .abstained, .tick-error, .evaluation-failed { color: #b91c1c; }
+  .disturbance, .scarcity, .pressure, .deferred { color: #b45309; }
+  footer { margin-top: 28px; font-size: 12px; color: #5b6660; }
+</style>
+</head>
+<body>
+<header>
+  <h1>BrainOS ecology observatory</h1><span id="clock">--:--:--</span>
+  <div id="states"><span class="state">indeterminate</span></div>
+  <p>Organizational states, not a clock. Serves are silent unless they trigger development;
+  suspensions, investigations and abstentions are all recorded decisions.</p>
+  <span id="status">connecting…</span>
+</header>
+<main>
+  <div class="row">
+    <div class="stat"><div class="n" id="s-phase">–</div><div class="l">environment</div></div>
+    <div class="stat"><div class="n" id="s-cov">–</div><div class="l">execution coverage</div></div>
+    <div class="stat"><div class="n" id="s-ready">–</div><div class="l">adaptive readiness</div></div>
+    <div class="stat"><div class="n" id="s-dev">–</div><div class="l">dev attempts left</div></div>
+    <div class="stat"><div class="n" id="s-def">–</div><div class="l">open deficiencies</div></div>
+    <div class="stat"><div class="n" id="s-nov">–</div><div class="l">net organizational value (est.)</div></div>
+  </div>
+  <h2>Organizational capabilities</h2>
+  <div class="card"><table id="caps"><tr><th>capability</th><th>members</th></tr></table>
+    <div id="viabnotes" style="color:#5b6660;margin-top:8px">awaiting first viability check…</div>
+  </div>
+  <h2>Competence and retention</h2>
+  <div class="card"><table id="comp"><tr><th>capability</th><th>context</th><th>n</th>
+  <th>success</th><th>correct</th><th>retention</th></tr></table>
+    <div id="compnote" style="color:#5b6660;margin-top:8px">observed = kernel records;
+    estimated = loop-attested; unknown = not yet observed.</div>
+  </div>
+  <h2>Unresolved deficiencies</h2>
+  <div class="card"><ul id="unres"></ul></div>
+  <h2>Environment pressure</h2>
+  <div class="card"><div id="phasebar">
+    <button data-ph="auto">auto cycle</button>
+    <button data-ph="stable">stable</button>
+    <button data-ph="drift">drift</button>
+    <button data-ph="novel">novel</button>
+    <button data-ph="scarcity">scarcity</button>
+    <button data-ph="disruption">disruption</button>
+    <button data-ph="recovery">recovery</button>
+  </div></div>
+  <h2>Autonomous decision feed</h2>
+  <ul id="feed"></ul>
+  <footer>Every entry is a real kernel event (journaled as <code>eco-decision</code>).
+  Coverage counts real serves; deficiencies veto viability; dev budget is finite and never refilled.</footer>
+</main>
+<script>
+var feed = document.getElementById("feed");
+var statusEl = document.getElementById("status");
+var BAD = { degraded: 1, "resource-constrained": 1 };
+var WARN = { investigating: 1, adapting: 1, recovering: 1 };
+setInterval(function () {
+  document.getElementById("clock").textContent = new Date().toLocaleTimeString("en-GB");
+}, 1000);
+var btns = document.querySelectorAll("#phasebar button");
+for (var i = 0; i < btns.length; i++) btns[i].addEventListener("click", function (e) {
+  fetch("/env", { method: "POST", body: JSON.stringify({ phase: e.target.getAttribute("data-ph") }) });
+});
+function renderSnapshot(r, tick) {
+  document.getElementById("s-phase").textContent = r.phase;
+  var st = r.stats || { demanded: {}, served: {} }, d = 0, s = 0, k;
+  for (k in st.demanded) d += st.demanded[k];
+  for (k in st.served) s += st.served[k];
+  document.getElementById("s-cov").textContent = d ? (100 * s / d).toFixed(1) + "%" : "–";
+  var org = r.org || {}, ready = 0, total = 0, rows = "";
+  for (k in org) {
+    total++;
+    if (org[k].length) ready++;
+    rows += "<tr><td>" + k + "</td><td>" + (org[k].join(", ") || "—") + "</td></tr>";
+  }
+  document.getElementById("caps").innerHTML = "<tr><th>capability</th><th>members</th></tr>" + rows;
+  document.getElementById("s-ready").textContent = ready + "/" + total;
+  var dev = r.dev_left || {};
+  document.getElementById("s-dev").textContent = dev.attempts !== undefined ? dev.attempts : "?";
+  document.getElementById("s-def").textContent = (r.open_deficiencies || []).length;
+  var v = r.viability || {};
+  if (v.notes) document.getElementById("viabnotes").textContent = v.notes.join(" · ");
+  if (r.nov && r.nov.total !== undefined)
+    document.getElementById("s-nov").textContent =
+      (typeof r.nov.total === "number" ? r.nov.total.toFixed(1) : r.nov.total) + " (est.)";
+  var comp = r.competence || {}, ret = r.retention || {}, rows = "";
+  for (var k in comp) {
+    var c = comp[k], ctxs = c.per_context || {}, first = true;
+    for (var cx in ctxs) {
+      var s = ctxs[cx];
+      rows += "<tr><td>" + (first ? k : "") + "</td><td>" + cx + "</td><td>" + s.n +
+        "</td><td>" + (s.thin ? "thin" : "ok") + "</td><td>" +
+        (s.correct_rate === null || s.correct_rate === undefined ? "unattested" : s.correct_rate) +
+        "</td><td>" + retentionText(ret[k]) + "</td></tr>";
+      first = false;
+    }
+    if (first) rows += "<tr><td>" + k + "</td><td>—</td><td>" + (c.n || 0) +
+      "</td><td colspan='2'>" + (c.status || "unknown") + "</td><td>" +
+      retentionText(ret[k]) + "</td></tr>";
+  }
+  if (rows) document.getElementById("comp").innerHTML =
+    "<tr><th>capability</th><th>context</th><th>n</th><th>evidence</th>" +
+    "<th>correctness</th><th>retention</th></tr>" + rows;
+  var un = r.unresolved || [], uh = "";
+  for (var i = 0; i < un.length; i++)
+    uh += "<li>#" + un[i].tick + " " + un[i].action + " " + (un[i].target || "") +
+      ": " + (un[i].disposition || "") + "</li>";
+  document.getElementById("unres").innerHTML = uh || "<li>none</li>";
+  var states = r.states || ["indeterminate"], html = "";
+  for (var i = 0; i < states.length; i++) {
+    var cls = BAD[states[i]] ? "state bad" : (WARN[states[i]] ? "state warn" :
+      (states[i] === "homeostatic" || states[i] === "quiescent" ? "state" : "state info"));
+    html += "<span class='" + cls + "'>" + states[i] + "</span>";
+  }
+  document.getElementById("states").innerHTML = html;
+}
+
+function retentionText(r) {
+  if (!r) return "unknown";
+  var out = [], k;
+  for (k in r) out.push(k.split("|").pop().slice(0, 10) + ":" + r[k].freshness +
+    (r[k].verdict ? "/" + r[k].verdict : ""));
+  return out.join("; ") || "no assessments";
+}
+function addDecision(r) {
+  var li = document.createElement("li");
+  li.innerHTML = "<span class='tag " + r.action + "'>" + r.action + "</span>#" + r.tick +
+    " " + r.clock + " [" + r.phase + "] " + (r.detail || "");
+  feed.insertBefore(li, feed.firstChild);
+  while (feed.children.length > 40) feed.removeChild(feed.lastChild);
+}
+fetch("/history").then(function (resp) { return resp.json(); }).then(function (h) {
+  renderSnapshot(h);
+  var ds = h.decisions || [];
+  for (var i = ds.length - 1; i >= 0; i--) {
+    var r = ds[i];
+    var li = document.createElement("li");
+    li.innerHTML = "<span class='tag " + r.action + "'>" + r.action + "</span>#" + r.tick +
+      " " + r.clock + " [" + r.phase + "] " + (r.detail || "");
+    feed.appendChild(li);
+  }
+  while (feed.children.length > 40) feed.removeChild(feed.firstChild);
+});
+var es = new EventSource("/events");
+es.onopen = function () { statusEl.textContent = "LIVE — organism deciding"; statusEl.className = ""; };
+es.onerror = function () { statusEl.textContent = "disconnected — is py live/server.py running?"; statusEl.className = "down"; };
+es.onmessage = function (ev) {
+  var r = JSON.parse(ev.data);
+  renderSnapshot(r);
+  addDecision(r);
+};
+</script>
+</body>
+</html>

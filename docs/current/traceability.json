@@ -1326,7 +1326,7 @@
     "tests/test_heterogeneous.py::FreezeManifest",
     "tests/test_heterogeneous.py::RunIntegrity"
    ],
-   "gap": "confirmatory execution blocked pending review; runner conformance only"
+   "gap": "executed f950f91 (H1-H5 pass, A1-A7 hold as qualified in RESULTS.md); economics negative, verdict redundant — no emergence or superiority claims"
   },
   "R-07-13": {
    "status": "partial",

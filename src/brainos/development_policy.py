@@ -546,14 +546,31 @@ class ViabilityPolicy(DevelopmentalPolicy):
                                   "serve poorly" if verdict == "poor"
                                   else "unconfirmed", detail),
                               evidence={"competence": comp, "probe_sig": sig})
-            adverse = [p for p, r in report.get("retention", {}).get(
+            adverse = {p: r for p, r in report.get("retention", {}).get(
                 "providers", {}).items()
-                if r.get("freshness") == "fresh"
-                and r.get("verdict") not in ("retain", "specialist", None)]
+                if r.get("state") == "ACTIVE"
+                and r.get("freshness") == "fresh"
+                and r.get("verdict") in ("redundant", "not-best")}
             if adverse:
+                serving = [p for p, r in report.get("retention", {}).get(
+                    "providers", {}).items()
+                    if r.get("state") == "ACTIVE"]
+                others = [p for p in serving if p not in adverse]
+                if others:
+                    provider = sorted(adverse)[0]
+                    return decide("suspend", target=capability,
+                                  reason="verified %s with %s serving: suspend %s" % (
+                                      adverse[provider]["verdict"],
+                                      ", ".join(sorted(others)),
+                                      provider),
+                                  evidence={"providers": sorted(adverse),
+                                            "assessment": adverse[provider][
+                                                "assessment"],
+                                            "suspended": provider})
                 return decide("investigate", target=capability,
-                              reason="adverse retention evidence on serving members",
-                              evidence={"providers": adverse})
+                              reason="adverse retention evidence with no "
+                                     "alternative serving member",
+                              evidence={"providers": sorted(adverse)})
         runway = observation.get("runway", {})
         floor = self.bands["budget_runway"]["enter"]
         for budget, entry in runway.items():

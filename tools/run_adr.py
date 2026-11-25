@@ -385,6 +385,13 @@ class Demo:
                 return self.execute_investigate(decision, observation)
             cap, kind = decision.get("target"), None
             kind = self.kind_of(cap)
+            if action == "suspend":
+                suspended = decision.get("evidence", {}).get("suspended")
+                aid = decision.get("evidence", {}).get("assessment")
+                if not suspended or not aid:
+                    return "abstained: suspend lacks verified assessment"
+                rt.population.make_dormant(cap, suspended, assessment=aid)
+                return "executed: dormant per verified assessment"
             if action == "recruit":
                 dormant = [m["provider"] for m in rt.population.members(
                     cap, states=("DORMANT",))]
@@ -443,6 +450,10 @@ class Demo:
                                      reason="%s: %s" % (type(exc).__name__,
                                                         str(exc)[:120])))
         demanded = sorted({o["kind"] for o in outcomes})
+        if self.tick == 10 and not getattr(self, "assimilated_early", False):
+            self.assimilated_early = True
+            early = self.assimilation_attempt()
+            self.journal("assimilation-early", early, scheduled=False)
         observation = self.observe(outcomes, demanded)
         decision = self.policy.propose(observation, self.ctx, self.state)
         disposition = self.execute(decision, observation)
@@ -480,20 +491,17 @@ class Demo:
         except (Refused, AssertionError) as exc:
             return "abstained: probe serving failed (%s)" % str(exc)[:120]
         try:
-            verdict = rt.population.assess(cap, members[0], invocations[members[0]])
+            # Cite both members' invocations so comparison verdicts
+            # (redundant/not-best) are reachable, not just retain.
+            cited = [i for m in members for i in invocations.get(m, [])]
+            verdict = rt.population.assess(cap, members[0], cited)
         except Refused as exc:
             return "refused: %s" % str(exc)[:120]
         self.journal("assessed", "range-count %s verdict=%s (drill)" %
                      (members[0][:12], verdict["verdict"]), scheduled=True)
-        if verdict["verdict"] in ("redundant", "not-best"):
-            others = [m for m in members if m != members[0]]
-            if others:
-                rt.population.make_dormant(cap, members[0],
-                                           assessment=verdict["id"])
-                self.journal("dormant", "%s dormant per verified %s" %
-                             (members[0][:12], verdict["verdict"]), scheduled=True)
-                return "executed: dormant per verified %s" % verdict["verdict"]
-        return "executed: assessment %s; no lifecycle change justified" % verdict[
+        # Evidence only: any dormancy must arrive as a policy suspend
+        # proposal through the kernel gate, never from this schedule.
+        return "executed: assessment %s recorded; lifecycle by policy only" % verdict[
             "verdict"]
 
     def disrupt(self):
@@ -546,11 +554,14 @@ class Demo:
     def assimilation_attempt(self):
         """Surface a legitimate assimilation opportunity; never force it."""
         try:
+            servable = set(self.active_members(self.caps["range-count"]))
+            parents = [{"capability": self.caps["range-count"], "provider": pid}
+                       for pid in (self.scan, self.hash) if pid in servable]
+            if len(parents) < 2:
+                return ("no opportunity: fewer than two servable range parents "
+                        "(blocked members cannot be nominated)")
             search = AssimilationSearch(self.rt)
-            candidates, controls = search.nominate(
-                [{"capability": self.caps["range-count"], "provider": self.scan},
-                 {"capability": self.caps["range-count"], "provider": self.hash}],
-                max_candidates=8)
+            candidates, controls = search.nominate(parents, max_candidates=8)
             return ("surfaced: %d candidates, %d controls; awaiting selection "
                     "record, not published (B21)" % (len(candidates), len(controls)))
         except Refused as exc:

@@ -29,8 +29,14 @@ R-25-08 and R-07-13 are partial with the coordination core
 (`src/brainos/development_policy.py`), R-02-16 stays specified. The
 ADR demo (tools/run_adr.py) showed demand-triggered construction,
 incompetence-triggered investigation, tiny-grant exhaustion abstain,
-provider-loss recovery through dependency closure, restart persistence
-and sustained quiescence — with unsuccessful adaptations preserved.
+provider-loss recovery through dependency closure, persistence across
+restart and sustained quiescence — with unsuccessful adaptations
+preserved. Policy-driven dormancy (verified redundant) and recruitment
+(wake after loss) are demonstrated end to end. `live/server.py` is
+unified on the ADR policy: same HTTP/SSE/dashboard contract with
+extended panels (competence, retention freshness, runway, churn,
+estimated NOV, lineage, unresolved), explicit init/resume/--reset,
+operator-forced phases journaled distinctly from the schedule.
 The Qwen probe ran disclosed and non-confirmatory (admission passed,
 irregular demand served where the deterministic parser refused).
 Carried forward:
