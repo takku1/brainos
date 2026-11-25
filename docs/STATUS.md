@@ -1,118 +1,57 @@
-# BrainOS - Current Status
+# BrainOS — Current Status
 
-## Current state
+## Current phase
 
-One canonical Markdown specification: docs/current/01-32 plus README.
-Core is an execution/authority contract; Plasticity adds recoverable
-adaptation; Morphogenesis adds construction and organizational development.
-src/brainos implements the first bounded single-authority runtime profile.
-Reference models and documentation validators remain under tools/. Full Core
-conformance remains open; actual implementation scope is Doc 21 section 21.9.
+Bounded single-authority runtime with developmental mechanisms under
+preregistered study. Not full Core conformance; not independently reviewed.
 
-## Consolidation disposition
+## Active focus
 
-Instruction signatures, restoration/adjudication, permit draining, publication,
-impact actions, task orchestration, crash/effect recovery, resource release,
-and first-profile ownership have been reconciled across their owning docs.
-Doc 08 owns the work sequence; Doc 31 owns unresolved evidence/obligations.
-The first runtime profile is single-authority. Distributed failover requires
-an explicit coordination/fencing profile and is deferred.
+Workstream W0 (Doc 08): keep documents and code in lockstep, and carry the
+X3 corrections and X2c open items. Next: W1, an emergence meter.
 
-Ecological interaction, game design/theory, construction-rule adaptation,
-and controlled expansion remain research directions in the same document set.
-The first construction recipe is bounded typed composition (Doc 27 section
-27.6); it precedes broader generators and multi-mechanism experiments.
+## Architecture summary
 
-## Organizational learning integration
+`docs/current` is one consolidated specification, with each rule owned by one
+document. `src/brainos` implements a standard-library Python runtime: durable
+SQLite authority, scoped permits and epochs, transactor publication, an effect
+gateway, typed lowered graphs, capability populations with a grounded
+lifecycle, and bounded composition and assimilation. The Doc 31 register is
+the source of truth for what is built. Its cells derive from
+`docs/current/traceability.json` and are checked against code and tests by
+`tools/check_traceability.py`. Doc 21 section 21.0 is the generated
+module-to-requirement map.
 
-Doc 19 now owns transferable predictions about organizational interventions;
-Doc 22 selects bounded plans/probes, Doc 21 section 21.7 defines records,
-and Doc 07 section 7.12 compares Static/Selection/Search/Cases/Model. Start
-with depth-two symbolic search and full case memory before learned forecasts.
-Enabling steps have named sub-demands and bounded grants; every actual prefix
-still passes resource, authority, retention and independent validation checks.
-The supplied organizational-world-models.md is now a navigation map, not a
-competing specification. No new numbered document, instruction or trusted
-subsystem was added. Model transfer, causality and performance remain untested.
+## Key decisions
 
-## Selected construction direction
+- Drift control (Doc 31 section 31.12): no claim of implementation without
+  cited code and tests, no unclaimed code, and document status derived from
+  register rows. Of 211 rows: 41 implemented, 70 partial, 85 specified,
+  15 documentary.
+- Experiments run only from committed, pushed, digest-matched
+  preregistrations. Results are committed separately and never edited.
+- Developmental code receives a restricted context; the kernel verifies every
+  lifecycle, publication and recovery request.
+- Workstream order (Doc 08): integrity, emergence meter, real-ecosystem
+  adapter, stability theory, mechanism design, kernel as protocol, governance,
+  publication arc.
 
-The alternatives comparison is integrated into the same framework. Doc 19
-section 19.10 selects developmental compilation as the next construction
-experiment: scoped typed abstractions lowering to existing providers (27
-section 27.8). Organizational prediction guides trials; bounded repertoire
-retention supplies alternatives; collective inference remains optional. Each
-has an isolated experiment, with combined attribution only under 07 section
-7.16. Source direction files are navigation, not alternate specifications.
+## Evidence so far
 
-## Next executable deliverable
+| Run | Outcome |
+|---|---|
+| X1 / X1b | Cumulative construction works. Cheapest for a matched repertoire (descriptive). |
+| X2, X2b | Ecology failed coexistence or retention discipline, and adaptation. |
+| X2c | 5 of 6 passed. Dormancy cut specialist loss; it does not beat plain uncertainty-aware selection reliably. Adaptation failed. |
+| X3 | Correct rejection, state reduction and recovery held. The acceptance rule was unsound (4 incorrect acceptances) and the economics were undercounted. |
 
-The first path is implemented: handwritten parse/sum workflow -> scoped permits
--> catalogue subprocess execution -> durable simulated effect -> lost-ack and
-process-crash recovery -> validated provider replacement. Modules have separate
-owners for contracts, storage, resources, evidence, authority, publication,
-execution, effect reconciliation and recovery. The runtime has no third-party
-dependencies. Z:/newbrain transaction test scenarios informed this implementation;
-no neural runtime or inherited verification result was imported.
+## Deprecated / legacy
 
-Corrective pass (Doc 21 section 21.10): review findings B01-B06 were all
-reproduced on 08cdd17 and fixed: derived minimum grants, dispatch-admission
-linearization, ledger-accounted validation, per-primitive artifact identity,
-stable endpoint identity and exactly scoped consequential evidence. A typed
-fabric (bounded unary DAGs, provenance-tracked intermediate results, impact and
-exclusion, node-boundary cancellation) now runs through the same Core. The first
-developmental composition discovered parse_csv -> sum from a demand, validated it
-on independent cases and published it without rebinding parents (docs/results/).
-
-Cumulative development and ecology (Doc 21 section 21.11): findings B07-B13
-were reproduced on 08d29f3 and resolved. Capability contracts, validated
-provider populations and role bindings are separate; composites lower into
-primitive execution, so acquisitions serve as building blocks. Runtime closure
-matches the reference model and impacts are enforced. Funding is
-operator-issued and periodic. Construction has an overall deadline and full
-provenance. Three execution profiles (subprocess, persistent, inprocess)
-share one adapter. Preregistered results (docs/results/2026-11-25T-ecology/):
-three generations of cumulative acquisition passed; the bounded ecology
-failed coexistence (v1) and retention discipline (v2), and failed adaptation in
-both. Offline algorithm selection was far cheaper given calibration.
-
-Grounded retention (Doc 21 section 21.12): B14-B20 were reproduced on
-9b9e7bd and resolved. Providers move through ACTIVE, DORMANT and ARCHIVED,
-with retirement justified by population-computed assessments. Ecology state
-is durable, costs are reported on separate ledgers, and developmental code
-works through a restricted context. Preregistered X2c (run 2; run 1 aborted
-by a disclosed defect): specialist loss fell from 6-7 to 0-1. Dormancy with
-LCB matched the strong control on 4 of 5 seeds and failed on one, a dormant
-specialist that was never recruited. Adaptation failed everywhere.
-Matched-repertoire X1b (descriptive): cumulative construction was cheapest.
-
-Next: the first bounded assimilation experiment (Doc 21 to be extended),
-with parents kept dormant rather than archived until the consolidated
-provider is validated. Known open items: incremental assessment, and
-demand-triggered waking of dormant members, which needs its own
-preregistration.
-
-## Verification scope
-
-Structural checks validate declarations/references. The in-memory behavioral
-harness and regressions cover selected permit, version-admission, and closure
-cases; cross-document integrity checks also cover unnumbered duplicate sections.
-Actual tests under tests/ cover scoped authority, verdict-only verification,
-challenge-at-cut, atomic grants, revision races, process deadlines, corruption,
-and process death before/after durable publication and simulated effects.
-The demo and tests exercise the SQLite stores and provider workers, not just
-in-memory stubs. Hostile-code sandboxing, physical resource caps, full task DAGs,
-distributed fencing, arbitrary external targets and hard real-time stopping
-remain unqualified. See Doc 21 section 21.9 for profile-specific limits.
-
-## Historical material
-
-Predecessor Z:\newbrain results (231 tests; selective-repair cost 0.21-0.26x
-with retention failure) are historical only. The original docx is archived as superseded in docs/archive/;
-Markdown is the current specification. Independent artifact/requirement review
-is still outstanding. Research ambition is preserved; empirical outcomes
-will be recorded when experiments run.
+- Pre-31.12 register cells (all rows marked I✗) are replaced by derived cells.
+- Doc 21 sections 21.9-21.13 are an increment log, kept because results cite them.
+- The original DOCX is archived as superseded in docs/archive/.
+- Predecessor Z:\newbrain results are historical only.
 
 ## Last updated
 
-2026-11-25 (B14-B20, provider lifecycle, preregistered X2c/X1b)
+2026-11-25 (drift control, X3 recorded, gate corrections, roadmap W0-W7)

@@ -1,5 +1,7 @@
 # 06 — Temporal Coordination
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 ## 6.1 Multi-rate reality
 
 Providers run at different periods; execution is async with timestamped

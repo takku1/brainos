@@ -35,6 +35,7 @@ SUITES = [
     ("doc-negative-checks", [sys.executable, "tools/gate1_negatives.py"]),
     ("l1-harness", [sys.executable, "tools/l1_harness.py"]),
     ("dependency-closure", [sys.executable, "tools/dep_closure.py"]),
+    ("traceability-drift", [sys.executable, "-X", "utf8", "tools/check_traceability.py"]),
 ]
 
 

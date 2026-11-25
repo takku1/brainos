@@ -1,5 +1,7 @@
 # 30 — Evaluation Grounding and Trust Termination
 
+Status: research — hypotheses and proposed mechanisms; nothing this document owns is implemented or validated.
+
 Evaluators evaluating evaluators must terminate somewhere, or the
 ecology becomes exceptionally competent at satisfying its own
 detached judgments (Doc 23 §23.2). This document states where the

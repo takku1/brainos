@@ -20,6 +20,7 @@ verify everything they are given.
 """
 from dataclasses import dataclass, field
 from itertools import product
+import math
 from statistics import median
 from types import SimpleNamespace
 import time
@@ -37,6 +38,10 @@ class Gate:
     min_savings_ns: float = 0.0          # per-epoch savings must exceed this
     resolution_ns: float = 20_000.0      # latency ratios below this median are not measurable
     upkeep_ns_per_provider_epoch: float = 0.0    # declared upkeep of each maintained provider
+    confidence_z: float = 1.96           # tolerance applies to the upper bound of the paired ratio
+    min_log_sd: float = 0.10             # floor on log-ratio spread (no false certainty from few inputs)
+    early_stop_factor: float = 20.0      # abort a candidate pass once its cost exceeds this x parents'
+    early_stop_min_inputs: int = 2       # ... after at least this many inputs per capability
 
 
 @dataclass
@@ -46,9 +51,21 @@ class EvaluationSet:
     dependents: dict = field(default_factory=dict)   # role -> [inputs] for downstream checks
 
 
+class _EarlyStop(Exception):
+    pass
+
+
+def structure_kind(spec):
+    """Maintained-structure identity: declared prepare, or an opaque internal structure."""
+    if spec.get("prepare"):
+        return spec["prepare"]
+    return f"internal:{spec['implementation']}" if spec.get("internal_state") else None
+
+
 class AssimilationSearch:
     def __init__(self, runtime):
         self.ctx = runtime if isinstance(runtime, SimpleNamespace) else development_context(runtime)
+        self.session = dict(construction_ns=0, evaluations=0, parent_cache={})
 
     def _record(self, kind, **body):
         key = uid()
@@ -70,10 +87,11 @@ class AssimilationSearch:
         eligible = {c: [s for s in ctx.catalogue()
                         if all(s[k] == contracts[c][k] for k in ("input", "output", "input_unit", "output_unit"))
                         and s["capability"] in labels[c]] for c in caps}
-        parent_kinds = {parent_specs[p["provider"]]["prepare"] for p in parents} - {None}
+        self.session = dict(construction_ns=0, evaluations=0, parent_cache={})   # one nomination = one session
+        parent_kinds = {structure_kind(parent_specs[p["provider"]]) for p in parents} - {None}
         nominated, rejected = [], []
-        for kind in sorted({s["prepare"] for c in caps for s in eligible[c]}, key=lambda k: (k is None, k or "")):
-            options = [[s for s in eligible[c] if s["prepare"] == kind] for c in caps]
+        for kind in sorted({structure_kind(s) for c in caps for s in eligible[c]}, key=lambda k: (k is None, k or "")):
+            options = [[s for s in eligible[c] if structure_kind(s) == kind] for c in caps]
             if not all(options):
                 rejected.append(dict(prepare=kind, reason="no admissible primitive for every parent contract"))
                 continue
@@ -108,19 +126,37 @@ class AssimilationSearch:
         timings.extend(seen)
         return out, seen[-1]
 
-    def measure(self, providers_by_cap, epochs, budget, principal):
-        """Run providers over each epoch from a cold cache; per-input outputs and stage costs."""
+    def measure(self, providers_by_cap, epochs, budget, principal, *, reference=None, gate=None):
+        """Run providers over each epoch from a cold cache; per-input outputs and stage costs.
+
+        With `reference` (parent records, same order) and `gate`, the pass stops early once a
+        capability's cumulative cost exceeds gate.early_stop_factor x the parents' cost.
+        Returns (records, compute_ns, stopped_reason or None).
+        """
         ctx, records, spent = self.ctx, [], []
-        for e, epoch in enumerate(epochs):
-            ctx.clear_prepared()
-            for cap, value, set_name in epoch:
-                runs = {}
-                for key in providers_by_cap[cap]:
-                    out, timing = self._run(ctx.resolve(key), value, budget, principal, spent)
-                    runs[key] = dict(output=out, prepare_ns=timing["prepare_ns"], answer_ns=timing["answer_ns"],
-                                     state_bytes=timing["state_bytes"], prepare=ctx.resolve(key)["prepare"])
-                records.append(dict(epoch=e, capability=cap, set=set_name, runs=runs))
-        return records, sum(t["compute_ns"] for t in spent)
+        totals = {}
+        try:
+            for e, epoch in enumerate(epochs):
+                ctx.clear_prepared()
+                for cap, value, set_name in epoch:
+                    runs = {}
+                    for key in providers_by_cap[cap]:
+                        out, timing = self._run(ctx.resolve(key), value, budget, principal, spent)
+                        runs[key] = dict(output=out, prepare_ns=timing["prepare_ns"], answer_ns=timing["answer_ns"],
+                                         state_bytes=timing["state_bytes"], prepare=ctx.resolve(key)["prepare"])
+                    records.append(dict(epoch=e, capability=cap, set=set_name, runs=runs))
+                    if reference is not None and gate is not None:
+                        ref = reference[len(records) - 1]
+                        mine = sum(r["prepare_ns"] + r["answer_ns"] for r in runs.values())
+                        theirs = min(r["prepare_ns"] + r["answer_ns"] for r in ref["runs"].values())
+                        count, a, b = totals.get(cap, (0, 0, 0))
+                        totals[cap] = (count + 1, a + mine, b + max(theirs, gate.resolution_ns))
+                        count, a, b = totals[cap]
+                        if count >= gate.early_stop_min_inputs and a > gate.early_stop_factor * b:
+                            raise _EarlyStop(f"early stop: {cap} cost {a / b:.1f}x parents after {count} inputs")
+        except _EarlyStop as stop:
+            return records, sum(t["compute_ns"] for t in spent), str(stop)
+        return records, sum(t["compute_ns"] for t in spent), None
 
     @staticmethod
     def epoch_costs(records, choice, gate):
@@ -150,10 +186,30 @@ class AssimilationSearch:
         for implementation in set(candidate["implementations"].values()):
             ctx.register(implementation)             # identity record only; no membership or authority
         parent_by_cap = {c: [p["provider"] for p in parents if p["capability"] == c] for c in caps}
-        # Parents and candidate run in separate cold passes so neither warms the other's cache.
-        parent_records, parent_ns = self.measure(parent_by_cap, evaluation.epochs, budget, principal)
-        cand_records, cand_ns = self.measure({c: [candidate["assignment"][c]] for c in caps},
-                                             evaluation.epochs, budget, principal)
+        # Parents are measured once per nomination; candidates run in separate cold passes.
+        cache_key = (digest(sorted(p["provider"] for p in parents)), id(evaluation))
+        if cache_key in self.session["parent_cache"]:
+            parent_records, parent_ns = self.session["parent_cache"][cache_key], 0
+        else:
+            parent_records, parent_ns, _ = self.measure(parent_by_cap, evaluation.epochs, budget, principal)
+            self.session["parent_cache"][cache_key] = parent_records
+        cand_records, cand_ns, stopped = self.measure({c: [candidate["assignment"][c]] for c in caps},
+                                                      evaluation.epochs, budget, principal,
+                                                      reference=parent_records, gate=gate)
+        if stopped:
+            self.session["construction_ns"] += parent_ns + cand_ns
+            self.session["evaluations"] += 1
+            verdict = dict(accepted=False, competent=False, reasons=[stopped], assignment=candidate["assignment"],
+                           implementations=candidate["implementations"], method=candidate["method"],
+                           latency_ratio={}, mismatches=None, rebuilt={}, mean_savings_ns=None, upkeep_saving_ns=0,
+                           construction_ns=parent_ns + cand_ns, session_construction_ns=self.session["construction_ns"],
+                           break_even_epochs=None, state_bytes_before=None, state_bytes_after=None,
+                           per_epoch_before={}, per_epoch_after={}, early_stop=True,
+                           evaluation_wall_ns=time.perf_counter_ns() - started)
+            verdict["trial"] = self._record("evaluation", parents=parents, **{k: v for k, v in verdict.items()
+                                                                              if k not in ("per_epoch_before", "per_epoch_after")})
+            return verdict
+        parent_records = parent_records[:len(cand_records)]
         reasons, per_cap = [], {}
         mismatches = 0
         for pr, cr in zip(parent_records, cand_records):
@@ -182,6 +238,22 @@ class AssimilationSearch:
                 per_cap.setdefault(c, {})[s] = round(ratio, 3)
                 if ratio > gate.tolerance[c]:
                     reasons.append(f"{c} answer latency {ratio:.2f}x parents on {s} exceeds tolerance {gate.tolerance[c]}x")
+            # Confidence margin over all measurable inputs: upper bound of the paired log ratio.
+            logs = []
+            for pr, cr in zip(parent_records, cand_records):
+                if pr["capability"] != c:
+                    continue
+                p1 = min(run["answer_ns"] for run in pr["runs"].values())
+                q1 = cr["runs"][candidate["assignment"][c]]["answer_ns"]
+                if max(p1, q1) >= gate.resolution_ns:
+                    logs.append(math.log(max(q1, 1) / max(p1, 1)))
+            if logs:
+                mean = sum(logs) / len(logs)
+                sd = max(gate.min_log_sd, math.sqrt(sum((x - mean) ** 2 for x in logs) / max(1, len(logs) - 1)))
+                upper = math.exp(mean + gate.confidence_z * sd / math.sqrt(len(logs)))
+                per_cap.setdefault(c, {})["upper_bound"] = round(upper, 3)
+                if upper > gate.tolerance[c]:
+                    reasons.append(f"{c} answer-latency upper bound {upper:.2f}x exceeds tolerance {gate.tolerance[c]}x")
         # Downstream dependents: rebuild with the candidate and require equal outputs.
         kept = set(candidate["assignment"].values())
         superseded = [p for p in parents if p["provider"] not in kept]
@@ -222,17 +294,22 @@ class AssimilationSearch:
         savings = [before[e]["total_ns"] - after[e]["total_ns"] + upkeep for e in before]
         mean_savings = sum(savings) / len(savings)
         construction_ns = parent_ns + cand_ns
-        horizon = construction_ns / mean_savings if mean_savings > 0 else float("inf")
+        self.session["construction_ns"] += construction_ns
+        self.session["evaluations"] += 1
+        # Break-even uses everything this nomination has spent so far, not this candidate alone.
+        horizon = self.session["construction_ns"] / mean_savings if mean_savings > 0 else float("inf")
         if mean_savings <= gate.min_savings_ns:
             reasons.append(f"no per-epoch saving ({mean_savings / 1e3:.1f} us)")
         elif horizon > gate.horizon_epochs:
             reasons.append(f"break-even {horizon:.1f} epochs exceeds horizon {gate.horizon_epochs}")
         state_before = sum(v["state_bytes"] for v in before.values()) / len(before)
         state_after = sum(v["state_bytes"] for v in after.values()) / len(after)
-        verdict = dict(accepted=not reasons, reasons=reasons, assignment=candidate["assignment"],
+        competent = not [r for r in reasons if "saving" not in r and "break-even" not in r]
+        verdict = dict(accepted=not reasons, competent=competent, reasons=reasons, assignment=candidate["assignment"],
                        implementations=candidate["implementations"], method=candidate["method"],
                        latency_ratio=per_cap, mismatches=mismatches, rebuilt=rebuilt,
                        mean_savings_ns=round(mean_savings), upkeep_saving_ns=upkeep, construction_ns=construction_ns,
+                       session_construction_ns=self.session["construction_ns"], early_stop=False,
                        break_even_epochs=None if horizon == float("inf") else round(horizon, 2),
                        state_bytes_before=round(state_before), state_bytes_after=round(state_after),
                        per_epoch_before=before, per_epoch_after=after,
@@ -240,6 +317,32 @@ class AssimilationSearch:
         verdict["trial"] = self._record("evaluation", parents=parents, **{k: v for k, v in verdict.items()
                                                                           if k not in ("per_epoch_before", "per_epoch_after")})
         return verdict
+
+    def select(self, verdicts, gate):
+        """Final decision over a nomination: charge ALL evaluations to the chosen candidate.
+
+        A candidate is selectable only if competent and if the nomination's total construction
+        cost breaks even within the horizon at its per-epoch saving. Returns the best verdict
+        (largest saving) or None; every verdict gets `selectable` and `final_reasons`.
+        """
+        total = sum(v["construction_ns"] for v in verdicts)
+        best = None
+        for v in verdicts:
+            reasons = [] if v.get("competent") else ["not competent: " + "; ".join(v["reasons"])]
+            saving = v.get("mean_savings_ns")
+            if v.get("competent"):
+                if saving is None or saving <= gate.min_savings_ns:
+                    reasons.append("no per-epoch saving")
+                elif total / saving > gate.horizon_epochs:
+                    reasons.append(f"nomination break-even {total / saving:.1f} epochs exceeds horizon {gate.horizon_epochs}")
+            v.update(selectable=not reasons, final_reasons=reasons, nomination_construction_ns=total,
+                     nomination_break_even_epochs=None if not saving or saving <= 0 else round(total / saving, 2))
+            if not reasons and (best is None or saving > best["mean_savings_ns"]):
+                best = v
+        self._record("selection", total_construction_ns=total, chosen=best and best["trial"],
+                     candidates=[dict(trial=v["trial"], selectable=v["selectable"], reasons=v["final_reasons"])
+                                 for v in verdicts])
+        return best
 
     # --- publication and recovery -------------------------------------------------------
     def publish(self, verdict, parents, role_cases, *, budget, principal):

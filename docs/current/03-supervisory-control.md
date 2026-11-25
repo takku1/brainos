@@ -1,5 +1,7 @@
 # 03 — Supervisory Control
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 The reference eligibility implementation uses forward-chaining Horn rules
 with precondition/effect actions. Other implementations preserve section 3.6's
 eligibility contract. Planning and task execution follow Doc 32 section 32.11;

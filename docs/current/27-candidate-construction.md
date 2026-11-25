@@ -1,5 +1,7 @@
 # 27 — Candidate Construction and Computational Synthesis
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 Doc 22 decides WHAT to build; this document specifies HOW candidates
 come into existence. Construction is a provider family of its own:
 synthesis strategies compete under the same contracts as everything

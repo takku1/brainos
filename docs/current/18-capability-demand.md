@@ -1,5 +1,7 @@
 # 18 — Capability Demand and Discovery
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 Growth is demand-driven, not population-driven. The system spawns
 capacity because it has evidence of an opportunity — never because
 growth is intrinsically desirable.

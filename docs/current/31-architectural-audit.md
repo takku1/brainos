@@ -1,5 +1,7 @@
 # 31 - Requirement Register and Open Obligations
 
+Status: implemented — every requirement this document owns is built and tested (Doc 31 register; Doc 21 section 21.0).
+
 Maintains stable requirement IDs and current gap dispositions. Historical
 review assertions are not fresh independent verification. Doc 08 owns the
 implementation plan; this register owns evidence and unresolved obligations.
@@ -25,98 +27,98 @@ tested. A requirement reads C/S/I/V/E with ✓/✗/∼ (partial).
 
 Format: ID | source | requirement (short) | obligation | C/S/I/V/E.
 
-R-02-01 | 02 §2.1 | minimal provider contract; all else optional | L1-C1 conformance | C✓ S∼ I✗ V✗ E✗ (optional interfaces lack per-capability tests)
-R-02-02 | 02 §2.1 | formal tuple + execution (y,x′)~F | L1-C1 | C✓ S∼ I✗ V✗ E✗ (stochastic/nondet kinds named in 24, not in 02)
-R-02-03 | 02 §2.2 | output-based adapters; no hidden-state reads | L1-C1/C4 | C✓ S✓ I✗ V✗ E✗
+R-02-01 | 02 §2.1 | minimal provider contract; all else optional | L1-C1 conformance | C✓ S∼ I∼ V∼ E✗ (optional interfaces lack per-capability tests)
+R-02-02 | 02 §2.1 | formal tuple + execution (y,x′)~F | L1-C1 | C✓ S∼ I∼ V∼ E✗ (stochastic/nondet kinds named in 24, not in 02)
+R-02-03 | 02 §2.2 | output-based adapters; no hidden-state reads | L1-C1/C4 | C✓ S✓ I∼ V∼ E✗
 R-02-04 | 02 §2.3 | lossy readout integration over published outputs | L1-C1 | C✓ S∼ I✗ V✗ E✗ (fusion-choice semantics per implementation)
-R-02-05 | 02 §2.4 | edges only where contracts mutually satisfiable | L1-C1 | C✓ S✓ I✗ V✗ E✗
-R-02-06 | 02 §2.5 | control/signal path separation | L1 (no tensor path via supervisor) | C✓ S✓ I✗ V✗ E✗ (partial reference probe; runtime boundary tests open — gap G-01)
-R-02-07 | 02 §2.6 | specialization/observability/autonomy/provenance invariants | L1-C4 + L3 | C✓ S∼ I✗ V✗ E✗ (specialization check = L3 gate, unrun)
-R-02-08 | 02 §2.7 | one logical authority, N readouts, per-task epistemic bars | L1-C2/C5 | C✓ S∼ I✗ V✗ E✗ (single-owner profile specified; failover deferred — gap G-02)
-R-02-09 | 02 §2.8 | slots/checkpoints/adapters versioning; swaps never move certification | L1-C4 | C✓ S✓ I✗ V✗ E✗
-R-02-10 | 02 §2.9 | atomic sequenced snapshots; no cross-version assembly; scheduler≠supervisor | L1-C4 | C✓ S✓ I✗ V✗ E✗
-R-02-11 | 02 §2.9 | enable/revoke/preempt distinct; safe stops in contract | L1-C2/C5 | C✓ S∼ I✗ V✗ E✗ (safe-stop completeness per provider — gap G-03)
+R-02-05 | 02 §2.4 | edges only where contracts mutually satisfiable | L1-C1 | C✓ S✓ I∼ V∼ E✗
+R-02-06 | 02 §2.5 | control/signal path separation | L1 (no tensor path via supervisor) | C✓ S✓ I∼ V∼ E✗ (partial reference probe; runtime boundary tests open — gap G-01)
+R-02-07 | 02 §2.6 | specialization/observability/autonomy/provenance invariants | L1-C4 + L3 | C✓ S∼ I∼ V∼ E✗ (specialization check = L3 gate, unrun)
+R-02-08 | 02 §2.7 | one logical authority, N readouts, per-task epistemic bars | L1-C2/C5 | C✓ S∼ I∼ V∼ E✗ (single-owner profile specified; failover deferred — gap G-02)
+R-02-09 | 02 §2.8 | slots/checkpoints/adapters versioning; swaps never move certification | L1-C4 | C✓ S✓ I∼ V∼ E✗
+R-02-10 | 02 §2.9 | atomic sequenced snapshots; no cross-version assembly; scheduler≠supervisor | L1-C4 | C✓ S✓ I∼ V∼ E✗
+R-02-11 | 02 §2.9 | enable/revoke/preempt distinct; safe stops in contract | L1-C2/C5 | C✓ S∼ I∼ V∼ E✗ (safe-stop completeness per provider — gap G-03)
 R-02-12 | 02 §2.10 | convergence sufficient conditions (norm/domain/uniform bound); switching mitigations | L3 + Phase 4 proof | C✓ S∼ I✗ V✗ E∼ (toy pins one regime — historical evidence, not proof)
 
-R-03-01 | 03 §3.6 | eligibility from versioned facts/contracts/freshness/authority; Horn = implementation | L1-C1 | C✓ S∼ I✗ V✗ E✗ (alternative mechanisms untested)
-R-03-02 | 03 §§3.2–3.5 | enabled≠authorized≠executed; incremental closure | L1-C2 | C✓ S✓ I✗ V✗ E✗
-R-03-03 | 03 §3.3 | closure is capability abstraction, not physical reachability | scope note | C✓ S— I— V— E— (definitional, no executable content)
-R-03-04 | 03 §3.4 | schema/ownership/timestamp/adapter preconditions | L1-C1 | C✓ S✓ I✗ V✗ E✗
-R-03-05 | 03 §3.6–3.7 | tiers × validity; Certified+Active for irreversible acts within bounds | L1-C5 | C✓ S∼ I✗ V✗ E✗ (probation/dwell unjustified defaults — stated gap)
+R-03-01 | 03 §3.6 | eligibility from versioned facts/contracts/freshness/authority; Horn = implementation | L1-C1 | C✓ S∼ I∼ V∼ E✗ (alternative mechanisms untested)
+R-03-02 | 03 §§3.2–3.5 | enabled≠authorized≠executed; incremental closure | L1-C2 | C✓ S✓ I✓ V✓ E✗
+R-03-03 | 03 §3.3 | closure is capability abstraction, not physical reachability | scope note | C✓ S— I— V✗ E— (definitional, no executable content)
+R-03-04 | 03 §3.4 | schema/ownership/timestamp/adapter preconditions | L1-C1 | C✓ S✓ I∼ V∼ E✗
+R-03-05 | 03 §3.6–3.7 | tiers × validity; Certified+Active for irreversible acts within bounds | L1-C5 | C✓ S∼ I✓ V✓ E✗ (probation/dwell unjustified defaults — stated gap)
 R-03-06 | 03 | federated supervisor, single-valued eligibility | — | C∼ S✗ I✗ V✗ E✗ (asserted in 02 §2.7; single-owner first profile; failover deferred — gap G-02)
 
 R-09-01 | 09 §9.9 | LEARN full machine-readable schema (9 properties) | L1-C1 identical accept/reject | C✓ S✓ I✗ V✗ E✗ (schema exists; no implementation to check)
-R-09-OBSERVE | 09 §9.10 | append-only evidence; rejects unknown sources | L1-C1 | C✓ S✓ I✗ V✗ E✗
+R-09-OBSERVE | 09 §9.10 | append-only evidence; rejects unknown sources | L1-C1 | C✓ S✓ I∼ V∼ E✗
 R-09-ENCODE | 09 §9.10 | bound-model representations retaining (ref, version) | L1-C1 | C✓ S✓ I✗ V✗ E✗
-R-09-INFER | 09 §9.10 | pinned-version read-only inference; refuses mixing | L1-C1 | C✓ S✓ I✗ V✗ E✗
+R-09-INFER | 09 §9.10 | pinned-version read-only inference; refuses mixing | L1-C1 | C✓ S✓ I∼ V∼ E✗
 R-09-PREDICT | 09 §9.10 | estimate + uncertainty + horizon; no uncertainty-free claims | L1-C1 | C✓ S✓ I✗ V✗ E✗
 R-09-REVISE | 09 §9.10 | new-version-only revision with derivation edge | L1-C2 | C✓ S✓ I✗ V✗ E✗
 R-09-COMPARE | 09 §9.10 | disagreement + differing inputs; incomparability reported | L1-C1 | C✓ S✓ I✗ V✗ E✗
 R-09-PROPAGATE | 09 §9.10 | declared-dependency corrections only; partial-with-report | L1-C2 | C✓ S✓ I✗ V✗ E✗
-R-09-VALIDATE | 09 §9.10 | quarantined candidates; fail-closed; never publishes | L1-C2 | C✓ S✓ I✗ V✗ E✗
-R-09-BENCHMARK | 09 §9.10 | measurements vs declared workload; production read-only | L3 | C✓ S✓ I✗ V✗ E✗
+R-09-VALIDATE | 09 §9.10 | quarantined candidates; fail-closed; never publishes | L1-C2 | C✓ S✓ I✓ V✓ E✗
+R-09-BENCHMARK | 09 §9.10 | measurements vs declared workload; production read-only | L3 | C✓ S✓ I∼ V∼ E✗
 R-09-FORK | 09 §9.10 | history-intact context versions; parent untouched | L1-C2 | C✓ S✓ I✗ V✗ E✗
 R-09-CONSOLIDATE | 09 §9.10 | durable version + ancestry or labeled approximate repair | L1-C2 | C✓ S✓ I✗ V✗ E✗
-R-09-ASSERT | 09 §9.10 | claim + evidence → id; no self-certification | L1-C2 | C✓ S✓ I✗ V✗ E✗
-R-09-CHALLENGE | 09 §9.10 | suspends dependents at next epoch cut; serialized | L1-C2 | C✓ S✓ I✗ V✗ E✗
-R-09-VERIFY | 09 §9.10 | procedure record; verdict-only, no status change | L1-C2 | C✓ S✓ I✗ V✗ E✗
+R-09-ASSERT | 09 §9.10 | claim + evidence → id; no self-certification | L1-C2 | C✓ S✓ I∼ V∼ E✗
+R-09-CHALLENGE | 09 §9.10 | suspends dependents at next epoch cut; serialized | L1-C2 | C✓ S✓ I✓ V∼ E✗
+R-09-VERIFY | 09 §9.10 | procedure record; verdict-only, no status change | L1-C2 | C✓ S✓ I✓ V✓ E✗
 R-09-RETRACT | 09 §9.10 | kernel-decided withdrawal; history preserved | L1-C2 | C✓ S✓ I✗ V✗ E✗
-R-09-QUARANTINE | 09 §9.10 | exclusion scoped; independent work continues | L1-C2 | C✓ S✓ I✗ V✗ E✗
-R-09-RESTORE | 09 §9.10 | same-target eligibility restored on scoped proof; no permit | L1-C2 | C✓ S✓ I✗ V✗ E✗
-R-09-BIND | 09 §9.10 | eligibility-checked role binding | L1-C2 | C✓ S✓ I✗ V✗ E✗
+R-09-QUARANTINE | 09 §9.10 | exclusion scoped; independent work continues | L1-C2 | C✓ S✓ I∼ V∼ E✗
+R-09-RESTORE | 09 §9.10 | same-target eligibility restored on scoped proof; no permit | L1-C2 | C✓ S✓ I✓ V✓ E✗
+R-09-BIND | 09 §9.10 | eligibility-checked role binding | L1-C2 | C✓ S✓ I✓ V✓ E✗
 R-09-SPAWN | 09 §9.10 | fresh-manifest instances; budget-gated; no shared mutable by default | L1-C2/C3 | C✓ S✓ I✗ V✗ E✗
-R-09-CONNECT | 09 §9.10 | compatible declared edges only | L1-C2 | C✓ S✓ I✗ V✗ E✗
+R-09-CONNECT | 09 §9.10 | compatible declared edges only | L1-C2 | C✓ S✓ I∼ V∼ E✗
 R-09-SNAPSHOT | 09 §9.10 | atomic immutable S_k + seq; torn-read retry | L1-C4 | C✓ S✓ I✗ V✗ E✗
-R-09-COMMIT | 09 §9.10 | epoch-gated CAS publish; rejects stale/unvalidated/mixed | L1-C2/C4 | C✓ S✓ I✗ V✗ E✗
-R-09-AUTHORIZE | 09 §9.10 | permit/deny under manifest + tier; deny-closed | L1-C5 | C✓ S✓ I✗ V✗ E✗
-R-09-REVOKE | 09 §9.10 | immediate for new, safe-stop for in-flight; latency-bounded; no retroactive invalidation | L1-C2/C5 | C✓ S✓ I✗ V✗ E✗
-R-09-ACT | 09 §9.10 | executes only epoch-valid permitted ops | L1-C5 | C✓ S✓ I✗ V✗ E✗
-R-09-BIRTH | 09 §9.10 | compound: nomination + budget → quarantined candidate; non-construction explicit | L1 + L3 | C✓ S✓ I✗ V✗ E✗
+R-09-COMMIT | 09 §9.10 | epoch-gated CAS publish; rejects stale/unvalidated/mixed | L1-C2/C4 | C✓ S✓ I✓ V✓ E✗
+R-09-AUTHORIZE | 09 §9.10 | permit/deny under manifest + tier; deny-closed | L1-C5 | C✓ S✓ I✓ V✓ E✗
+R-09-REVOKE | 09 §9.10 | immediate for new, safe-stop for in-flight; latency-bounded; no retroactive invalidation | L1-C2/C5 | C✓ S✓ I∼ V∼ E✗
+R-09-ACT | 09 §9.10 | executes only epoch-valid permitted ops | L1-C5 | C✓ S✓ I✓ V✓ E✗
+R-09-BIRTH | 09 §9.10 | compound: nomination + budget → quarantined candidate; non-construction explicit | L1 + L3 | C✓ S✓ I∼ V∼ E✗
 R-09-DIFFERENTIATE | 09 §9.10 | context version without parent modification or scope overclaim | L1 + L3 | C✓ S✓ I✗ V✗ E✗
-R-09-FUSE | 09 §9.10 | composite candidate, parents retained until gated retirement | L1 + L3 | C✓ S✓ I✗ V✗ E✗
-R-09-RETIRE | 09 §9.10 | removal on floors + fallback with lineage; remain-with-flag on failure | L1 + L3 | C✓ S✓ I✗ V✗ E✗
-R-09-RESERVE | 09 §9.10 | atomic budget debit; over-reservation rejected | L1-C3 | C✓ S✓ I✗ V✗ E✗
-R-09-ALLOCATE | 09 §9.10 | committed spend against held reservation; no double-spend | L1-C3 | C✓ S✓ I✗ V✗ E✗
-R-09-RELEASE | 09 §9.10 | idempotent return | L1-C3 | C✓ S✓ I✗ V✗ E✗
-R-09-REBIND | 09 §9.10 | eligibility-checked rebinding with closure revalidation | L1-C2 | C✓ S✓ I✗ V✗ E✗
-R-09-CANCEL | 09 §9.10 | safe-stop termination; critical sections complete with report | L1-C2 | C✓ S✓ I✗ V✗ E✗
+R-09-FUSE | 09 §9.10 | composite candidate, parents retained until gated retirement | L1 + L3 | C✓ S✓ I∼ V∼ E✗
+R-09-RETIRE | 09 §9.10 | removal on floors + fallback with lineage; remain-with-flag on failure | L1 + L3 | C✓ S✓ I∼ V∼ E✗
+R-09-RESERVE | 09 §9.10 | atomic budget debit; over-reservation rejected | L1-C3 | C✓ S✓ I✓ V✓ E✗
+R-09-ALLOCATE | 09 §9.10 | committed spend against held reservation; no double-spend | L1-C3 | C✓ S✓ I✓ V✓ E✗
+R-09-RELEASE | 09 §9.10 | idempotent return | L1-C3 | C✓ S✓ I✓ V✓ E✗
+R-09-REBIND | 09 §9.10 | eligibility-checked rebinding with closure revalidation | L1-C2 | C✓ S✓ I∼ V∼ E✗
+R-09-CANCEL | 09 §9.10 | safe-stop termination; critical sections complete with report | L1-C2 | C✓ S✓ I∼ V∼ E✗
 R-09-EMIT | 09 §9.10 | sequenced channel append; bounded-drop reported | L1-C1 | C✓ S✓ I✗ V✗ E✗
 R-09-RECEIVE | 09 §9.10 | cursor-advancing read; only contracted delivery guarantees | L1-C1 | C✓ S✓ I✗ V✗ E✗
-R-09-03 | 09 | LEARN≠COMMIT≠AUTHORIZE≠ACT separation | L1-C2 violation tests | C✓ S✓ I✗ V✗ E✗
-R-09-04 | 09 §§9.3/9.7 | manifests, epoch windows, challenge-at-cut, in-flight drain | L1-C2/C4 | C✓ S✓ I✗ V✗ E✗
-R-09-05 | 09 §9.3 | claim/unit lifecycles | L1-C2 | C✓ S∼ I✗ V✗ E✗ (transitions reconciled in 32; executable lifecycle tests open — gap G-04, shared with 05)
+R-09-03 | 09 | LEARN≠COMMIT≠AUTHORIZE≠ACT separation | L1-C2 violation tests | C✓ S✓ I∼ V∼ E✗
+R-09-04 | 09 §§9.3/9.7 | manifests, epoch windows, challenge-at-cut, in-flight drain | L1-C2/C4 | C✓ S✓ I✓ V✓ E✗
+R-09-05 | 09 §9.3 | claim/unit lifecycles | L1-C2 | C✓ S∼ I∼ V∼ E✗ (transitions reconciled in 32; executable lifecycle tests open — gap G-04, shared with 05)
 R-09-06 | 09 §9.4 | promotion requirements incl. canonical economics pointer | L3 | C✓ S✓ I✗ V✗ E✗
 R-09-07 | 09 | per-instruction conformance; unimplemented rejected | L1-C1 (Doc 21 C1) | C✓ S∼ I✗ V✗ E✗ (partial fixture harness; runtime suite incomplete)
-R-09-08 | 09 §9.8 | AUTHORIZE/REVOKE: latency bounds + side-effect reauthorization | L1-C5 + deployment L2 | C✓ S✓ I✗ V✗ E✗
-R-09-09 | 09 §9.8 | developmental ops as conditional compound transactions | L1 + L3 | C✓ S∼ I✗ V✗ E✗ (construction branches per Doc 27 untested)
-R-09-10 | 09 §9.8 | RESERVE/ALLOCATE/RELEASE caps; failed candidates counted | L1-C3 | C✓ S✓ I✗ V✗ E✗
+R-09-08 | 09 §9.8 | AUTHORIZE/REVOKE: latency bounds + side-effect reauthorization | L1-C5 + deployment L2 | C✓ S✓ I∼ V∼ E✗
+R-09-09 | 09 §9.8 | developmental ops as conditional compound transactions | L1 + L3 | C✓ S∼ I∼ V∼ E✗ (construction branches per Doc 27 untested)
+R-09-10 | 09 §9.8 | RESERVE/ALLOCATE/RELEASE caps; failed candidates counted | L1-C3 | C✓ S✓ I✓ V✓ E✗
 
-R-21-01 | 21 §21.1 | interface/type/Manifest/Snapshot/Evidence schemas | L1-C1 | C✓ S∼ I✗ V✗ E✗ (sketches, not machine-enforceable — stated; Phase 1B)
-R-21-02 | 21 §21.2 | Transactor CAS publish; challenge serialization; transport; versioning | L1-C2/C4 | C✓ S∼ I✗ V✗ E✗ (sketches, same as R-21-01)
-R-21-03 | 21 §21.3 | executable L1-C1..C5 tests | Gate 3 entry | C✓ S∼ I✗ V✗ E✗ (partial runnable fixtures; runtime coverage open — Phase 1B C4)
-R-21-04 | 21 §21.4 | dependency rule (core free of framework deps; build-enforced) | CI lint | C✓ S— I✗ V✗ E✗ (no build exists to lint; S not applicable — no transition semantics claimed)
+R-21-01 | 21 §21.1 | interface/type/Manifest/Snapshot/Evidence schemas | L1-C1 | C✓ S∼ I∼ V∼ E✗ (sketches, not machine-enforceable — stated; Phase 1B)
+R-21-02 | 21 §21.2 | Transactor CAS publish; challenge serialization; transport; versioning | L1-C2/C4 | C✓ S∼ I∼ V∼ E✗ (sketches, same as R-21-01)
+R-21-03 | 21 §21.3 | executable L1-C1..C5 tests | Gate 3 entry | C✓ S∼ I∼ V∼ E✗ (partial runnable fixtures; runtime coverage open — Phase 1B C4)
+R-21-04 | 21 §21.4 | dependency rule (core free of framework deps; build-enforced) | CI lint | C✓ S— I✓ V✓ E✗ (no build exists to lint; S not applicable — no transition semantics claimed)
 
-R-24-01 | 24 §24.3 | authoritative Σ; T:Σ⇀Σ′; declared transition kinds | Phase 4 | C✓ S∼ I✗ V✗ E✗ (kinds named; per-op kind assignments partial — gap G-05)
-R-24-ADD | 24 §24.4 | ADD-PROVIDER: quarantined birth; resource/evaluator admission before publication; removal pre-commit | L1 + L3 | C✓ S∼ I✗ V✗ E✗
+R-24-01 | 24 §24.3 | authoritative Σ; T:Σ⇀Σ′; declared transition kinds | Phase 4 | C✓ S∼ I∼ V∼ E✗ (kinds named; per-op kind assignments partial — gap G-05)
+R-24-ADD | 24 §24.4 | ADD-PROVIDER: quarantined birth; resource/evaluator admission before publication; removal pre-commit | L1 + L3 | C✓ S∼ I∼ V∼ E✗
 R-24-REMOVE | 24 §24.4 | REMOVE-PROVIDER: artifact≠state restoration; separate op for state | L1 + L3 | C✓ S∼ I✗ V✗ E✗
 R-24-EDGE | 24 §24.4 | ADD/REMOVE-EDGE: closure-bounded revalidation beyond downstream graph | L1-C2 | C✓ S∼ I✗ V✗ E✗
-R-24-REBIND | 24 §24.4 | REBIND: closure-checked; dependents revalidate | L1-C2 | C✓ S∼ I✗ V✗ E✗
-R-24-COMPOSE | 24 §24.4 | COMPOSE: nominated-contract admission; parent replacement gates only on replacement; retention and impact checks | L1 + L3 | C✓ S∼ I✗ V✗ E✗
+R-24-REBIND | 24 §24.4 | REBIND: closure-checked; dependents revalidate | L1-C2 | C✓ S∼ I∼ V∼ E✗
+R-24-COMPOSE | 24 §24.4 | COMPOSE: nominated-contract admission; parent replacement gates only on replacement; retention and impact checks | L1 + L3 | C✓ S∼ I✓ V✓ E✗
 R-24-SPLIT | 24 §24.4 | SPLIT: no automatic competence preservation; partition boundaries validated | L1 + L3 | C✓ S∼ I✗ V✗ E✗
-R-24-ASSIMILATE | 24 §24.4 | ASSIMILATE: 4 distinct recovery forms; rebuild-not-undo | L1 + L3 | C✓ S∼ I✗ V✗ E✗
-R-24-RETIRE | 24 §24.4 | RETIRE/RESTORE: floors + fallback; reconstruction with revalidation, never time reversal | L1 + L3 | C✓ S∼ I✗ V✗ E✗
-R-24-03 | 24 §24.2/24.5 | conditional frame rule; prepare/validate/commit/publish; conflict rejection | L1-C2/C4 | C✓ S∼ I✗ V✗ E✗
-R-24-04 | 24 §24.5 | proof obligations labeled; no unproven guarantees | Gate 2/5 | C✓ S— I✗ V✗ E✗ (no proofs attempted — Phase 4)
+R-24-ASSIMILATE | 24 §24.4 | ASSIMILATE: 4 distinct recovery forms; rebuild-not-undo | L1 + L3 | C✓ S∼ I∼ V∼ E✗
+R-24-RETIRE | 24 §24.4 | RETIRE/RESTORE: floors + fallback; reconstruction with revalidation, never time reversal | L1 + L3 | C✓ S∼ I∼ V∼ E✗
+R-24-03 | 24 §24.2/24.5 | conditional frame rule; prepare/validate/commit/publish; conflict rejection | L1-C2/C4 | C✓ S∼ I✓ V✓ E✗
+R-24-04 | 24 §24.5 | proof obligations labeled; no unproven guarantees | Gate 2/5 | C✓ S— I— V✗ E✗ (no proofs attempted — Phase 4)
 
-R-29-01 | 29 §29.2/29.4 | fixed-point closure; directional vs symmetric; conservatism; cascading | L1-C2/C4 | C✓ S∼ I✗ V✗ E✗ (reference closure and termination specified; typed impact enforcement — Phase 1B C3)
-R-29-02 | 29 §29.3 | isolation levels; scoped exclusion; quarantine semantics | L1-C2 | C✓ S✓ I✗ V✗ E✗
+R-29-01 | 29 §29.2/29.4 | fixed-point closure; directional vs symmetric; conservatism; cascading | L1-C2/C4 | C✓ S∼ I✓ V✓ E✗ (reference closure and termination specified; typed impact enforcement — Phase 1B C3)
+R-29-02 | 29 §29.3 | isolation levels; scoped exclusion; quarantine semantics | L1-C2 | C✓ S✓ I∼ V∼ E✗
 
-R-01-01 | 01 §1.2 | H1–H4 independently testable; no experiment proves all four | L3 per-hypothesis | C✓ S— I✗ V✗ E✗
-R-01-02 | 01 §1.6 | gated reorganization in scope; autonomous discovery out | scope gate | C✓ S— I✗ V✗ E✗
-R-01-03 | 01 §1.7 | per-hypothesis success criteria; Track R evidence, not bar | L3 | C✓ S— I✗ V✗ E✗
-R-01-04 | 01 §1.8 | novelty unclaimed; direction only; central design principle | honesty gate | C✓ S— I✗ V✗ E✗
+R-01-01 | 01 §1.2 | H1–H4 independently testable; no experiment proves all four | L3 per-hypothesis | C✓ S— I— V✗ E✗
+R-01-02 | 01 §1.6 | gated reorganization in scope; autonomous discovery out | scope gate | C✓ S— I— V✗ E✗
+R-01-03 | 01 §1.7 | per-hypothesis success criteria; Track R evidence, not bar | L3 | C✓ S— I— V✗ E✗
+R-01-04 | 01 §1.8 | novelty unclaimed; direction only; central design principle | honesty gate | C✓ S— I— V✗ E✗
 R-04-01 | 04 §4.1 | readout optional surface, never mandatory bus | L1-C1 | C✓ S✓ I✗ V✗ E✗
-R-04-02 | 04 §4.2 | implementation-appropriate derivation provenance; derived≠independent | L1-C1 | C✓ S∼ I✗ V✗ E✗
+R-04-02 | 04 §4.2 | implementation-appropriate derivation provenance; derived≠independent | L1-C1 | C✓ S∼ I∼ V∼ E✗
 R-04-03 | 04 §4.3 | multi-query arbitration with schema/freshness/epistemic minimums | L1-C1 | C✓ S∼ I✗ V✗ E✗
 R-05-01 | 05 §§15.2/9.8 | training-time dependency recording; later explanations no substitute | L1 | C✓ S✓ I✗ V✗ E✗
 R-05-02 | 05 §5.3/5.6 | stable core + bounded plastic units per substrate; repair broader than relearning | L1-C2 | C✓ S∼ I✗ V✗ E∼ (R2b historical only)
@@ -126,99 +128,99 @@ R-06-01 | 06 §6.1/6.5 | periodic/event/on-demand/distributed all supported; fas
 R-06-02 | 06 §6.2 | atomic immutable snapshots; no cross-version assembly | L1-C4 | C✓ S✓ I✗ V✗ E✗
 R-06-03 | 06 §6.3 | consume rule Δτ≤τ_max else fallback; age-aware laws; degraded modes specified | L1-C4 + L2 | C✓ S✓ I✗ V✗ E✗
 R-06-04 | 06 §6.4 | liveness without safety override; anti-oscillation | L1 + L2 | C✓ S∼ I✗ V✗ E✗
-R-06-05 | 06 §6.5 | per-stream sequences; clock-uncertainty margins; idempotent handlers; manifest-serialized commits | L1-C4 | C✓ S∼ I✗ V✗ E✗ (replay exactness missing — gap G-06)
+R-06-05 | 06 §6.5 | per-stream sequences; clock-uncertainty margins; idempotent handlers; manifest-serialized commits | L1-C4 | C✓ S∼ I∼ V∼ E✗ (replay exactness missing — gap G-06)
 R-07-01 | 07 L1 | conformance mandatory, threshold-free; two implementations one contract | Gate 3 entry | C✓ S✓ I✗ V✗ E✗
-R-07-02 | 07 L2 | deployment-set thresholds, never universal | deployment | C✓ S— I✗ V✗ E✗
-R-07-03 | 07 L3 | matched arms; routing free when under test; thresholds confined to L3; ≥5 seeds provisional | L3 | C✓ S∼ I✗ V✗ E✗
-R-07-04 | 07 §7.8/registry | L1 harness vs L3 verdict distinct; sim-only scoped to physical transfer | method | C✓ S— I✗ V✗ E✗
-R-08-01 | 08 | layers adoptable separately; dependency rule (core free of framework deps) | build gate | C✓ S— I✗ V✗ E✗
+R-07-02 | 07 L2 | deployment-set thresholds, never universal | deployment | C✓ S— I— V✗ E✗
+R-07-03 | 07 L3 | matched arms; routing free when under test; thresholds confined to L3; ≥5 seeds provisional | L3 | C✓ S∼ I∼ V∼ E✗
+R-07-04 | 07 §7.8/registry | L1 harness vs L3 verdict distinct; sim-only scoped to physical transfer | method | C✓ S— I— V✗ E✗
+R-08-01 | 08 | layers adoptable separately; dependency rule (core free of framework deps) | build gate | C✓ S— I∼ V∼ E✗
 R-08-02 | 08 | Experiment 001 + Arm 0 specified; comparison baselines named | Phase 5 | C✓ S— I✗ V✗ E✗ (unrun)
-R-11-01 | 11 §11.1/11.6 | developmental providers; plasticity as capability; Transactor-gated ops | L1 + L3 | C✓ S✓ I✗ V✗ E✗
-R-11-02 | 11 §11.3 | niche-relative selection; directional s; Pareto vector; protected floors | L3 | C✓ S∼ I✗ V✗ E✗
-R-11-03 | 11 §11.4 | assimilation = functional result; 7 methods; union-gate + rollback | L3 | C✓ S∼ I✗ V✗ E✗
-R-11-04 | 11 §11.5 | grouped execution; budgets; hysteresis/cooldowns/floors; drain-before-reclaim | L1-C3 + L3 | C✓ S∼ I✗ V✗ E✗
+R-11-01 | 11 §11.1/11.6 | developmental providers; plasticity as capability; Transactor-gated ops | L1 + L3 | C✓ S✓ I∼ V∼ E✗
+R-11-02 | 11 §11.3 | niche-relative selection; directional s; Pareto vector; protected floors | L3 | C✓ S∼ I∼ V∼ E✗
+R-11-03 | 11 §11.4 | assimilation = functional result; 7 methods; union-gate + rollback | L3 | C✓ S∼ I∼ V∼ E✗
+R-11-04 | 11 §11.5 | grouped execution; budgets; hysteresis/cooldowns/floors; drain-before-reclaim | L1-C3 + L3 | C✓ S∼ I∼ V∼ E✗
 R-11-05 | 11 §§11.7–11.8 | 3 layers; Σ-state calculus; graph transforms as topological subset | L1 + L3 | C✓ S∼ I✗ V✗ E✗
-R-12-F1 | 12 | unsafe actuation only Certified+Active within revoke bounds | L1-C5 + L2 | C✓ S∼ I✗ V✗ E✗
-R-12-F2 | 12 | epoch-scoped permits; reauthorization at side-effect boundaries | L1-C2/C5 | C✓ S✓ I✗ V✗ E✗
+R-12-F1 | 12 | unsafe actuation only Certified+Active within revoke bounds | L1-C5 + L2 | C✓ S∼ I✓ V✓ E✗
+R-12-F2 | 12 | epoch-scoped permits; reauthorization at side-effect boundaries | L1-C2/C5 | C✓ S✓ I✓ V✓ E✗
 R-12-F3 | 12 | fusion requires support refs; derived≠independent | L1-C1 | C✓ S∼ I✗ V✗ E✗
-R-12-F4 | 12 | competence/diversity measured; agreement≠evidence | L1 + L3 | C✓ S∼ I✗ V✗ E✗
-R-12-F5 | 12 | explicit caps, protected floors, hysteresis against runaway growth | L1-C3 | C✓ S∼ I✗ V✗ E✗
-R-12-F6 | 12 | retention measured separately; approximate repair labeled | L3 | C✓ S∼ I✗ V✗ E✗
+R-12-F4 | 12 | competence/diversity measured; agreement≠evidence | L1 + L3 | C✓ S∼ I∼ V∼ E✗
+R-12-F5 | 12 | explicit caps, protected floors, hysteresis against runaway growth | L1-C3 | C✓ S∼ I∼ V∼ E✗
+R-12-F6 | 12 | retention measured separately; approximate repair labeled | L3 | C✓ S∼ I∼ V∼ E✗
 R-12-F7 | 12 | joint failure rates measured; no fabricated availability | L3 | C✓ S∼ I✗ V✗ E✗
 R-12-F8 | 12 | liveness arbitration without safety override; specified fallback | L1 + L2 | C✓ S∼ I✗ V✗ E✗
-R-12-F9 | 12 | per-stream sequences; manifest-serialized commits; minority degrades | L1-C4 | C✓ S∼ I✗ V✗ E✗
-R-12-F10 | 12 | developmental pathologies with lineage-based remedy | L3 | C✓ S∼ I✗ V✗ E✗
-R-12-F11 | 12 | conformance re-run per release; contract changes version the contract | L1 | C✓ S✓ I✗ V✗ E✗
+R-12-F9 | 12 | per-stream sequences; manifest-serialized commits; minority degrades | L1-C4 | C✓ S∼ I∼ V∼ E✗
+R-12-F10 | 12 | developmental pathologies with lineage-based remedy | L3 | C✓ S∼ I∼ V∼ E✗
+R-12-F11 | 12 | conformance re-run per release; contract changes version the contract | L1 | C✓ S✓ I∼ V∼ E✗
 R-12-F12 | 12 | evaluator capture → integrity checks + evaluator quarantine | L1-C1 | C✓ S∼ I✗ V✗ E✗
-R-12-F13 | 12 | ontological drift → versioned ontology, re-baseline on change | L1-C1 | C✓ S∼ I✗ V✗ E✗
-R-12-F14 | 12 | synthesis escape → isolation levels + kernel-only validation | L1-C2 | C✓ S∼ I✗ V✗ E✗
-R-12-F15 | 12 | credit corruption → uncertainty-aware thresholds + regeneration | L3 | C✓ S∼ I✗ V✗ E✗
-R-12-F16 | 12 | grounding corruption → validity intervals + invalidation propagation | L1 + L3 | C✓ S∼ I✗ V✗ E✗
-R-12-F17 | 12 | dependency concealment = contract violation + footprint audits | L1-C2 | C✓ S∼ I✗ V✗ E✗
+R-12-F13 | 12 | ontological drift → versioned ontology, re-baseline on change | L1-C1 | C✓ S∼ I∼ V∼ E✗
+R-12-F14 | 12 | synthesis escape → isolation levels + kernel-only validation | L1-C2 | C✓ S∼ I∼ V∼ E✗
+R-12-F15 | 12 | credit corruption → uncertainty-aware thresholds + regeneration | L3 | C✓ S∼ I∼ V∼ E✗
+R-12-F16 | 12 | grounding corruption → validity intervals + invalidation propagation | L1 + L3 | C✓ S∼ I∼ V∼ E✗
+R-12-F17 | 12 | dependency concealment = contract violation + footprint audits | L1-C2 | C✓ S∼ I∼ V∼ E✗
 R-12-F18 | 12 | meta-adaptive instability → bounded meta-adaptation, grounded strategy evaluation | L3 | C✓ S∼ I✗ V✗ E✗
-R-12-F19 | 12 | resource-accounting evasion → single-ledger booking + audits | L1-C3 | C✓ S∼ I✗ V✗ E✗
+R-12-F19 | 12 | resource-accounting evasion → single-ledger booking + audits | L1-C3 | C✓ S∼ I∼ V∼ E✗
 R-12-F20 | 12 | organizational deadlock → stalled-demand detection + explicit relaxation policy | L2 | C✓ S∼ I✗ V✗ E✗
-R-13-01 | 13 | rename table governs term collisions; reserved terms (Snapshot, Authority, etc.) | editorial | C✓ S— I✗ V✗ E✗
-R-13-02 | 13 | L3-mapping note (G1–G7 historical); subsystem-vs-layer terminology | editorial | C✓ S— I✗ V✗ E✗
-R-14-01 | 14 | game mappings as analogies constrained by contract, never equivalences | — | C✓ S— I✗ V✗ E✗ (interpretive mapping, gated by L3)
-R-15-01 | 15 | sim-only scoped to physical transfer; evaluation-type evidence table | — | C✓ S— I✗ V✗ E✗ (interpretive, gated by L3)
-R-15-02 | 15 | research-track policies (prereg/PROV-O/seeds/replication) ≠ runtime requirements | — | C✓ S— I✗ V✗ E✗ (scoping rule, no executable content)
-R-16-01 | 16 | any-technique-permitted, unvalidated-acquisition-prohibited; scope statements not theorems | — | C✓ S— I✗ V✗ E✗ (interpretive, gated by L3)
-R-17-01 | 17 §17.1 | capability≠contract≠provider; measurables against stated contract | L1-C1 | C✓ S— I✗ V✗ E✗
+R-13-01 | 13 | rename table governs term collisions; reserved terms (Snapshot, Authority, etc.) | editorial | C✓ S— I— V✗ E✗
+R-13-02 | 13 | L3-mapping note (G1–G7 historical); subsystem-vs-layer terminology | editorial | C✓ S— I— V✗ E✗
+R-14-01 | 14 | game mappings as analogies constrained by contract, never equivalences | — | C✓ S— I— V✗ E✗ (interpretive mapping, gated by L3)
+R-15-01 | 15 | sim-only scoped to physical transfer; evaluation-type evidence table | — | C✓ S— I— V✗ E✗ (interpretive, gated by L3)
+R-15-02 | 15 | research-track policies (prereg/PROV-O/seeds/replication) ≠ runtime requirements | — | C✓ S— I— V✗ E✗ (scoping rule, no executable content)
+R-16-01 | 16 | any-technique-permitted, unvalidated-acquisition-prohibited; scope statements not theorems | — | C✓ S— I— V✗ E✗ (interpretive, gated by L3)
+R-17-01 | 17 §17.1 | capability≠contract≠provider; measurables against stated contract | L1-C1 | C✓ S— I✓ V✓ E✗
 R-17-02 | 17 §17.2 | s_requirements vs p_success; uncertainty-aware floors; variance reported | L3 | C✓ S∼ I✗ V✗ E✗
 R-17-03 | 17 §17.2 | weights Σ=1 from contract priorities; proof/exhaustive/sampling trichotomy; provisional seeds | L3 | C✓ S∼ I✗ V✗ E✗
-R-17-04 | 17 §17.2/17.4 | correct Pareto rule; redundancy≠independence; niche decides | L3 | C✓ S— I✗ V✗ E✗
+R-17-04 | 17 §17.2/17.4 | correct Pareto rule; redundancy≠independence; niche decides | L3 | C✓ S— I∼ V∼ E✗
 R-17-05 | 17 §§17.5–17.6 | state handover; effect-equivalence; no pure-function sub for effectful; exact-vs-estimated, transitivity rules | L1-C1 + L3 | C✓ S∼ I✗ V✗ E✗
 R-17-06 | 17 §17.3/§17.4 | degeneracy test (structure+overlap); 4-record registry | L1-C1 + L3 | C✓ S∼ I✗ V✗ E✗
-R-18-01 | 18 | demand-gated growth; nomination→construction→evaluation→acquisition | L3 | C✓ S∼ I✗ V✗ E✗
-R-18-02 | 18 | construction order (reuse→…→instantiate, new capacity last); stopping rules; demand signals | L3 | C✓ S∼ I✗ V✗ E✗
+R-18-01 | 18 | demand-gated growth; nomination→construction→evaluation→acquisition | L3 | C✓ S∼ I✓ V✓ E✗
+R-18-02 | 18 | construction order (reuse→…→instantiate, new capacity last); stopping rules; demand signals | L3 | C✓ S∼ I∼ V∼ E✗
 R-19-01 | 19 | 4 adaptation targets; org learning without component learning | L3 | C✓ S∼ I✗ V✗ E✗
-R-19-02 | 19 §19.2 | operator = graph transformation + preserved contracts + rollback; composites are providers | L1 + L3 | C✓ S∼ I✗ V✗ E✗
-R-20-01 | 20 §20.1/20.5 | S(N) special case with stated assumptions; general S(T); no-double-counting ledgers | L3 | C✓ S✓ I✗ V✗ E✗
-R-20-02 | 20 §20.2/20.4 | marginal utility vs frontier; B_explore; 3 values; subsidy rule; cost-of-asking | L3 | C✓ S∼ I✗ V✗ E✗
-R-20-03 | 20 §20.3 | retention ledger; policy floors; forgetting reported | L3 | C✓ S✓ I✗ V✗ E✗
+R-19-02 | 19 §19.2 | operator = graph transformation + preserved contracts + rollback; composites are providers | L1 + L3 | C✓ S∼ I∼ V∼ E✗
+R-20-01 | 20 §20.1/20.5 | S(N) special case with stated assumptions; general S(T); no-double-counting ledgers | L3 | C✓ S✓ I∼ V∼ E✗
+R-20-02 | 20 §20.2/20.4 | marginal utility vs frontier; B_explore; 3 values; subsidy rule; cost-of-asking | L3 | C✓ S∼ I∼ V∼ E✗
+R-20-03 | 20 §20.3 | retention ledger; policy floors; forgetting reported | L3 | C✓ S✓ I∼ V∼ E✗
 R-22-01 | 22 | Discovery Engine as competing provider family; coordination-check-first | L3 | C✓ S∼ I✗ V✗ E✗
 R-22-02 | 22 | decision procedure (residual→decompose→ablate→contract→probe); stopping rules; B_explore cap | L3 | C✓ S∼ I✗ V✗ E✗
 R-23-01 | 23 | 7 evaluator families with named appropriate evidence | L1-C1 + L3 | C✓ S✓ I✗ V✗ E✗
-R-23-02 | 23 | integrity: provenance/calibration/independence; evaluator quarantine; no self-set criteria | L1-C1 | C✓ S∼ I✗ V✗ E✗
+R-23-02 | 23 | integrity: provenance/calibration/independence; evaluator quarantine; no self-set criteria | L1-C1 | C✓ S∼ I∼ V∼ E✗
 R-23-03 | 23 §§23.3–23.4 | adjudication terminates or escalates; trust termination per Doc 30 | L1 + L3 | C✓ S∼ I✗ V✗ E✗
 R-25-01 | 25 | equilibrium≠stability; thrash/erode/ossify distinguished | L3 | C✓ S∼ I✗ V✗ E✗
 R-25-02 | 25 §25.5 | measured state vector; control inputs; static-valid stability; open questions registered | L3 | C✓ S∼ I✗ V✗ E✗ (control law untested by design)
 R-26-01 | 26 | exact equivalence vs non-transitive estimated substitution; resilience separate; ontology consistency rules | L1-C1 | C✓ S∼ I✗ V✗ E✗ (registry enforcement untested)
 R-27-01 | 27 | 5 reference boundaries; level mislabeling prohibited | L3 | C✓ S— I✗ V✗ E✗
-R-27-02 | 27 §§27.2–27.3 | conditional trial; artifact types; isolation/cancellation/reproducibility; kernel-only entry | L1 + L3 | C✓ S∼ I✗ V✗ E✗
+R-27-02 | 27 §§27.2–27.3 | conditional trial; artifact types; isolation/cancellation/reproducibility; kernel-only entry | L1 + L3 | C✓ S∼ I∼ V∼ E✗
 R-28-01 | 28 §§28.1–28.2 | vector Δ; 3 categories; admissibility; replay-validity conditions; fresh execution where invalid | L3 | C✓ S∼ I✗ V✗ E✗
 R-28-02 | 28 §28.3 | attribution-before-selection; no auto-retention; uncertainty-aware thresholds | L3 | C✓ S∼ I✗ V✗ E✗
 R-30-01 | 30 §30.1 | 4 grounding types; policy≠truth; termination recorded or inadmissible | L1 + L3 | C✓ S✓ I✗ V✗ E✗
 R-30-02 | 30 §30.2 | diagnostic depth (no auto-penalty); calibration/dependence accounting; circularity defect; expiry/invalidation; unresolved-vs-failed | L1 + L3 | C✓ S∼ I✗ V✗ E✗
-R-10-01 | 10 | optional neural provider family; R0/R1/R2b results labeled historical predecessor evidence | — | C✓ S— I✗ V✗ E✗ (scoped; no new claims)
+R-10-01 | 10 | optional neural provider family; R0/R1/R2b results labeled historical predecessor evidence | — | C✓ S— I— V✗ E✗ (scoped; no new claims)
 
 ## 31.2a Consolidation requirement extension
 
-R-02-13 | 02 §2.11 | semantic adapter checks and uncertainty mapping | adapter boundary tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
-R-20-04 | 20 §20.2 | separate discovery probe and construction grants | bounded funding tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
-R-21-05 | 21 §21.5 | owned reservation conversion and idempotent unspent release | durable concurrent ledger tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
+R-02-13 | 02 §2.11 | semantic adapter checks and uncertainty mapping | adapter boundary tests | C✓ S∼ I∼ V∼ E✗ (specified; runtime/experiment evidence open)
+R-20-04 | 20 §20.2 | separate discovery probe and construction grants | bounded funding tests | C✓ S∼ I∼ V∼ E✗ (specified; runtime/experiment evidence open)
+R-21-05 | 21 §21.5 | owned reservation conversion and idempotent unspent release | durable concurrent ledger tests | C✓ S∼ I✓ V✓ E✗ (specified; runtime/experiment evidence open)
 R-21-06 | 21 §21.6 | bounded history retention and deletion dispositions | GC and unavailable-replay tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
 R-23-04 | 23 §23.5 | adaptive evaluation access and repeated-comparison policy | holdout/access tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
 R-23-05 | 23 §23.6 | family-specific uncertainty and floor decisions | calibration/statistical checks | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
-R-27-03 | 27 §27.6 | bounded typed-composition recipe and baselines | executable construction experiment | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
-R-29-03 | 29 §29.2 | typed impact actions distinguish authority from interference | impact enforcement tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
+R-27-03 | 27 §27.6 | bounded typed-composition recipe and baselines | executable construction experiment | C✓ S∼ I✓ V✓ E✗ (specified; runtime/experiment evidence open)
+R-29-03 | 29 §29.2 | typed impact actions distinguish authority from interference | impact enforcement tests | C✓ S∼ I∼ V∼ E✗ (specified; runtime/experiment evidence open)
 R-32-01 | 32 §32.1 | mechanism/stage transition declarations and envelope | runtime kind/envelope tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
-R-32-02 | 32 §32.3 | single-owner profile; failover requires fencing | restart/ownership tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
-R-32-03 | 32 §32.4 | scoped permits; revoke starts; drain existing invocation only | gateway/stop tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
-R-32-04 | 32 §32.5 | verdict-only verification; repeatable restoration; no permit | lifecycle tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
+R-32-02 | 32 §32.3 | single-owner profile; failover requires fencing | restart/ownership tests | C✓ S∼ I✓ V✓ E✗ (specified; runtime/experiment evidence open)
+R-32-03 | 32 §32.4 | scoped permits; revoke starts; drain existing invocation only | gateway/stop tests | C✓ S∼ I✓ V✓ E✗ (specified; runtime/experiment evidence open)
+R-32-04 | 32 §32.5 | verdict-only verification; repeatable restoration; no permit | lifecycle tests | C✓ S∼ I✓ V✓ E✗ (specified; runtime/experiment evidence open)
 R-32-05 | 32 §32.6 | purpose-specific replay and external trace limits | replay-profile tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
-R-32-06 | 32 §32.7 | trusted enforcement includes deadlines and effect gateway | bypass/isolation tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
-R-32-07 | 32 §32.9 | empty change and finite closure; cycles valid | reference regression plus runtime impact tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
-R-32-08 | 32 §32.11 | task ownership, orchestration, cancellation, bounded queues | executor/deadlock tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
-R-32-09 | 32 §32.12 | durable publication and uncertain-effect reconciliation | crash-injection tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime/experiment evidence open)
+R-32-06 | 32 §32.7 | trusted enforcement includes deadlines and effect gateway | bypass/isolation tests | C✓ S∼ I✓ V✓ E✗ (specified; runtime/experiment evidence open)
+R-32-07 | 32 §32.9 | empty change and finite closure; cycles valid | reference regression plus runtime impact tests | C✓ S∼ I✓ V✓ E✗ (specified; runtime/experiment evidence open)
+R-32-08 | 32 §32.11 | task ownership, orchestration, cancellation, bounded queues | executor/deadlock tests | C✓ S∼ I∼ V∼ E✗ (specified; runtime/experiment evidence open)
+R-32-09 | 32 §32.12 | durable publication and uncertain-effect reconciliation | crash-injection tests | C✓ S∼ I✓ V✓ E✗ (specified; runtime/experiment evidence open)
 
 Research additions in Docs 07/11/14/18/20/22/25/27/28 retain their
 bounded experiments and source links. They are research policies, not implicit
 Core requirements; normative extraction of each selected deployment policy
 is part of independent review, not presumed complete in this register.
 
-R-24-COMPOSE-02 | 24 §24.4 | complementary composition does not require parent-interface substitution; retirement has separate replacement gates | AR-01 admission/retirement cases | C✓ S∼ I✗ V✗ E✗ (specified; runtime tests open)
+R-24-COMPOSE-02 | 24 §24.4 | complementary composition does not require parent-interface substitution; retirement has separate replacement gates | AR-01 admission/retirement cases | C✓ S∼ I✓ V✓ E✗ (specified; runtime tests open)
 R-26-02 | 26 §26.4 | only exact equivalence canonicalizes; estimated overlap has no transitive closure | AR-02 overlap witness and registry tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime tests open)
 
 ## 31.3 Operation inventory (completeness per operation, not per document)
@@ -228,7 +230,7 @@ Construction-direction integration (selected policies, not mandatory Core):
 R-19-04-M | 19 §19.10 | one framework assigns compiler, predictor, repertoire and inference distinct roles | architecture/ablation review | C✓ S∼ I✗ V✗ E✗ (design selected; benefit untested)
 R-27-05 | 27 §27.8 | learned abstractions have scoped contracts and versioned dependency-preserving lowerings | abstraction/semantic tests | C✓ S∼ I✗ V✗ E✗ (specified; generator unimplemented)
 R-21-08 | 21 §21.8 | case, library and repertoire record kinds are distinct and versioned | record/retention tests | C✓ S∼ I✗ V✗ E✗ (specified; implementation open)
-R-29-05 | 29 §29.6 | transitive lowering dependencies and descriptor-policy impacts remain scoped | invalidation tests | C✓ S∼ I✗ V✗ E✗ (specified; enforcement open)
+R-29-05 | 29 §29.6 | transitive lowering dependencies and descriptor-policy impacts remain scoped | invalidation tests | C✓ S∼ I✓ V✓ E✗ (specified; enforcement open)
 R-25-03 | 25 §25.12 | repertoire selection uses measured behavior and full retention/reuse costs | matched archive experiment | C✓ S∼ I✗ V✗ E✗ (specified; experiment unrun)
 R-10-02 | 10 §10.1 | optional coupled inference declares update algebra, termination and support withdrawal | solver/withdrawal comparison | C✓ S∼ I✗ V✗ E✗ (specified; current experiment unrun)
 R-07-06 | 07 §7.13 | macro learning competes with flat/memoized/static macro controls at expanded work bounds | construction experiment | C✓ S∼ I✗ V✗ E✗ (specified; unrun)
@@ -251,6 +253,15 @@ R-28-03 | 28 §28.5 | causal interpretation requires assigned interventions and 
 R-29-04 | 29 §29.5 | stale prediction properties are suspended/narrowed by actual dependencies; model guesses cannot narrow runtime closure | invalidation tests | C✓ S∼ I✗ V✗ E✗ (specified; enforcement open)
 R-32-10 | 32 §32.13 | model remains ordinary provider; predictions grant no validation, publication or authority | workflow/bypass tests | C✓ S∼ I✗ V✗ E✗ (specified; runtime absent)
 R-07-05 | 07 §7.12 | Static/Selection/Search/Cases/Model comparison charges total cost and budget non-attainment | preregistered experiment | C✓ S∼ I✗ V✗ E✗ (specified; unrun)
+R-20-06 | 20 §20.2 | operator-issued periodic funding; ceilings bound unspent funding including holds; developmental code cannot mint | L1 | C✓ S✓ I✓ V✓ E✗
+R-21-09 | 21 §21.11 | execution profiles (subprocess/persistent/inprocess) share one adapter: schema checks, protocol bounds, artifact verification, timing | L1 | C✓ S✓ I✓ V✓ E✗
+R-21-10 | 21 §21.12 | developmental code receives a restricted context with no ledger, raw store, runtime or funding authority | L1 | C✓ S✓ I✓ V∼ E✗
+R-21-11 | 21 §21.13 | prepared structures shared only by identical prepare stages, with measured time and size | L1 | C✓ S✓ I✓ V✓ E✗
+R-24-ASSIMILATE-02 | 24 §24.4 | structural-factoring assimilation: catalogue nomination, isolated union gate, atomic publication refusing hidden dependents, lineage recovery with fresh validation | L1 + L3 | C✓ S✓ I✓ V∼ E✗
+R-25-04 | 25 §25.12 | provider lifecycle ACTIVE/DORMANT/ARCHIVED; transitions justified by population-computed assessments from kernel records | L1 + L3 | C✓ S✓ I✓ V✓ E✗
+R-25-05 | 25 §25.5 | ecology decisions are durable and replay to identical state and later decisions | L1 | C✓ S✓ I✓ V✓ E✗
+R-07-10 | 07 §7.4 | experiment runners execute only from committed, digest-matched preregistrations; amendments disclosed | process | C✓ S✓ I∼ V∼ E✗
+R-31-01 | 31 §31.12 | register cells, document status and code/test citations are mechanically consistent | L1 | C✓ S✓ I✓ V✓ E✗
 
 CIA instructions: all 37 schematized in Doc 09 §§9.9–9.10 (LEARN template + 36 in §9.10), each carrying the 9-property template; per-instruction register rows R-09-* above. Developmental transformations: ADD-PROVIDER, REMOVE-PROVIDER, ADD/REMOVE-EDGE, REBIND, COMPOSE, SPLIT, ASSIMILATE, RETIRE/RESTORE — per-primitive contracts in Doc 24 §24.4 with register rows R-24-* above; machine-checked pre/post (proofs, model checks) remain Phase 3A/4 work, explicitly distinguished from these preliminary machine-readable contracts.
 
@@ -348,17 +359,54 @@ open under G-13; existing reference tests do not discharge these obligations.
 
 ## 31.11 First runtime implementation disposition
 
-src/brainos now contains the bounded single-owner implementation described in
-Doc 21 section 21.9. Earlier register I/V/E cells describe full target obligations;
-they are not blanket statements that no executable code exists. This increment
-provides partial implementation evidence for G-02/G-03/G-04/G-07/G-12 and selected
-L1 boundary behaviors, not full conformance or independent gate acceptance.
+Superseded by section 31.12. Register I/V cells are now derived from
+`docs/current/traceability.json` and mechanically checked against the code and
+tests in `src/brainos` and `tests/`. They state what is actually built, not
+target obligations. The bounded runtime's limits remain in Doc 21 sections
+21.9-21.13; do not infer closure from a passing test count.
 
-Actual tests cover scoped permits, challenge-at-cut behavior, verdict/adjudication
-separation, expiring evidence, atomic budget operations, provider catalogue
-identity, process execution, staged revision CAS, journal integrity, and real
-child-process death at manifest/invocation/effect boundaries. The demo performs
-parsing, summation, receipt reconciliation after lost acknowledgment, restart
-authority rejection, and validated replacement. No model-learning or abstraction
-benefit is claimed. The bounded runtime and remaining requirements are listed
-in Doc 21 section 21.9; do not infer closure from a passing test count.
+## 31.12 Traceability and drift control
+
+The register is the single source of truth for what is built. Every row's
+implementation (I) and verification (V) cells are derived from
+`docs/current/traceability.json`, which binds each requirement ID to:
+- a status: `implemented` (I✓), `partial` (I∼), `specified` (I✗) or
+  `documentary` (I—, a rule about claims or vocabulary, not code);
+- the code symbols that implement it;
+- the tests that verify it (`verified: full` gives V✓, otherwise V∼; no
+  tests gives V✗);
+- a gap note.
+
+`tools/check_traceability.py` fails on any drift:
+1. a cited code symbol or test does not exist (resolved by parsing source);
+2. a register row's I/V cells disagree with the map;
+3. a module in `src/brainos` or a test class in `tests/` is claimed by no
+   requirement (unspecified behavior);
+4. a document's `Status:` header, or its README status, disagrees with the
+   status of the requirements it owns;
+5. Doc 21's generated current-state map is out of date.
+
+`--write` regenerates the derived cells, the README status column and the
+Doc 21 map. Nothing else is generated, so prose stays authored. The checker
+runs in the acceptance suite. A passing check proves that claims cite real
+code and tests; it does not prove that the tests are sufficient, which
+remains review work.
+
+Corrective work from X3 (docs/results/2026-11-25T-assimilation) is carried in
+this increment as implementation fixes. They are not a rerun, and any new
+confirmatory claim needs its own preregistration.
+
+## Assurance 31.12
+
+Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 (slo); operations T1 (schema); performance T1 (slo); maintainability T1 (new_boundary); others T0
+
+| ID | Discipline | Claim | Could fail by | Control (owner) | Check | Evidence |
+|---|---|---|---|---|---|---|
+| A-51 | verification | Every implemented or partial requirement cites code symbols and tests that exist | Docs claim unbuilt behavior | tools/check_traceability.py symbol resolution | py tools/check_traceability.py | tested |
+| A-52 | maintainability | Every src/brainos module and test class is claimed by a requirement | Built behavior absent from the specification | Orphan check in tools/check_traceability.py | py tools/check_traceability.py | tested |
+| A-53 | verification | Register I/V cells equal the traceability map | Stale status cells (the pre-31.12 state: all 202 rows I✗) | Derived cells; drift check | py tools/check_traceability.py | tested |
+| A-54 | maintainability | Each document's status header and README status match its requirements | A doc presented as built while unimplemented, or the reverse | Header and README consistency check | py tools/check_traceability.py | tested |
+| A-55 | observability | Doc 21's current-state map is generated from the traceability map | Hand-maintained implementation summary drifting | Generated section verified byte-for-byte | py tools/check_traceability.py | tested |
+| A-56 | operations | The drift check runs in acceptance and every suite still passes | Checker skipped | tools/run_acceptance.py; all suites | py -m unittest discover -s tests | tested |
+| A-57 | reliability | The assimilation gate charges the full construction cost of a nomination, stops hopeless evaluations early, compares tolerances with a confidence margin, and accounts for undeclared internal state | X3 failure modes recur | assimilation.py corrections | tests/test_assimilation.py GateCorrections | tested |
+| A-58 | performance | Early termination bounds the evaluation cost of a hopeless candidate (measured, not assumed) | Seconds spent proving hopeless candidates hopeless | Early-stop rule in AssimilationSearch.evaluate | tests/test_assimilation.py GateCorrections | tested |

@@ -1,5 +1,7 @@
 # 01 — Research Proposal: BrainOS as Programmable Cognitive Execution
 
+Status: documentary — vocabulary, rationale or claims policy; adds no runtime requirement.
+
 ## 1.1 Abstract
 
 BrainOS is a programmable execution environment for heterogeneous AI

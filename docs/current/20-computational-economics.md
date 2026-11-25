@@ -1,5 +1,7 @@
 # 20 — Computational Economics (canonical model)
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 One economic model for all transformations — promotion, assimilation,
 growth, and retention. Docs 09 and 11 reference this document as
 canonical; their inline equations are shorthands, not rivals.

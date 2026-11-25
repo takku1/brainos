@@ -184,7 +184,8 @@ class UnionGate(Organization):
         verdict = self.search.evaluate(hashed, self.parents, self.evalset(wide=True), self.gate(),
                                        budget=self.budget, principal="dev")
         self.assertFalse(verdict["accepted"])
-        self.assertTrue(any("range-count" in r and "tolerance" in r for r in verdict["reasons"]), verdict["reasons"])
+        self.assertTrue(any("range-count" in r and ("tolerance" in r or "early stop" in r) for r in verdict["reasons"]),
+                        verdict["reasons"])
 
     def test_output_mismatch_is_rejected(self):
         candidate = self.sorted_candidate()
@@ -365,6 +366,71 @@ class Boundaries(Organization):
         for kind in ("nomination", "evaluation", "publication", "recovery"):
             self.assertIn(kind, kinds)
         self.assertNotIn("ARCHIVED", {m["state"] for m in self.r.store.find("member")})
+
+
+class GateCorrections(Organization):
+    """X3 corrections (Doc 31 section 31.12): full nomination cost, early stop,
+    confidence-bounded tolerance and declared internal state."""
+
+    def verdicts(self, gate):
+        nominated, _ = self.search.nominate(self.parents)
+        evalset = self.evalset()
+        return [self.search.evaluate(c, self.parents, evalset, gate, budget=self.budget, principal="dev")
+                for c in nominated]
+
+    def test_selection_charges_the_whole_nomination(self):
+        gate = self.gate(maintenance_ns_per_byte_epoch=1000.0)       # make the state saving dominate
+        verdicts = self.verdicts(gate)
+        sorted_v = next(v for v in verdicts if v["implementations"][self.exact] == "exact_sorted")
+        self.assertTrue(sorted_v["competent"], sorted_v["reasons"])
+        own = sorted_v["construction_ns"] / sorted_v["mean_savings_ns"]
+        total = sum(v["construction_ns"] for v in verdicts) / sorted_v["mean_savings_ns"]
+        self.assertGreater(total, own)
+        tight = self.gate(maintenance_ns_per_byte_epoch=1000.0, horizon=(own + total) / 2)
+        self.assertIsNone(self.search.select(verdicts, tight))
+        self.assertIn("nomination break-even", " ".join(sorted_v["final_reasons"]))
+        roomy = self.gate(maintenance_ns_per_byte_epoch=1000.0, horizon=total * 2)
+        self.assertIs(self.search.select(verdicts, roomy), sorted_v)
+
+    def test_early_stop_bounds_the_cost_of_a_hopeless_candidate(self):
+        nominated, _ = self.search.nominate(self.parents)
+        scan = next(c for c in nominated if c["implementations"][self.exact] == "exact_scan")
+        evalset = self.evalset(wide=True, epochs=4)
+        full = self.search.evaluate(scan, self.parents, evalset, self.gate(early_stop_factor=1e12),
+                                    budget=self.budget, principal="dev")
+        stopped = self.search.evaluate(scan, self.parents, evalset, self.gate(early_stop_factor=3.0),
+                                       budget=self.budget, principal="dev")
+        self.assertTrue(stopped["early_stop"])
+        self.assertFalse(stopped["accepted"])
+        self.assertLess(stopped["construction_ns"], 0.6 * full["construction_ns"])
+
+    def test_confidence_bound_rejects_a_ratio_whose_median_is_under_tolerance(self):
+        candidate = self.sorted_candidate()
+        sorted_id = candidate["assignment"][self.exact]
+        real = self.search._run
+        ratios = iter([1.5, 1.5, 1.5, 9.0, 9.0, 1.5] * 10)
+        def scripted(spec, value, budget, principal, timings):
+            out, timing = real(spec, value, budget, principal, timings)
+            timing = dict(timing, answer_ns=100_000)
+            if spec["id"] == sorted_id:
+                timing["answer_ns"] = int(100_000 * next(ratios))
+            return out, timing
+        self.search._run = scripted
+        verdict = self.search.evaluate(candidate, self.parents, self.evalset(epochs=8), self.gate(exact=3.0),
+                                       budget=self.budget, principal="dev")
+        ratio = verdict["latency_ratio"][self.exact]
+        self.assertLess(min(v for k, v in ratio.items() if isinstance(v, float) and k != "upper_bound"), 3.0)
+        self.assertGreater(ratio["upper_bound"], 3.0)
+        self.assertTrue(any("upper bound" in r for r in verdict["reasons"]), verdict["reasons"])
+
+    def test_internal_state_primitives_are_not_offered_as_stateless(self):
+        self.assertTrue(providers.specification("range_bisect")["internal_state"])
+        self.assertNotIn("internal_state", providers.specification("range_sorted"))
+        nominated, _ = self.search.nominate(self.parents)
+        stateless = [c for c in nominated if c["method"] == "structure-elimination"]
+        self.assertTrue(stateless)
+        for c in stateless:
+            self.assertFalse({"range_bisect", "range_hash"} & set(c["implementations"].values()), c)
 
 
 class FrozenPreregistration(unittest.TestCase):

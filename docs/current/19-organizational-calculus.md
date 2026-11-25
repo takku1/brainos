@@ -1,5 +1,7 @@
 # 19 - Organizational Adaptation and World Models
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 BrainOS adapts computational organizations and can learn from the consequences
 of those adaptations. This document owns the replaceable organizational
 prediction/planning strategy. Doc 24 owns transformation contracts; Doc 21 owns

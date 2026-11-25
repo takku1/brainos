@@ -165,6 +165,7 @@ class Primitive:
     resources: tuple = ("cpu",)
     prepare: object = None          # staged primitives: data -> structure (shared by identity)
     split: bool = False             # answer signature is (data, queries) with no prepare stage
+    internal_state: bool = False    # builds a structure inside the answer stage (undeclared prepare)
 
 
 PRIMITIVES = {
@@ -179,9 +180,9 @@ PRIMITIVES = {
     "range_scan_list": Primitive(range_scan_list, "range-batch", "integers", "range-count",
                                    resources=("cpu", "list-buffer")),
     "range_bisect": Primitive(range_bisect, "range-batch", "integers", "range-count",
-                              resources=("cpu", "sort-buffer")),
+                              resources=("cpu", "sort-buffer"), internal_state=True),
     "range_hash": Primitive(range_hash, "range-batch", "integers", "range-count",
-                            resources=("cpu", "hash-table")),
+                            resources=("cpu", "hash-table"), internal_state=True),
     # Staged lookup family (assimilation experiments): `function` is the answer stage.
     "exact_hash": Primitive(exact_on_hash, "exact-batch", "integers", "exact-count",
                             resources=("cpu", "hash-table"), prepare=prepare_hash),
@@ -232,6 +233,8 @@ def specification(name):
                 cost={"attempts": entry.attempts}, engine_abi="trusted-unary/v1",
                 prepare=prepare_identity(entry),
                 footprint={"resources": sorted(entry.resources), "failure_domains": ["trusted-python"]})
+    if entry.internal_state:
+        core["internal_state"] = True   # added only when true, so other identities are unchanged
     artifact = digest(core)
     return dict(core, artifact=artifact, id=f"{name}@{entry.version}:{artifact}")
 

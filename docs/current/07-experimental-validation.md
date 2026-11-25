@@ -1,5 +1,7 @@
 # 07 — Experimental Validation (three levels)
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 Conformance, usefulness, and superiority are three different claims.
 A system conforms to BrainOS without outperforming any baseline.
 

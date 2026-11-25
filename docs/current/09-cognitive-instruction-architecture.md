@@ -1,5 +1,7 @@
 # 09 — Cognitive Instruction Architecture (generalized contract)
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 ## 9.1 What it is
 
 This document owns instruction signatures and allowed effects. Doc 21 owns

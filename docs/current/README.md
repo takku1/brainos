@@ -15,40 +15,53 @@ necessarily a neural network.
 
 ## Documents
 
-| # | Document | Contents |
-|---|----------|----------|
-| 01 | [Research Proposal](01-research-proposal.md) | Programmable execution thesis, hypothesis, claims, scope, success criteria |
-| 02 | [Formal Architecture](02-formal-architecture.md) | Providers, adapters, readout state, contracts, graphs, slots |
-| 03 | [Supervisory Control](03-supervisory-control.md) | Reachability closure, enablement vs authorization vs execution |
-| 04 | [Shared Representation](04-shared-representation.md) | Readout integration, provenance, uncertainty, failure modes |
-| 05 | [Cross-Provider Learning](05-cross-module-learning.md) | Joint objective, alignment, retention, recoverable plasticity |
-| 06 | [Temporal Coordination](06-temporal-coordination.md) | Multi-rate async execution, snapshots, staleness, liveness |
-| 07 | [Experimental Validation](07-experimental-validation.md) | Matched conditions, metrics, ablations, robotics track |
-| 08 | [Development Roadmap](08-development-roadmap.md) | Canonical implementation sequence, first vertical slice, demos, Experiment 001 |
-| 09 | [Cognitive Instruction Architecture](09-cognitive-instruction-architecture.md) | Typed instruction contract, kernel protocol, conformance |
-| 10 | [Mechanism Network and Collective Inference](10-mechanism-network.md) | Optional coupled-inference providers, update algebra, contradiction and support withdrawal |
-| 11 | [Developmental ecology (CCCM)](11-developmental-ecology.md) | Developmental providers, operations, layers Core/Plasticity/Morphogenesis |
-| 12 | [Failure Modes](12-failure-modes-and-mitigations.md) | Risks, contracts, residual risks |
-| 13 | [Glossary](13-glossary.md) | Terms, symbols, conventions, rename table |
-| 14 | [Game-dev mapping](14-game-dev-mapping.md) | BT/utility/GOAP/ECS/netcode shifted to OUR concepts |
-| 15 | [Science mapping](15-science-mapping.md) | World models/sims/provenance/prereg/controls/replication as gates |
-| 16 | [Evolution + neuroscience](16-evolution-neuroscience-mapping.md) | Adopted lineage vs rejected relabeling/pop claims |
-| 17 | [Capability Specification](17-capability-spec.md) | Functional contracts, substitutability measurement, registry |
-| 18 | [Capability Demand](18-capability-demand.md) | Demand-driven nomination, construction order, acquisition |
-| 19 | [Organizational Adaptation and World Models](19-organizational-calculus.md) | Transformation experience, scoped outcome prediction, guarded reuse and bounded planning |
-| 20 | [Computational Economics](20-computational-economics.md) | Canonical S(N), marginal utility, exploration and retention budgets |
-| 21 | [Reference Implementation](21-reference-implementation.md) | Interfaces, types, protocols, L1 tests, dependency rule |
-| 22 | [Capability Discovery and Planning](22-capability-discovery.md) | Demand diagnosis, case/model-guided proposals, enabling steps, probes and stopping |
-| 23 | [Evaluation Architecture](23-evaluation-architecture.md) | Evaluator families, integrity, evaluation of evaluators |
-| 24 | [Transformation Algebra](24-transformation-algebra.md) | Graph-operation primitives, composition, frame rule |
-| 25 | [Ecology Dynamics](25-ecology-dynamics.md) | Stability, endogenous opportunities, coevolution research, cycles, sources |
-| 26 | [Capability Ontology](26-capability-ontology.md) | Specialization, equivalence, dependency, composition, abstraction |
-| 27 | [Candidate Construction](27-candidate-construction.md) | Typed search, selected abstraction-learning extension, explicit lowerings and grammar boundaries |
-| 28 | [Credit Assignment](28-credit-assignment.md) | Marginal contribution, synergy, intervention, coalition attribution |
-| 29 | [Dependency & Isolation](29-dependency-interference.md) | Interference classes, closure, isolation levels |
-| 30 | [Evaluation Grounding](30-evaluation-grounding.md) | Trust termination, distance-to-grounding |
-| 31 | [Requirement Register](31-architectural-audit.md) | Inventory, traceability, queued fixes, closure plan, gates |
-| 32 | [Core Semantics (Phase 1B)](32-core-semantics.md) | Task execution, scoped authority, lifecycles, replay, trusted enforcement, crash/effect recovery |
+| # | Document | Contents | Status |
+|---|----------|----------|---|
+| 01 | [Research Proposal](01-research-proposal.md) | Programmable execution thesis, hypothesis, claims, scope, success criteria | documentary |
+| 02 | [Formal Architecture](02-formal-architecture.md) | Providers, adapters, readout state, contracts, graphs, slots | partial |
+| 03 | [Supervisory Control](03-supervisory-control.md) | Reachability closure, enablement vs authorization vs execution | partial |
+| 04 | [Shared Representation](04-shared-representation.md) | Readout integration, provenance, uncertainty, failure modes | partial |
+| 05 | [Cross-Provider Learning](05-cross-module-learning.md) | Joint objective, alignment, retention, recoverable plasticity | research |
+| 06 | [Temporal Coordination](06-temporal-coordination.md) | Multi-rate async execution, snapshots, staleness, liveness | partial |
+| 07 | [Experimental Validation](07-experimental-validation.md) | Matched conditions, metrics, ablations, robotics track | partial |
+| 08 | [Development Roadmap](08-development-roadmap.md) | Canonical implementation sequence, first vertical slice, demos, Experiment 001 | partial |
+| 09 | [Cognitive Instruction Architecture](09-cognitive-instruction-architecture.md) | Typed instruction contract, kernel protocol, conformance | partial |
+| 10 | [Mechanism Network and Collective Inference](10-mechanism-network.md) | Optional coupled-inference providers, update algebra, contradiction and support withdrawal | research |
+| 11 | [Developmental ecology (CCCM)](11-developmental-ecology.md) | Developmental providers, operations, layers Core/Plasticity/Morphogenesis | partial |
+| 12 | [Failure Modes](12-failure-modes-and-mitigations.md) | Risks, contracts, residual risks | partial |
+| 13 | [Glossary](13-glossary.md) | Terms, symbols, conventions, rename table | documentary |
+| 14 | [Game-dev mapping](14-game-dev-mapping.md) | BT/utility/GOAP/ECS/netcode shifted to OUR concepts | documentary |
+| 15 | [Science mapping](15-science-mapping.md) | World models/sims/provenance/prereg/controls/replication as gates | documentary |
+| 16 | [Evolution + neuroscience](16-evolution-neuroscience-mapping.md) | Adopted lineage vs rejected relabeling/pop claims | documentary |
+| 17 | [Capability Specification](17-capability-spec.md) | Functional contracts, substitutability measurement, registry | partial |
+| 18 | [Capability Demand](18-capability-demand.md) | Demand-driven nomination, construction order, acquisition | partial |
+| 19 | [Organizational Adaptation and World Models](19-organizational-calculus.md) | Transformation experience, scoped outcome prediction, guarded reuse and bounded planning | partial |
+| 20 | [Computational Economics](20-computational-economics.md) | Canonical S(N), marginal utility, exploration and retention budgets | partial |
+| 21 | [Reference Implementation](21-reference-implementation.md) | Interfaces, types, protocols, L1 tests, dependency rule | partial |
+| 22 | [Capability Discovery and Planning](22-capability-discovery.md) | Demand diagnosis, case/model-guided proposals, enabling steps, probes and stopping | research |
+| 23 | [Evaluation Architecture](23-evaluation-architecture.md) | Evaluator families, integrity, evaluation of evaluators | partial |
+| 24 | [Transformation Algebra](24-transformation-algebra.md) | Graph-operation primitives, composition, frame rule | partial |
+| 25 | [Ecology Dynamics](25-ecology-dynamics.md) | Stability, endogenous opportunities, coevolution research, cycles, sources | partial |
+| 26 | [Capability Ontology](26-capability-ontology.md) | Specialization, equivalence, dependency, composition, abstraction | research |
+| 27 | [Candidate Construction](27-candidate-construction.md) | Typed search, selected abstraction-learning extension, explicit lowerings and grammar boundaries | partial |
+| 28 | [Credit Assignment](28-credit-assignment.md) | Marginal contribution, synergy, intervention, coalition attribution | research |
+| 29 | [Dependency & Isolation](29-dependency-interference.md) | Interference classes, closure, isolation levels | partial |
+| 30 | [Evaluation Grounding](30-evaluation-grounding.md) | Trust termination, distance-to-grounding | research |
+| 31 | [Requirement Register](31-architectural-audit.md) | Inventory, traceability, queued fixes, closure plan, gates | implemented |
+| 32 | [Core Semantics (Phase 1B)](32-core-semantics.md) | Task execution, scoped authority, lifecycles, replay, trusted enforcement, crash/effect recovery | partial |
+
+The Status column is checked, not asserted. It derives from the requirement rows
+each document owns:
+- **implemented**: every row is built and tested;
+- **partial**: some rows are built;
+- **specified**: normative design, not built;
+- **research**: hypotheses and proposed mechanisms;
+- **documentary**: vocabulary and policy.
+
+The register (Doc 31) is the source of truth. `tools/check_traceability.py`
+verifies that every implementation claim cites real code and tests, and that
+no code is unclaimed (Doc 31 section 31.12). What exists today, by module, is
+in Doc 21 section 21.0.
 
 ## Document roles and ownership
 

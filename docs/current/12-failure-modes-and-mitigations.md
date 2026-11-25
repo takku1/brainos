@@ -1,5 +1,7 @@
 # 12 — Failure Modes and Mitigations
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 F1 Unsafe actuation: only Certified+Active within revoke bounds;
 in-flight work completes unless a safe stop exists. F2 Stale authority:
 snapshots sequenced; challenge suspends dependents at episode boundary;

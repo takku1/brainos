@@ -1,5 +1,7 @@
 # 23 — Evaluation Architecture
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 Capabilities without trustworthy evaluation evolve toward the
 evaluator's flaws. Evaluators are therefore first-class providers
 with their own capability contracts — competed, versioned, and

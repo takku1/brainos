@@ -1,5 +1,7 @@
 # 29 — Dependency, Interference and Isolation Semantics
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 Graph connectivity is not the dependency model. Two providers sharing
 a GPU, an evaluator, a mutable store, a scheduler, an external
 service, or a failure domain interfere without sharing an edge —

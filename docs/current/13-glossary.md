@@ -1,5 +1,7 @@
 # 13 - Glossary
 
+Status: documentary — vocabulary, rationale or claims policy; adds no runtime requirement.
+
 Definitions below identify the owning contracts; examples do not add requirements.
 
 | Term | Definition / owner |

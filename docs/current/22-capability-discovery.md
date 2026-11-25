@@ -1,5 +1,7 @@
 # 22 - Capability Discovery and Organizational Planning
 
+Status: research — hypotheses and proposed mechanisms; nothing this document owns is implemented or validated.
+
 Discovery diagnoses a demand and chooses a bounded response: reuse existing
 organization, propose a transformation/sequence, acquire discriminating
 information, or abstain. Doc 18 owns demand records; Doc 19 owns outcome

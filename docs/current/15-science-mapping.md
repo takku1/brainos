@@ -1,5 +1,7 @@
 # 15 — Science Mapping (world models / sims / provenance / prereg / controls / replication)
 
+Status: documentary — vocabulary, rationale or claims policy; adds no runtime requirement.
+
 Document role: research rationale and source mappings. Architectural rules
 remain in their owning contracts/protocols (README ownership table); mappings
 do not introduce additional runtime conformance requirements.

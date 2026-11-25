@@ -298,6 +298,11 @@ def run_x2(root, v2=False):
 
 
 def main():
+    import inspect
+    from brainos.population import CapabilityPopulation
+    if "evidence" not in inspect.signature(CapabilityPopulation.retire).parameters:
+        raise SystemExit("historical runner: X2/X2b used caller-supplied retirement evidence, removed by B14. "
+                         "Reproduce them at commit 9b9e7bd (git worktree add ../brainos-x2 9b9e7bd).")
     v2 = "--v2" in sys.argv[1:]
     args = [a for a in sys.argv[1:] if a != "--v2"]
     digest = verify_preregistration(PREREG_V2, PREREG_V2_SHA256) if v2 else verify_preregistration()

@@ -1,5 +1,7 @@
 # 08 — Development Roadmap (three layers, four demos)
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 ## The three layers
 
 - BrainOS Core: arbitrary abilities execute, communicate, coordinate,
@@ -32,40 +34,40 @@ generalized — report it as a fail.
 
 ## Milestones and executable sequence (canonical plan)
 
-Historical M1-M3 describe predecessor work only; they do not mark this runtime
-implemented. Current phases map to milestones as follows. Doc 31 tracks
-obligations/evidence against this plan rather than maintaining another roadmap.
+How work proceeds so that documents and code cannot drift (Doc 31 section 31.12):
+1. A workstream begins with a design note in its owning document and register
+   rows whose status is `specified`.
+2. Code lands together with tests and a traceability entry that moves those
+   rows to `partial` or `implemented`; `tools/check_traceability.py` must pass.
+3. Any empirical claim needs a preregistration that is committed and pushed
+   before the run. Results are committed separately and never edited.
 
-| Phase | Deliverable / milestone | Exit evidence |
-|---|---|---|
-| 1A | Contract consistency and normative inventory | No known signature/lifecycle conflicts; independently reviewed register |
-| 1B | Core protocols, records, and reference models | Defined task/permit/recovery/resource semantics; reference regressions; remaining runtime tests explicitly listed |
-| 2 / M4 | Minimal single-authority runtime | Durable ledger/registry -> staged CAS publication -> scoped authority/effect gateway -> bounded task executor -> process/resource enforcement; L1 against actual runtime plus crash/negative tests |
-| 3A | Developmental executable semantics | Impact actions, construction operators, attribution and acquisition policies tied to executable checks |
-| 3B / M5 | Typed construction and reusable abstractions | Establish flat search/memoization and intervention traces; then test parameterized abstractions against static macros (07 section 7.13) with expanded primitive bounds |
-| 4 / M6 | Repair, assimilation, and recovery | Fault injection, union-of-context validation, capability restoration, and retained failures |
-| 5 / M7 | Experience-guided organization and broader experiments | Guarded cases, learned forecasts on a fixed library (07 section 7.12), then independent-factor combination (7.16); test inference/repertoire separately (7.14-7.15) |
-| 6 | Qualified release | Reproducible build, requirement traceability, deployment limits, no blocking defects for declared profile |
+Historical phases 1A-3B and M1-M3 are summarized by their evidence. Doc 31 holds
+the obligations; this table holds the order.
 
-Phase numbers identify work packages, not automatic authorization or a claim
-that a gate passed. Independent review remains outstanding. Perform a narrow
-closest-systems prior-art screen before substantial developmental engineering;
-extend it before scientific novelty claims. Construction prototypes are
-allowed as bounded experiments without pretending the production kernel exists.
+| Delivered | Evidence |
+|---|---|
+| Single-authority Core: durable ledger, staged CAS publication, scoped authority, effect gateway, task executor, crash recovery | R-09-04, R-09-COMMIT, R-32-02..09; tests/test_core.py, tests/test_crash_recovery.py |
+| Corrective passes B01-B20 | docs/results/2026-11-25T043902Z, -T-ecology, -T-retention |
+| Typed fabric, cumulative composition, populations, lifecycle | R-24-COMPOSE, R-17-01, R-25-04; X1, X1b |
+| Bounded ecology and retention study | X2, X2b, X2c (5 of 6 hypotheses passed; adaptation failed) |
+| Bounded assimilation | R-24-ASSIMILATE-02; X3 (safety held; acceptance rule unsound; not economical) |
+| Drift control | R-31-01; tools/check_traceability.py |
 
-First vertical slice: handwritten task -> deterministic provider -> scoped
-permit -> recorded result -> simulated idempotent effect -> restart recovery
--> one validated provider replacement. Prove this path before scaling provider
-families, distributed authority, or learned discovery. Expand Experiment 001's
-full task mixture after this smaller slice works through the same interfaces.
+| Workstream | Goal | Entry | Exit evidence | State |
+|---|---|---|---|---|
+| W0 Integrity | Keep docs and code in lockstep. Correct the X3 gate (full nomination cost, early stop, confidence-bounded tolerance, declared internal state). Carry the X2c open items: recruitment of dormant specialists, incremental assessment, kernel overhead, adaptation latency | — | Drift check in acceptance; GateCorrections tests; X3b preregistered before any new assimilation claim | gate corrected; X3b not yet preregistered |
+| W1 Emergence meter | Operational test: a capability is organizational if it survives substitution of every individual provider and vanishes when the coordination structure is removed | W0 | Meter implemented against populations and graphs, with positive and negative controls; register rows for Doc 19/25 | specified |
+| W2 Real-ecosystem adapter | One external provider family (for example a local LLM) behind the existing contracts, outside the standard-library kernel, with nondeterministic validation | W0 | Adapter process; validation that handles nondeterminism; semantic-commensurability gaps (R-02-13) measured rather than declared | specified |
+| W3 Stability of self-modification | Model learn → validate → commit → rebind as a control loop; state assumptions; prove bounded churn and no acquisition/retirement oscillation under them; test against X2c-style churn | W1 | Written result with assumptions; preregistered test; register rows for Doc 25 section 25.5 | specified |
+| W4 Mechanism design | Strategic providers: bonded claims, proper scoring of reported cost and confidence, calibration-based eligibility, collusion detection | W1, W3 | Adversarial providers in the catalogue; preregistered strategic-provider experiment; Doc 20 section 20.6 made normative | specified |
+| W5 Kernel as protocol | Signed claims and attestations across authorities; two-authority federation; Byzantine threat model | W4, design review | Design note reviewed before code; protocol tests with an adversarial peer; R-03-06 and R-32-02 revisited | specified |
+| W6 Governance and oversight | Gate parameters learned under evidence discipline; performativity (self-impact) terms on validity; human-oversight bandwidth and escalation model | W3, W5 | Bounded meta-adaptation with grounded evaluation (R-12-F18); oversight-load measurements | specified |
+| W7 Publication arc | Consolidate into three papers (Core semantics with proofs and a real demo; mechanism/economics with strategic experiments; morphogenesis results); package the preregistration machinery as a reusable standard | W2, W4 | Drafts whose claims are all traceable to register rows with evidence | specified |
 
-Next adaptation slice: pin a transformation record schema (21 section 21.7),
-collect assigned intervention outcomes, and build competent typed symbolic search
-with memoization. The selected next construction extension is parameterized
-abstraction learning (27 section 27.8). Establish exact guarded case retrieval,
-then test richer outcome models with a fixed library. Combine only under Doc
-07 section 7.16's independent-factor controls. Collective inference and repertoire
-retention are task-specific policies in this same framework, not new kernels.
+The order is deliberate. W1 gives every later experiment a dependent variable,
+and W3's loop model grounds W4/W5 design, so the protocol kernel (W5) is not
+built before its threat and stability assumptions are stated.
 
 ## Repository structure (adopted direction)
 

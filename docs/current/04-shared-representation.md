@@ -1,5 +1,7 @@
 # 04 — Shared Representation (readout integration)
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 ## 4.1 Role
 
 The readout is a queryable integration surface, not a mandatory bus.

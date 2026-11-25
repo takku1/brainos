@@ -1,5 +1,7 @@
 # 28 — Organizational Credit Assignment
 
+Status: research — hypotheses and proposed mechanisms; nothing this document owns is implemented or validated.
+
 When five providers cooperate and the system improves 20%, which one
 earned it? Wrong answers create wrong selection pressure and kill
 useful components. Downstream evaluation and ablations (Docs 07, 17)

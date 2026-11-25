@@ -1,5 +1,7 @@
 # 17 — Capability Specification
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 Capabilities are the unit of organization. Providers implement them;
 the supervisor reasons over them; competition compares them.
 

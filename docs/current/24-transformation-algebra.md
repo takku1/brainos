@@ -1,5 +1,7 @@
 # 24 — Organizational Transformation Algebra
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 Doc 19 defines the topological projection T:(G,X,B)→G'. This
 document gives the full calculus over the authoritative
 organizational state (§24.3): the graph signature describes

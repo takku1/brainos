@@ -1,5 +1,7 @@
 # 25 — Computational Ecology Dynamics
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 The ecology is a dynamical system over populations, not a ranking.
 This document states what equilibrium, pressure, diversity, growth,
 and stability mean operationally — targets for measurement and

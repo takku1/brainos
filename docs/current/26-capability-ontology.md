@@ -1,5 +1,7 @@
 # 26 — Capability Ontology and Abstraction
 
+Status: research — hypotheses and proposed mechanisms; nothing this document owns is implemented or validated.
+
 Capabilities need relationships, or the registry (Doc 17 §17.4)
 becomes a flat catalog of narrow functions. This document defines
 the relationship vocabulary; the registry implements it.

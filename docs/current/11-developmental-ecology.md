@@ -1,5 +1,7 @@
 # 11 — Developmental Ecology (CCCM growth layer, optional)
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 ## 11.1 Position
 
 CCCM population dynamics are an optional growth layer atop Docs 02–09,

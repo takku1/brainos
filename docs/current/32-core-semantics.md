@@ -1,5 +1,7 @@
 # 32 - Core Operational Semantics
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 Doc 09 owns instruction signatures and allowed effects; Doc 21 owns shared
 records; this document owns runtime protocols; Doc 29 owns impact semantics.
 Conflicts require coordinated edits, not precedence based on document age.

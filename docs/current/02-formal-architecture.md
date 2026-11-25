@@ -1,5 +1,7 @@
 # 02 — Formal Architecture (generalized)
 
+Status: partial — some requirements are built (Doc 31 register; Doc 21 section 21.0); the rest is specification, not implementation.
+
 ## 2.1 System definition
 
 Let the system be N heterogeneous providers:

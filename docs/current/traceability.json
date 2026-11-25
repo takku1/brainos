@@ -1,0 +1,1244 @@
+{
+ "version": 1,
+ "note": "Source of truth for register I/V cells (Doc 31 section 31.12). Rows absent here are 'specified'. Checked by tools/check_traceability.py.",
+ "requirements": {
+  "R-01-01": {
+   "status": "documentary",
+   "gap": "research-program statement"
+  },
+  "R-01-02": {
+   "status": "documentary",
+   "gap": "scope statement"
+  },
+  "R-01-03": {
+   "status": "documentary",
+   "gap": "success-criteria statement"
+  },
+  "R-01-04": {
+   "status": "documentary",
+   "gap": "novelty/direction statement"
+  },
+  "R-02-01": {
+   "status": "partial",
+   "code": [
+    "src/brainos/providers.py::specification",
+    "src/brainos/contracts.py::ProviderSpec"
+   ],
+   "tests": [
+    "tests/test_corrective.py::B04ArtifactIdentity",
+    "tests/test_runners.py::RunnerProfiles"
+   ],
+   "gap": "trusted catalogue only; optional interfaces have no per-capability tests"
+  },
+  "R-02-02": {
+   "status": "partial",
+   "code": [
+    "src/brainos/providers.py::timed_compute"
+   ],
+   "tests": [
+    "tests/test_runners.py::RunnerProfiles"
+   ],
+   "gap": "deterministic providers only; stochastic/stateful kinds unimplemented"
+  },
+  "R-02-03": {
+   "status": "partial",
+   "code": [
+    "src/brainos/graphs.py::compatible"
+   ],
+   "tests": [
+    "tests/test_corrective.py::TypedFabric"
+   ],
+   "gap": "identity adapters only; semantic adapters unimplemented"
+  },
+  "R-02-05": {
+   "status": "partial",
+   "code": [
+    "src/brainos/graphs.py::specification"
+   ],
+   "tests": [
+    "tests/test_corrective.py::TypedFabric",
+    "tests/test_cumulative.py::GraphReachability"
+   ],
+   "gap": "unary chains with exact schema/unit match"
+  },
+  "R-02-06": {
+   "status": "partial",
+   "code": [
+    "src/brainos/contracts.py::PermitScope",
+    "src/brainos/authority.py::Authority"
+   ],
+   "tests": [
+    "tests/test_core.py::EndToEndTests",
+    "tests/test_core.py::RuntimeCase.test_authority_receives_control_projection_not_signal_payload"
+   ],
+   "gap": "gap G-01: no runtime enforcement boundary against hostile providers"
+  },
+  "R-02-07": {
+   "status": "partial",
+   "code": [
+    "src/brainos/execution.py::TaskExecutor.run_task",
+    "src/brainos/development.py::CompositionSearch._record"
+   ],
+   "tests": [
+    "tests/test_corrective.py::TypedFabric",
+    "tests/test_cumulative.py::ConstructionProvenance"
+   ],
+   "gap": "provenance of results and construction only; observability/autonomy invariants untested"
+  },
+  "R-02-08": {
+   "status": "partial",
+   "code": [
+    "src/brainos/storage.py::Store"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_only_one_authority_owns_database"
+   ],
+   "gap": "single authority implemented; readouts and per-task epistemic bars are not"
+  },
+  "R-02-09": {
+   "status": "partial",
+   "code": [
+    "src/brainos/providers.py::code_identity",
+    "src/brainos/evidence.py::EvidenceLedger.check_support"
+   ],
+   "tests": [
+    "tests/test_corrective.py::B04ArtifactIdentity",
+    "tests/test_corrective.py::B06EvidenceScope"
+   ],
+   "gap": "slots/checkpoints unimplemented"
+  },
+  "R-02-10": {
+   "status": "partial",
+   "code": [
+    "src/brainos/transactor.py::Transactor.commit"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_competing_manifests_use_compare_and_swap"
+   ],
+   "gap": "manifest revisions only; no snapshot streams or scheduler"
+  },
+  "R-02-11": {
+   "status": "partial",
+   "code": [
+    "src/brainos/execution.py::TaskExecutor.cancel_task",
+    "src/brainos/authority.py::Authority.revoke"
+   ],
+   "tests": [
+    "tests/test_corrective.py::TypedFabric.test_cancellation_stops_at_node_boundary_and_refunds_unspent"
+   ],
+   "gap": "safe stops only at pure node boundaries; preempt unimplemented"
+  },
+  "R-02-13": {
+   "status": "partial",
+   "code": [
+    "src/brainos/graphs.py::compatible"
+   ],
+   "tests": [
+    "tests/test_corrective.py::TypedFabric.test_unsupported_adapter_is_refused"
+   ],
+   "gap": "exact schema/unit checks; semantic commensurability and uncertainty mapping unimplemented"
+  },
+  "R-03-01": {
+   "status": "partial",
+   "code": [
+    "src/brainos/registry.py::ProviderRegistry.resolve",
+    "src/brainos/authority.py::Authority.check_permit"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase",
+    "tests/test_cumulative.py::ImpactEnforcement"
+   ],
+   "gap": "Horn-clause eligibility engine unimplemented"
+  },
+  "R-03-02": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/execution.py::TaskExecutor.create_task",
+    "src/brainos/execution.py::TaskExecutor.authorize",
+    "src/brainos/execution.py::TaskExecutor.run_task"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_task_runs_only_after_admission_and_preserves_result"
+   ],
+   "verified": "full",
+   "gap": "incremental closure is not separately implemented"
+  },
+  "R-03-03": {
+   "status": "documentary",
+   "gap": "interpretive rule"
+  },
+  "R-03-04": {
+   "status": "partial",
+   "code": [
+    "src/brainos/contracts.py::require_owner",
+    "src/brainos/providers.py::check"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_scope_forgery_wrong_principal_and_wrong_task",
+    "tests/test_core.py::RuntimeCase.test_bad_inputs_are_rejected_before_spending"
+   ]
+  },
+  "R-03-05": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/evidence.py::EvidenceLedger.check_support"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_effect_requires_certified_current_support_and_exact_endpoint",
+    "tests/test_corrective.py::B06EvidenceScope"
+   ],
+   "verified": "full"
+  },
+  "R-09-OBSERVE": {
+   "status": "partial",
+   "code": [
+    "src/brainos/evidence.py::EvidenceLedger.record_evidence",
+    "src/brainos/storage.py::Store.event"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_journal_corruption_fails_closed_on_restart"
+   ],
+   "gap": "trusted operator ingestion; no OBSERVE instruction dispatch"
+  },
+  "R-09-INFER": {
+   "status": "partial",
+   "code": [
+    "src/brainos/execution.py::TaskExecutor.run_task"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_live_permit_is_stale_after_replacement"
+   ],
+   "gap": "pinned manifest execution; no INFER instruction"
+  },
+  "R-09-VALIDATE": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/transactor.py::Transactor.validate"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_failed_or_unvalidated_candidates_do_not_publish",
+    "tests/test_corrective.py::B03ValidationAccounting"
+   ],
+   "verified": "full"
+  },
+  "R-09-BENCHMARK": {
+   "status": "partial",
+   "code": [
+    "src/brainos/assimilation.py::AssimilationSearch.measure"
+   ],
+   "tests": [
+    "tests/test_assimilation.py::UnionGate"
+   ],
+   "gap": "evaluation measurement only; no BENCHMARK instruction"
+  },
+  "R-09-ASSERT": {
+   "status": "partial",
+   "code": [
+    "src/brainos/evidence.py::EvidenceLedger.record_evidence"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_challenge_timing_and_verdict_only_restore"
+   ],
+   "gap": "trusted operator assigns tiers; providers cannot self-certify"
+  },
+  "R-09-CHALLENGE": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/evidence.py::EvidenceLedger.challenge",
+    "src/brainos/authority.py::Authority.cut_epoch"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_challenge_timing_and_verdict_only_restore"
+   ],
+   "gap": "serialization is implicit in the single owner"
+  },
+  "R-09-VERIFY": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/evidence.py::EvidenceLedger.verify"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_challenge_timing_and_verdict_only_restore",
+    "tests/test_core.py::RuntimeCase.test_stale_or_negative_proof_does_not_restore"
+   ],
+   "verified": "full"
+  },
+  "R-09-QUARANTINE": {
+   "status": "partial",
+   "code": [
+    "src/brainos/registry.py::ProviderRegistry.record_impact"
+   ],
+   "tests": [
+    "tests/test_cumulative.py::ImpactEnforcement"
+   ],
+   "gap": "block impacts only; no quarantine instruction"
+  },
+  "R-09-RESTORE": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/evidence.py::EvidenceLedger.restore"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_challenge_timing_and_verdict_only_restore"
+   ],
+   "verified": "full"
+  },
+  "R-09-BIND": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/transactor.py::Transactor.stage",
+    "src/brainos/transactor.py::Transactor.commit"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_stale_validation_and_incompatible_replacement"
+   ],
+   "verified": "full"
+  },
+  "R-09-CONNECT": {
+   "status": "partial",
+   "code": [
+    "src/brainos/registry.py::ProviderRegistry.register_graph"
+   ],
+   "tests": [
+    "tests/test_corrective.py::TypedFabric"
+   ],
+   "gap": "unary typed chains"
+  },
+  "R-09-COMMIT": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/transactor.py::Transactor.commit"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_competing_manifests_use_compare_and_swap",
+    "tests/test_crash_recovery.py::CrashRecoveryTests"
+   ],
+   "verified": "full"
+  },
+  "R-09-AUTHORIZE": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/authority.py::Authority.issue_tx",
+    "src/brainos/authority.py::Authority.check_permit"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_scope_forgery_wrong_principal_and_wrong_task",
+    "tests/test_core.py::RuntimeCase.test_revocation_same_epoch_and_expiration"
+   ],
+   "verified": "full"
+  },
+  "R-09-REVOKE": {
+   "status": "partial",
+   "code": [
+    "src/brainos/authority.py::Authority.revoke",
+    "src/brainos/execution.py::TaskExecutor.cancel_task"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_revocation_same_epoch_and_expiration"
+   ],
+   "gap": "revocation latency is not measured or bounded"
+  },
+  "R-09-ACT": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/gateways.py::EffectGateway.dispatch_effect"
+   ],
+   "tests": [
+    "tests/test_corrective.py::B02DispatchLinearization",
+    "tests/test_core.py::RuntimeCase.test_effect_revocation_and_expired_support_block_at_boundary"
+   ],
+   "verified": "full"
+  },
+  "R-09-BIRTH": {
+   "status": "partial",
+   "code": [
+    "src/brainos/development.py::CompositionSearch.acquire"
+   ],
+   "tests": [
+    "tests/test_corrective.py::DevelopmentalCompilation"
+   ],
+   "gap": "composition from a trusted catalogue only"
+  },
+  "R-09-FUSE": {
+   "status": "partial",
+   "code": [
+    "src/brainos/fabric.py::ComputationalFabric.register"
+   ],
+   "tests": [
+    "tests/test_corrective.py::DevelopmentalCompilation.test_parents_preserved_and_failures_retained"
+   ]
+  },
+  "R-09-RETIRE": {
+   "status": "partial",
+   "code": [
+    "src/brainos/population.py::CapabilityPopulation.retire"
+   ],
+   "tests": [
+    "tests/test_retention.py::GroundedRetirement"
+   ],
+   "gap": "fallback demonstration is not required"
+  },
+  "R-09-RESERVE": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/resources.py::ResourceLedger.reserve_tx"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_atomic_concurrent_reservations",
+    "tests/test_core.py::RuntimeCase.test_budget_rejects_invalid_vectors_and_overdraft"
+   ],
+   "verified": "full"
+  },
+  "R-09-ALLOCATE": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/resources.py::ResourceLedger.allocate_tx",
+    "src/brainos/resources.py::ResourceLedger.spend_tx"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_budget_ownership_reserve_convert_and_release",
+    "tests/test_corrective.py::B01MinimumGrant"
+   ],
+   "verified": "full"
+  },
+  "R-09-RELEASE": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/resources.py::ResourceLedger.release_tx"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_budget_ownership_reserve_convert_and_release"
+   ],
+   "verified": "full"
+  },
+  "R-09-REBIND": {
+   "status": "partial",
+   "code": [
+    "src/brainos/transactor.py::Transactor.commit_assimilation"
+   ],
+   "tests": [
+    "tests/test_assimilation.py::AtomicPublication"
+   ],
+   "gap": "dependents revalidated in assimilation; general REBIND closure revalidation open"
+  },
+  "R-09-CANCEL": {
+   "status": "partial",
+   "code": [
+    "src/brainos/execution.py::TaskExecutor.cancel_task"
+   ],
+   "tests": [
+    "tests/test_corrective.py::TypedFabric.test_cancellation_stops_at_node_boundary_and_refunds_unspent"
+   ]
+  },
+  "R-09-03": {
+   "status": "partial",
+   "code": [
+    "src/brainos/authority.py::Authority",
+    "src/brainos/transactor.py::Transactor",
+    "src/brainos/gateways.py::EffectGateway"
+   ],
+   "tests": [
+    "tests/test_core.py::EndToEndTests.test_authority_layer_does_not_import_signal_execution"
+   ],
+   "gap": "LEARN is unimplemented"
+  },
+  "R-09-04": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/authority.py::Authority.cut_epoch",
+    "src/brainos/recovery.py::RecoveryCoordinator.recover"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_challenge_timing_and_verdict_only_restore",
+    "tests/test_core.py::RuntimeCase.test_reopen_preserves_result_budget_and_revokes_permits"
+   ],
+   "verified": "full"
+  },
+  "R-09-05": {
+   "status": "partial",
+   "code": [
+    "src/brainos/evidence.py::EvidenceLedger",
+    "src/brainos/population.py::CapabilityPopulation"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_challenge_timing_and_verdict_only_restore",
+    "tests/test_retention.py::ProviderLifecycle"
+   ],
+   "gap": "gap G-04: full claim/unit lifecycle tests"
+  },
+  "R-09-08": {
+   "status": "partial",
+   "code": [
+    "src/brainos/gateways.py::EffectGateway.prepare_effect"
+   ],
+   "tests": [
+    "tests/test_corrective.py::B02DispatchLinearization"
+   ],
+   "gap": "revocation latency bounds unmeasured"
+  },
+  "R-09-09": {
+   "status": "partial",
+   "code": [
+    "src/brainos/transactor.py::Transactor.commit_assimilation",
+    "src/brainos/development.py::CompositionSearch.acquire"
+   ],
+   "tests": [
+    "tests/test_assimilation.py::InterruptedAssimilation",
+    "tests/test_cumulative.py::CumulativeConstruction"
+   ]
+  },
+  "R-09-10": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/transactor.py::Transactor.validate"
+   ],
+   "tests": [
+    "tests/test_corrective.py::B03ValidationAccounting"
+   ],
+   "verified": "full"
+  },
+  "R-21-01": {
+   "status": "partial",
+   "code": [
+    "src/brainos/contracts.py::ProviderSpec",
+    "src/brainos/contracts.py::EffectReceipt"
+   ],
+   "tests": [
+    "tests/test_core.py::EndToEndTests.test_authority_layer_does_not_import_signal_execution"
+   ],
+   "gap": "Snapshot and full Evidence schemas"
+  },
+  "R-21-02": {
+   "status": "partial",
+   "code": [
+    "src/brainos/transactor.py::Transactor",
+    "src/brainos/runtime.py::Runtime"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_competing_manifests_use_compare_and_swap",
+    "tests/test_crash_recovery.py::CrashRecoveryTests"
+   ],
+   "gap": "transport and cross-process versioning"
+  },
+  "R-21-03": {
+   "status": "partial",
+   "code": [
+    "src/brainos/runtime.py::Runtime"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase",
+    "tests/test_core.py::EndToEndTests"
+   ],
+   "gap": "L1-C1..C5 as an independent harness"
+  },
+  "R-21-04": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/runtime.py::Runtime"
+   ],
+   "tests": [
+    "tests/test_core.py::EndToEndTests.test_kernel_imports_no_model_frameworks"
+   ],
+   "verified": "full"
+  },
+  "R-21-05": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/resources.py::ResourceLedger.release_tx",
+    "src/brainos/resources.py::ResourceLedger.charge_tx"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_budget_conservation_across_mixed_reserve_spend_release",
+    "tests/test_core.py::RuntimeCase.test_allocated_task_cannot_be_refunded_before_execution"
+   ],
+   "verified": "full"
+  },
+  "R-21-09": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/runner.py::make_runner",
+    "src/brainos/runner.py::PersistentRunner",
+    "src/brainos/worker.py::answer"
+   ],
+   "tests": [
+    "tests/test_runners.py::RunnerProfiles",
+    "tests/test_runners.py::RunnerFailureVisibility"
+   ],
+   "verified": "full"
+  },
+  "R-21-10": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/devcontext.py::development_context"
+   ],
+   "tests": [
+    "tests/test_retention.py::DevelopmentBoundary",
+    "tests/test_assimilation.py::Boundaries"
+   ],
+   "gap": "in-process capability discipline, not a sandbox"
+  },
+  "R-21-11": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/providers.py::timed_compute",
+    "src/brainos/providers.py::prepare_identity"
+   ],
+   "tests": [
+    "tests/test_assimilation.py::SharedRepresentation"
+   ],
+   "verified": "full"
+  },
+  "R-24-01": {
+   "status": "partial",
+   "code": [
+    "src/brainos/storage.py::Store"
+   ],
+   "tests": [
+    "tests/test_crash_recovery.py::CrashRecoveryTests"
+   ],
+   "gap": "gap G-05: per-operation transition kinds"
+  },
+  "R-24-ADD": {
+   "status": "partial",
+   "code": [
+    "src/brainos/population.py::CapabilityPopulation.admit"
+   ],
+   "tests": [
+    "tests/test_cumulative.py::CapabilityPopulation"
+   ],
+   "gap": "evaluator admission is not separate"
+  },
+  "R-24-REBIND": {
+   "status": "partial",
+   "code": [
+    "src/brainos/transactor.py::Transactor.commit_assimilation"
+   ],
+   "tests": [
+    "tests/test_assimilation.py::AtomicPublication.test_hidden_dependency_and_missing_coverage_are_refused"
+   ]
+  },
+  "R-24-COMPOSE": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/development.py::CompositionSearch.acquire",
+    "src/brainos/graphs.py::specification"
+   ],
+   "tests": [
+    "tests/test_corrective.py::DevelopmentalCompilation",
+    "tests/test_cumulative.py::CumulativeConstruction"
+   ],
+   "verified": "full"
+  },
+  "R-24-ASSIMILATE": {
+   "status": "partial",
+   "code": [
+    "src/brainos/transactor.py::Transactor.revert_assimilation"
+   ],
+   "tests": [
+    "tests/test_assimilation.py::Recovery"
+   ],
+   "gap": "configuration rollback only; state restoration, reconstruction and compensation forms open"
+  },
+  "R-24-ASSIMILATE-02": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/assimilation.py::AssimilationSearch",
+    "src/brainos/transactor.py::Transactor.commit_assimilation"
+   ],
+   "tests": [
+    "tests/test_assimilation.py::Nomination",
+    "tests/test_assimilation.py::UnionGate",
+    "tests/test_assimilation.py::AtomicPublication",
+    "tests/test_assimilation.py::GateCorrections"
+   ],
+   "gap": "X3: decision rule unsound before the 31.12 corrections; economics not justified in that domain"
+  },
+  "R-24-RETIRE": {
+   "status": "partial",
+   "code": [
+    "src/brainos/population.py::CapabilityPopulation.retire",
+    "src/brainos/population.py::CapabilityPopulation.restore"
+   ],
+   "tests": [
+    "tests/test_retention.py::GroundedRetirement",
+    "tests/test_retention.py::ProviderLifecycle"
+   ]
+  },
+  "R-24-03": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/transactor.py::Transactor.stage",
+    "src/brainos/transactor.py::Transactor.validate",
+    "src/brainos/transactor.py::Transactor.commit"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_stale_validation_and_incompatible_replacement",
+    "tests/test_core.py::RuntimeCase.test_slow_validation_does_not_block_epoch_control"
+   ],
+   "verified": "full"
+  },
+  "R-24-04": {
+   "status": "documentary",
+   "gap": "labeling rule for proof obligations"
+  },
+  "R-24-COMPOSE-02": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/fabric.py::ComputationalFabric.register"
+   ],
+   "tests": [
+    "tests/test_corrective.py::DevelopmentalCompilation.test_parents_preserved_and_failures_retained"
+   ],
+   "verified": "full"
+  },
+  "R-29-01": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/closure.py::compute_closure",
+    "src/brainos/closure.py::population_closure"
+   ],
+   "tests": [
+    "tests/test_cumulative.py::ClosureConformance"
+   ],
+   "verified": "full"
+  },
+  "R-29-02": {
+   "status": "partial",
+   "code": [
+    "src/brainos/registry.py::ProviderRegistry.blocking_impact"
+   ],
+   "tests": [
+    "tests/test_cumulative.py::ImpactEnforcement"
+   ],
+   "gap": "isolation levels unimplemented"
+  },
+  "R-29-03": {
+   "status": "partial",
+   "code": [
+    "src/brainos/registry.py::ProviderRegistry.record_impact",
+    "src/brainos/fabric.py::ComputationalFabric.evidence_current"
+   ],
+   "tests": [
+    "tests/test_cumulative.py::ImpactEnforcement"
+   ]
+  },
+  "R-29-05": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/graphs.py::specification"
+   ],
+   "tests": [
+    "tests/test_cumulative.py::CumulativeConstruction.test_blocking_an_earlier_generation_blocks_later_ones"
+   ],
+   "verified": "full"
+  },
+  "R-04-02": {
+   "status": "partial",
+   "code": [
+    "src/brainos/fabric.py::ComputationalFabric.results"
+   ],
+   "tests": [
+    "tests/test_corrective.py::TypedFabric.test_composite_cost_is_fully_accounted_and_results_have_provenance"
+   ]
+  },
+  "R-06-05": {
+   "status": "partial",
+   "code": [
+    "src/brainos/storage.py::Store.journal",
+    "src/brainos/effects.py::LocalReceiptSink.apply"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_idempotency_keys_and_lost_ack_reconciliation"
+   ],
+   "gap": "streams and clock margins unimplemented"
+  },
+  "R-07-02": {
+   "status": "documentary",
+   "gap": "threshold-placement rule"
+  },
+  "R-07-03": {
+   "status": "partial",
+   "code": [
+    "src/brainos/ecology.py::EcologyService"
+   ],
+   "tests": [
+    "tests/test_retention.py::FrozenPreregistration",
+    "tests/test_retention.py::CoexistenceQuantifier"
+   ],
+   "gap": "matched-arm process followed in X2c/X3 runners (tools/)"
+  },
+  "R-07-04": {
+   "status": "documentary",
+   "gap": "evidence-type distinction"
+  },
+  "R-07-10": {
+   "status": "partial",
+   "code": [
+    "src/brainos/ecology.py::EcologyService"
+   ],
+   "tests": [
+    "tests/test_retention.py::FrozenPreregistration",
+    "tests/test_assimilation.py::FrozenPreregistration",
+    "tests/test_ecology.py::PreregistrationIntegrity"
+   ],
+   "gap": "integrity checks live in tools/run_*.py, outside src"
+  },
+  "R-08-01": {
+   "status": "partial",
+   "code": [
+    "src/brainos/runtime.py::Runtime"
+   ],
+   "tests": [
+    "tests/test_core.py::EndToEndTests.test_kernel_imports_no_model_frameworks"
+   ],
+   "gap": "Plasticity layer not separately adoptable yet"
+  },
+  "R-10-01": {
+   "status": "documentary",
+   "gap": "optional provider family; predecessor labeling"
+  },
+  "R-11-01": {
+   "status": "partial",
+   "code": [
+    "src/brainos/development.py::CompositionSearch",
+    "src/brainos/population.py::CapabilityPopulation"
+   ],
+   "tests": [
+    "tests/test_corrective.py::DevelopmentalCompilation",
+    "tests/test_retention.py::ProviderLifecycle"
+   ]
+  },
+  "R-11-02": {
+   "status": "partial",
+   "code": [
+    "src/brainos/ecology.py::EcologyPolicy",
+    "src/brainos/population.py::verdict"
+   ],
+   "tests": [
+    "tests/test_ecology.py::Retention",
+    "tests/test_retention.py::GroundedRetirement"
+   ],
+   "gap": "Pareto vector over one cost dimension"
+  },
+  "R-11-03": {
+   "status": "partial",
+   "code": [
+    "src/brainos/assimilation.py::AssimilationSearch"
+   ],
+   "tests": [
+    "tests/test_assimilation.py::UnionGate"
+   ],
+   "gap": "2 of 7 methods"
+  },
+  "R-11-04": {
+   "status": "partial",
+   "code": [
+    "src/brainos/population.py::CapabilityPopulation.maintain",
+    "src/brainos/resources.py::ResourceLedger.attach_policy_tx"
+   ],
+   "tests": [
+    "tests/test_retention.py::ProviderLifecycle",
+    "tests/test_cumulative.py::FundingLifecycle"
+   ]
+  },
+  "R-12-F1": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/evidence.py::EvidenceLedger.check_support"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_effect_requires_certified_current_support_and_exact_endpoint"
+   ],
+   "verified": "full"
+  },
+  "R-12-F2": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/gateways.py::EffectGateway.dispatch_effect",
+    "src/brainos/authority.py::Authority.check_permit"
+   ],
+   "tests": [
+    "tests/test_corrective.py::B02DispatchLinearization"
+   ],
+   "verified": "full"
+  },
+  "R-12-F4": {
+   "status": "partial",
+   "code": [
+    "src/brainos/ecology.py::EcologyPolicy.estimate"
+   ],
+   "tests": [
+    "tests/test_ecology.py::Selection"
+   ]
+  },
+  "R-12-F5": {
+   "status": "partial",
+   "code": [
+    "src/brainos/resources.py::ResourceLedger._accrue_tx"
+   ],
+   "tests": [
+    "tests/test_retention.py::FundingCeiling"
+   ]
+  },
+  "R-12-F6": {
+   "status": "partial",
+   "code": [
+    "src/brainos/population.py::CapabilityPopulation.assess"
+   ],
+   "tests": [
+    "tests/test_retention.py::ProviderLifecycle"
+   ]
+  },
+  "R-12-F9": {
+   "status": "partial",
+   "code": [
+    "src/brainos/transactor.py::Transactor.commit"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_competing_manifests_use_compare_and_swap"
+   ]
+  },
+  "R-12-F10": {
+   "status": "partial",
+   "code": [
+    "src/brainos/transactor.py::Transactor.revert_assimilation"
+   ],
+   "tests": [
+    "tests/test_assimilation.py::Recovery"
+   ]
+  },
+  "R-12-F11": {
+   "status": "partial",
+   "code": [
+    "src/brainos/providers.py::specification"
+   ],
+   "tests": [
+    "tests/test_corrective.py::B04ArtifactIdentity"
+   ]
+  },
+  "R-12-F13": {
+   "status": "partial",
+   "code": [
+    "src/brainos/population.py::CapabilityPopulation.define"
+   ],
+   "tests": [
+    "tests/test_cumulative.py::CapabilityPopulation.test_capability_identity_is_a_contract_not_a_role_name"
+   ]
+  },
+  "R-12-F14": {
+   "status": "partial",
+   "code": [
+    "src/brainos/devcontext.py::development_context"
+   ],
+   "tests": [
+    "tests/test_retention.py::DevelopmentBoundary"
+   ],
+   "gap": "no isolation levels for synthesized code (none exists)"
+  },
+  "R-12-F15": {
+   "status": "partial",
+   "code": [
+    "src/brainos/ecology.py::EcologyPolicy.bounds"
+   ],
+   "tests": [
+    "tests/test_retention.py::UncertaintyAwareExploration"
+   ]
+  },
+  "R-12-F16": {
+   "status": "partial",
+   "code": [
+    "src/brainos/evidence.py::EvidenceLedger.check_support",
+    "src/brainos/registry.py::ProviderRegistry.record_impact"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_effect_revocation_and_expired_support_block_at_boundary",
+    "tests/test_cumulative.py::ImpactEnforcement"
+   ]
+  },
+  "R-12-F17": {
+   "status": "partial",
+   "code": [
+    "src/brainos/transactor.py::Transactor.commit_assimilation"
+   ],
+   "tests": [
+    "tests/test_assimilation.py::AtomicPublication.test_hidden_dependency_and_missing_coverage_are_refused"
+   ]
+  },
+  "R-12-F19": {
+   "status": "partial",
+   "code": [
+    "src/brainos/resources.py::ResourceLedger"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_budget_conservation_across_mixed_reserve_spend_release",
+    "tests/test_retention.py::DevelopmentBoundary"
+   ]
+  },
+  "R-13-01": {
+   "status": "documentary"
+  },
+  "R-13-02": {
+   "status": "documentary"
+  },
+  "R-14-01": {
+   "status": "documentary"
+  },
+  "R-15-01": {
+   "status": "documentary"
+  },
+  "R-15-02": {
+   "status": "documentary"
+  },
+  "R-16-01": {
+   "status": "documentary"
+  },
+  "R-17-01": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/population.py::CapabilityPopulation.define",
+    "src/brainos/population.py::CapabilityPopulation.admit"
+   ],
+   "tests": [
+    "tests/test_cumulative.py::CapabilityPopulation"
+   ],
+   "verified": "full"
+  },
+  "R-17-04": {
+   "status": "partial",
+   "code": [
+    "src/brainos/population.py::verdict"
+   ],
+   "tests": [
+    "tests/test_retention.py::GroundedRetirement.test_specialist_cannot_be_retired_or_made_dormant"
+   ]
+  },
+  "R-18-01": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/development.py::CompositionSearch.acquire"
+   ],
+   "tests": [
+    "tests/test_corrective.py::DevelopmentalCompilation"
+   ],
+   "verified": "full"
+  },
+  "R-18-02": {
+   "status": "partial",
+   "code": [
+    "src/brainos/development.py::CompositionSearch.discover"
+   ],
+   "tests": [
+    "tests/test_cumulative.py::ConstructionDeadline",
+    "tests/test_corrective.py::DevelopmentalCompilation.test_search_budget_exhaustion_is_recorded"
+   ]
+  },
+  "R-19-02": {
+   "status": "partial",
+   "code": [
+    "src/brainos/registry.py::ProviderRegistry.register_graph"
+   ],
+   "tests": [
+    "tests/test_cumulative.py::CumulativeConstruction"
+   ]
+  },
+  "R-20-01": {
+   "status": "partial",
+   "code": [
+    "src/brainos/resources.py::ResourceLedger.charge"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_budget_conservation_across_mixed_reserve_spend_release",
+    "tests/test_retention.py::CostBoundaries"
+   ],
+   "gap": "S(N) not computed by the runtime"
+  },
+  "R-20-02": {
+   "status": "partial",
+   "code": [
+    "src/brainos/ecology.py::EcologyService.choose"
+   ],
+   "tests": [
+    "tests/test_ecology.py::Selection.test_no_exploration_without_budget"
+   ]
+  },
+  "R-20-03": {
+   "status": "partial",
+   "code": [
+    "src/brainos/population.py::CapabilityPopulation.maintain"
+   ],
+   "tests": [
+    "tests/test_retention.py::ProviderLifecycle.test_maintenance_charges_active_and_dormant_rates"
+   ]
+  },
+  "R-20-04": {
+   "status": "partial",
+   "code": [
+    "src/brainos/development.py::CompositionSearch.acquire"
+   ],
+   "tests": [
+    "tests/test_corrective.py::B03ValidationAccounting"
+   ]
+  },
+  "R-20-06": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/resources.py::ResourceLedger.attach_policy_tx",
+    "src/brainos/resources.py::ResourceLedger._accrue_tx"
+   ],
+   "tests": [
+    "tests/test_cumulative.py::FundingLifecycle",
+    "tests/test_retention.py::FundingCeiling"
+   ],
+   "verified": "full",
+   "gap": "operator identity asserted, not authenticated (trusted-operator profile)"
+  },
+  "R-23-02": {
+   "status": "partial",
+   "code": [
+    "src/brainos/development.py::CompositionSearch.acquire"
+   ],
+   "tests": [
+    "tests/test_corrective.py::DevelopmentalCompilation.test_admission_cases_are_independent_of_development_examples"
+   ]
+  },
+  "R-25-04": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/population.py::CapabilityPopulation.assess",
+    "src/brainos/population.py::CapabilityPopulation.make_dormant",
+    "src/brainos/population.py::CapabilityPopulation.wake"
+   ],
+   "tests": [
+    "tests/test_retention.py::GroundedRetirement",
+    "tests/test_retention.py::ProviderLifecycle",
+    "tests/test_retention.py::ServiceLifecycleConsistency"
+   ],
+   "verified": "full",
+   "gap": "X2c: recruitment of dormant specialists in seen contexts unresolved"
+  },
+  "R-25-05": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/ecology.py::EcologyService"
+   ],
+   "tests": [
+    "tests/test_retention.py::RecoverableEcology",
+    "tests/test_ecology.py::FollowUpMechanisms",
+    "tests/test_ecology.py::PopulationIntegration"
+   ],
+   "verified": "full"
+  },
+  "R-27-02": {
+   "status": "partial",
+   "code": [
+    "src/brainos/assimilation.py::AssimilationSearch.evaluate"
+   ],
+   "tests": [
+    "tests/test_assimilation.py::UnionGate"
+   ]
+  },
+  "R-27-03": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/development.py::CompositionSearch"
+   ],
+   "tests": [
+    "tests/test_corrective.py::DevelopmentalCompilation",
+    "tests/test_cumulative.py::ConstructionProvenance"
+   ],
+   "verified": "full"
+  },
+  "R-31-01": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/runtime.py::Runtime"
+   ],
+   "tests": [
+    "tests/test_traceability.py::DriftControl"
+   ],
+   "verified": "full",
+   "gap": "checker lives in tools/check_traceability.py; it proves citation, not test sufficiency"
+  },
+  "R-32-02": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/storage.py::Store"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_only_one_authority_owns_database",
+    "tests/test_crash_recovery.py::CrashRecoveryTests"
+   ],
+   "verified": "full",
+   "gap": "failover/fencing deferred"
+  },
+  "R-32-03": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/authority.py::Authority",
+    "src/brainos/execution.py::TaskExecutor.cancel_task"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_revocation_same_epoch_and_expiration",
+    "tests/test_core.py::RuntimeCase.test_scope_forgery_wrong_principal_and_wrong_task"
+   ],
+   "verified": "full"
+  },
+  "R-32-04": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/evidence.py::EvidenceLedger.verify",
+    "src/brainos/evidence.py::EvidenceLedger.restore"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_challenge_timing_and_verdict_only_restore"
+   ],
+   "verified": "full"
+  },
+  "R-32-06": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/runner.py::ProcessRunner",
+    "src/brainos/gateways.py::EffectGateway"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_real_subprocess_deadline",
+    "tests/test_corrective.py::B05EndpointIdentity"
+   ],
+   "verified": "full"
+  },
+  "R-32-07": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/closure.py::compute_closure"
+   ],
+   "tests": [
+    "tests/test_cumulative.py::ClosureConformance"
+   ],
+   "verified": "full"
+  },
+  "R-32-08": {
+   "status": "partial",
+   "code": [
+    "src/brainos/execution.py::TaskExecutor"
+   ],
+   "tests": [
+    "tests/test_core.py::RuntimeCase.test_failed_worker_and_timeout_have_owned_terminal_state"
+   ],
+   "gap": "bounded queues and orchestration unimplemented"
+  },
+  "R-32-09": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/recovery.py::RecoveryCoordinator.recover",
+    "src/brainos/gateways.py::EffectGateway.reconcile_effect",
+    "src/brainos/effects.py::LocalReceiptSink",
+    "src/brainos/__main__.py::demo"
+   ],
+   "tests": [
+    "tests/test_crash_recovery.py::CrashRecoveryTests",
+    "tests/test_core.py::EndToEndTests.test_real_demo"
+   ],
+   "verified": "full"
+  }
+ }
+}

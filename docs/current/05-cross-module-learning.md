@@ -1,5 +1,7 @@
 # 05 — Cross-Provider Learning and Recoverable Plasticity
 
+Status: research — hypotheses and proposed mechanisms; nothing this document owns is implemented or validated.
+
 ## 5.1 Question
 
 Can interacting providers acquire new skills, consolidate them, and

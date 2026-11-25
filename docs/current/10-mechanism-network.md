@@ -1,5 +1,7 @@
 # 10 — Mechanism Network (one provider family, optional)
 
+Status: research — hypotheses and proposed mechanisms; nothing this document owns is implemented or validated.
+
 Dependency-aware recurrent factor network as a candidate neural core,
 not a mandatory substrate. Typed variables revised by joint inference
 over learned relational energies; one reusable mechanism serves many
