@@ -255,11 +255,11 @@ class RuntimeCase(unittest.TestCase):
         entered, release = threading.Event(), threading.Event()
         delegate = self.r.transactor.runner
         class SlowRunner:
-            def compute(inner, spec, value, timeout):
+            def compute(inner, spec, value, timeout, **hooks):
                 entered.set()
                 if not release.wait(5):
                     raise RuntimeError("test runner was not released")
-                return delegate.compute(spec, value, timeout)
+                return delegate.compute(spec, value, timeout, **hooks)
         self.r.transactor.runner = SlowRunner()
         with ThreadPoolExecutor(max_workers=2) as pool:
             validation = pool.submit(self.r.transactor.validate, candidate, {"total": [([1, 2], 3)]})

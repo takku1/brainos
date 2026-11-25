@@ -68,8 +68,10 @@ class ResourceLedger:
         if periods <= 0:
             return record
         added = {}
+        outstanding = self._outstanding_tx(record["id"])
         for k, grant in policy["grant"].items():
-            room = max(0, policy["ceiling"][k] - record["available"][k])
+            # The ceiling bounds unspent funding: available plus held/allocated remainder.
+            room = max(0, policy["ceiling"][k] - record["available"][k] - outstanding.get(k, 0))
             added[k] = min(grant * periods, room)
             record["available"][k] += added[k]
             record["capacity"][k] += added[k]
@@ -77,6 +79,14 @@ class ResourceLedger:
         self.store.put("budget", record["id"], record)
         self.store.event("funded", budget=record["id"], period=due, periods=periods, added=added)
         return record
+
+    def _outstanding_tx(self, budget):
+        totals = {}
+        for holding in self.store.find("holding"):
+            if holding["budget"] == budget and holding["state"] in ("HELD", "ALLOCATED"):
+                for k, v in holding["remaining"].items():
+                    totals[k] = totals.get(k, 0) + v
+        return totals
 
     def budget(self, key, principal):
         with self.store.mutex:

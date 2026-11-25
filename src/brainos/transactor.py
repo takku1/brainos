@@ -104,7 +104,9 @@ class Transactor:
             self.store.put("candidate", candidate, record)
             self.store.event("validation-started", candidate=candidate)
         started = time.monotonic()
+        started_ns = time.perf_counter_ns()   # same clock as compute timings (monotonic is ~15 ms on Windows)
         attempts = 0
+        timings = []
         try:
             for role, examples in cases.items():
                 for value, expected in examples:
@@ -114,14 +116,18 @@ class Transactor:
                     attempts += 1
                     with self.store.transaction():
                         self.resources.spend_tx(holding, resolved[role]["cost"])
-                    if self.runner.compute(resolved[role], value, min(5, remaining)) != expected:
+                    if self.runner.compute(resolved[role], value, min(5, remaining),
+                                           on_timing=timings.append) != expected:
                         raise Refused("candidate failed independent expected-output checks")
             with self.store.transaction():
                 if self.control.read() != captured:
                     raise Refused("validation inputs changed")
                 if self.store.get("candidate", candidate)["state"] != "VALIDATING":
                     raise Refused("candidate state changed during validation")
-                record.update(state="VALIDATED", cases_digest=digest(cases))
+                record.update(state="VALIDATED", cases_digest=digest(cases),
+                              validation_compute_ns=sum(t["compute_ns"] for t in timings),
+                              validation_total_ns=sum(t["total_ns"] for t in timings),
+                              validation_wall_ns=time.perf_counter_ns() - started_ns, validation_attempts=attempts)
                 self.resources.release_tx(holding, principal)
                 self.store.put("candidate", candidate, record)
                 self.store.event("validated", candidate=candidate, cases=record["cases_digest"],

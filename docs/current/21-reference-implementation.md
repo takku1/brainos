@@ -451,3 +451,59 @@ Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 
 | A-21 | verification | Complementary specialists are retained; retirement needs dominance or zero-contribution evidence; archived members return only via validation | Retirement by aggregate score | ecology.py retention rule | tests/test_ecology.py | tested |
 | A-22 | verification | The ecology experiment refuses to run if its preregistration changed | Post-hoc criteria | Preregistration digest check in tools/run_ecology.py | tests/test_ecology.py PreregistrationIntegrity | tested |
 | A-23 | operations | Existing behavior, crash recovery, B01-B06 regressions and demo still hold | Regression from contract changes | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py | tested |
+
+## 21.12 Grounded retention, provider lifecycle and recoverable ecology
+
+Scope: findings B14-B20 from the third implementation review, the provider
+lifecycle needed by the X2c retention study, and a matched-repertoire
+re-evaluation of cumulative construction (X1b). All seven findings were
+reproduced on 9b9e7bd before changes
+(docs/results/2026-11-25T-retention/baseline-findings.json). The trusted kernel
+gains no new authority; the lifecycle rule moves into the population service
+because the population is what must refuse an unjustified retirement.
+
+| Finding | Classification on 9b9e7bd | Disposition |
+|---|---|---|
+| B14 retirement trusts caller-supplied `justified` | Defect | The population computes a durable retention assessment from kernel-measured invocation records and verifies it at retirement |
+| B15 ceiling ignores outstanding holdings | Defect | The ceiling bounds unspent funding: available plus held/allocated remainder |
+| B16 ecology state only in memory | Defect | Ecology configuration and every decision are durable records; randomness derives from (seed, decision sequence); restart replays to identical state |
+| B17 costs mix compute and wall-clock boundaries | Defect (reporting) | Three ledgers reported separately: provider compute, end-to-end execution, organizational (exploration, validation, maintenance, regeneration) |
+| B18 coexistence scored with a weaker quantifier | Defect (scoring) | Exact quantifier recomputed from preserved tables (verdicts unchanged) and used for X2c; originals kept |
+| B19 one-sample ratio pruning | Defect (policy) | Uncertainty-aware lower/upper confidence bounds in log-cost with a prior spread; pruning requires LCB(member) > UCB(best) |
+| B20 asserted operator identity | Documented trusted-operator boundary | Developmental code receives a `DevelopmentContext`: no ledger, no raw store, no runtime reference, only whitelisted record kinds. Asserted operator strings remain a trusted-profile assumption, not authentication |
+
+Provider lifecycle (per capability membership):
+
+| State | Executes | Maintained | Leaves by |
+|---|---|---|---|
+| ACTIVE | yes (capability-routed tasks) | active maintenance rate | dormancy or retirement assessment |
+| DORMANT | no | dormant maintenance rate | wake (free if fresh; revalidation if an impact or evidence change touched it) or retirement after a minimum dormant age |
+| ARCHIVED | no | none | regeneration through fresh validation |
+
+Retention assessment (population.py) is computed only from observation records
+that reference real invocations of that provider under a contract with the
+same schemas. Cost is read from the invocation record, and context is
+recomputed from the task input by the trusted featurizer. The assessment pins
+capability, provider, evidence revision, observation digest, per-context
+coverage, rule parameters (min_samples, margin, minimum admission age,
+minimum context coverage, minimum dormant age) and verdict. Retirement and
+dormancy re-derive the verdict from current records and refuse on any mismatch
+or staleness.
+
+## Assurance 21.12
+
+Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 (slo); operations T1 (schema); performance T1 (slo); maintainability T1 (new_boundary); others T0
+
+| ID | Discipline | Claim | Could fail by | Control (owner) | Check | Evidence |
+|---|---|---|---|---|---|---|
+| A-24 | verification | Retirement and dormancy succeed only with a current assessment derived from real invocations of that exact provider and capability (B14) | Forged or mismatched evidence | Durable retention assessment in population.py | tests/test_retention.py GroundedRetirement | unknown |
+| A-25 | reliability | Periodic funding never raises unspent funding (available plus held) above the ceiling, including across release (B15) | Refill ignores outstanding holdings | Ceiling room in resources.py | tests/test_retention.py FundingCeiling | unknown |
+| A-26 | reliability | A restarted ecology replays its durable decisions to identical state and subsequent decisions (B16) | In-memory policy state | EcologyService records in ecology.py | tests/test_retention.py RecoverableEcology | unknown |
+| A-27 | observability | Compute, end-to-end and organizational costs are recorded and reported on separate ledgers (B17) | Mixed measurement boundaries | Validation timing in transactor.py; X2c accounting in tools/run_retention.py | tests/test_retention.py CostBoundaries | unknown |
+| A-28 | verification | Coexistence is scored with the preregistered quantifier; corrected v1/v2 scores are published separately (B18) | Weaker quantifier | Scoring function in tools/run_retention.py | tests/test_retention.py CoexistenceQuantifier | unknown |
+| A-29 | verification | Exploration pruning requires confidence-bound separation, not one sample at a fixed ratio (B19) | Single noisy sample prunes a member | LCB/UCB policy in ecology.py | tests/test_retention.py UncertaintyAwareExploration | unknown |
+| A-30 | maintainability | Developmental code holds no funding authority: no ledger, raw store or runtime reference (B20) | Search/ecology minting budgets | DevelopmentContext (devcontext.py) | tests/test_retention.py DevelopmentBoundary | unknown |
+| A-31 | reliability | Lifecycle transitions follow the table above; dormant members cannot execute, and stale dormant members revalidate on wake | Waking stale competence without checks | population.py lifecycle | tests/test_retention.py ProviderLifecycle | unknown |
+| A-32 | verification | X2c and X1b run only from a committed, digest-matched preregistration and runner | Post-hoc criteria or code | Digest and git-commit check in tools/run_retention.py | tests/test_retention.py FrozenPreregistration | unknown |
+| A-33 | operations | All existing suites, crash recovery, the demo and earlier experiment runners still pass | Regression from contract changes | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py tests/test_cumulative.py tests/test_runners.py tests/test_ecology.py | unknown |
+| A-34 | performance | Retention machinery overhead (assessment, validation, maintenance, regeneration) is measured and reported per condition rather than assumed | Unmeasured overhead hidden in totals | Per-transition timing in population.py; X2c ledgers | tests/test_retention.py CostBoundaries | unknown |

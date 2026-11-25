@@ -143,6 +143,7 @@ class TaskExecutor:
                 raise Refused("invocation already terminated")
             current["state"] = "STOPPED" if cancelled else "FAILED" if error else "COMPLETED"
             current.update(error=error, timings=list(timings), profile=getattr(self.runner, "profile", None),
+                           evidence_revision=self.control.read()["evidence_revision"],
                            compute_ns=sum(t["compute_ns"] for t in timings),
                            total_ns=sum(t["total_ns"] for t in timings))
             self.store.put("invocation", invocation, current)

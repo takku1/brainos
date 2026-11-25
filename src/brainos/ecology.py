@@ -15,18 +15,14 @@ This module never issues funding and never mutates the manifest; BrainOS-side
 effects go through the population (retire/restore) and task APIs.
 """
 from dataclasses import dataclass, field
+import math
 import random
 from statistics import median
 
+from .contracts import digest, uid
 
-def featurize(workload):
-    """Trusted context assignment from declared workload features (not from providers)."""
-    queries = workload["queries"]
-    widths = sorted(hi - lo for lo, hi in queries) or [0]
-    q = len(queries)
-    qband = "single" if q <= 2 else "few" if q <= 32 else "many"
-    wband = "narrow" if widths[len(widths) // 2] <= 16 else "wide"
-    return f"{qband}-{wband}"
+
+from .population import featurize  # noqa: E402  (one trusted featurizer)
 
 
 @dataclass
@@ -41,10 +37,37 @@ class EcologyPolicy:
     current: object = None                          # (member, revision) -> bool, from fabric
     prune_factor: float = None                      # v2: stop forced exploration of hopeless members
     archived: list = field(default_factory=list)
+    mode: str = "median"                            # "lcb": uncertainty-aware selection/pruning (B19)
+    draws: str = "random"                           # "digest": per-decision draws, restart-reproducible (B16)
+    prior_sd: float = 1.0                           # log-cost spread assumed before data (lcb)
+    prior_weight: float = 2.0
+    z: float = 1.96
 
     def __post_init__(self):
         self.rng = random.Random(self.seed)
         self.members = list(self.members)
+        self.decisions = 0
+
+    def _uniform(self):
+        if self.draws == "digest":
+            return int(digest([self.seed, self.decisions, "u"])[:13], 16) / 16 ** 13
+        return self.rng.random()
+
+    def _pick(self, options):
+        if self.draws == "digest":
+            return options[int(digest([self.seed, self.decisions, "pick"])[:13], 16) % len(options)]
+        return self.rng.choice(options)
+
+    def bounds(self, context, member):
+        """(lower, upper) confidence bounds on cost from log-cost samples with a prior spread."""
+        values = [math.log(max(v, 1)) for v in self.samples(context, member)]
+        if not values:
+            return 0.0, math.inf
+        n, mean = len(values), sum(values) / len(values)
+        ss = sum((v - mean) ** 2 for v in values)
+        sd = math.sqrt((self.prior_sd ** 2 * self.prior_weight + ss) / (self.prior_weight + n - 1))
+        half = self.z * sd / math.sqrt(n)
+        return math.exp(mean - half), math.exp(mean + half)
 
     def samples(self, context, member):
         rows = self.evidence.get((context, member), [])
@@ -58,8 +81,34 @@ class EcologyPolicy:
 
     def select(self, context, can_explore):
         """Return (member, exploring)."""
+        try:
+            return self._select(context, can_explore)
+        finally:
+            self.decisions += 1
+
+    def _select_lcb(self, context, can_explore):
+        known = [(self.estimate(context, m), m) for m in self.members if self.samples(context, m)]
+        greedy = min(known)[1] if known else self.members[0]
+        if not can_explore:
+            return greedy, False
+        best_upper = min((self.bounds(context, m)[1] for m in self.members), default=math.inf)
+        # Optimism under uncertainty, excluding members whose lower bound exceeds the best upper bound.
+        plausible = [m for m in self.members if self.bounds(context, m)[0] <= best_upper]
+        unsampled = [m for m in plausible if not self.samples(context, m)]
+        if unsampled:
+            return unsampled[0], True
+        thin = [m for m in plausible if len(self.samples(context, m)) < self.min_samples]
+        if thin:
+            choice = min(thin, key=lambda m: self.bounds(context, m)[0])
+            return choice, choice != greedy
+        choice = min(plausible, key=lambda m: self.bounds(context, m)[0])
+        return choice, choice != greedy
+
+    def _select(self, context, can_explore):
         if context not in self.contexts:
             self.contexts.append(context)
+        if self.mode == "lcb":
+            return self._select_lcb(context, can_explore)
         if can_explore:
             known = [self.estimate(context, m) for m in self.members if self.samples(context, m)]
             order = self.members
@@ -76,8 +125,8 @@ class EcologyPolicy:
         if not known:
             return self.members[0], False
         best = min(known)[1]
-        if can_explore and len(self.members) > 1 and self.rng.random() < self.epsilon:
-            return self.rng.choice([m for m in self.members if m != best]), True
+        if can_explore and len(self.members) > 1 and self._uniform() < self.epsilon:
+            return self._pick([m for m in self.members if m != best]), True
         return best, False
 
     def observe(self, context, member, cost, revision=0):
@@ -158,3 +207,108 @@ def aggregate_retirement(policy, keep):
         return sum(values) / len(values) if values else float("inf")
     ranked = sorted(policy.members, key=mean_cost)
     return ranked[:keep], ranked[keep:]
+
+
+class EcologyService:
+    """Durable ecology over one capability population (B16).
+
+    The configuration and every decision (selection or lifecycle operation) are
+    records written through the development context. Observed costs are read
+    from the kernel's invocation records, never supplied by the caller.
+    Restarting replays the records in sequence and reproduces the policy state;
+    with digest draws, later decisions are identical to an uninterrupted run.
+    Lifecycle requests go to the population, which verifies them independently.
+    """
+
+    def __init__(self, ctx, ecology_id):
+        self.ctx = ctx
+        self.config = ctx.get("ecology", ecology_id)
+        self.id = ecology_id
+        self.capability = self.config["capability"]
+        self.providers = dict(self.config["providers"])          # name -> provider id
+        self.policy = EcologyPolicy(list(self.providers), current=self._current, draws="digest",
+                                    **self.config["policy"])
+        self.policy.dormant = []
+        self.seq = 0
+        self.cited = []
+        for row in sorted((r for r in ctx.find("ecology-decision") if r["ecology"] == ecology_id),
+                          key=lambda r: r["seq"]):
+            self._apply(row)
+
+    @classmethod
+    def create(cls, ctx, capability, providers, **policy):
+        key = uid()
+        ctx.write("ecology", key, dict(id=key, capability=capability, providers=dict(providers), policy=policy),
+                  "ecology-created", ecology=key, capability=capability)
+        return cls(ctx, key)
+
+    def _current(self, member, revision):
+        return self.ctx.evidence_current(self.providers[member], revision)
+
+    def _apply(self, row):
+        self.seq = row["seq"] + 1
+        policy = self.policy
+        if row["type"] == "select":
+            if row["context"] not in policy.contexts:
+                policy.contexts.append(row["context"])
+            policy.decisions += 1
+            invocation = self.ctx.get("invocation", row["invocation"])
+            policy.observe(row["context"], row["member"], invocation["compute_ns"], invocation["evidence_revision"])
+            self.cited.append(row["invocation"])
+        elif row["op"] in ("retire", "dormant"):
+            policy.members.remove(row["member"])
+            (policy.archived if row["op"] == "retire" else policy.dormant).append(row["member"])
+        elif row["op"] == "wake":
+            policy.dormant.remove(row["member"])
+            policy.members.append(row["member"])
+        elif row["op"] == "regenerate":
+            policy.archived.remove(row["member"])
+            policy.members.append(row["member"])
+
+    def _write(self, row):
+        row = dict(row, id=f"{self.id}:{self.seq}", ecology=self.id, seq=self.seq)
+        self.ctx.write("ecology-decision", row["id"], row, "ecology-decision", ecology=self.id, seq=self.seq)
+        self._apply(row)
+
+    # --- selection ------------------------------------------------------------
+    def choose(self, context, can_explore):
+        """Pure choice; nothing is recorded until `observe` cites the resulting invocation."""
+        snapshot = self.policy.decisions
+        known = list(self.policy.contexts)
+        member, exploring = self.policy.select(context, can_explore)
+        self.policy.decisions = snapshot              # the durable record advances the counter
+        self.policy.contexts[:] = known               # ... and records the context
+        return member, exploring
+
+    def observe(self, context, member, exploring, invocation):
+        invocation_record = self.ctx.get("invocation", invocation)
+        task = self.ctx.get("task", invocation_record["task"])
+        if task["provider"] != self.providers[member] or task.get("capability") != self.capability:
+            raise ValueError("observation must cite an invocation of that member under this capability")
+        self._write(dict(type="select", context=context, member=member, exploring=bool(exploring),
+                         invocation=invocation))
+
+    # --- lifecycle (population verifies every request) ------------------------
+    def assess(self, member):
+        return self.ctx.assess(self.capability, self.providers[member], self.cited)
+
+    def make_dormant(self, member):
+        assessment = self.assess(member)
+        self.ctx.make_dormant(self.capability, self.providers[member], assessment=assessment["id"])
+        self._write(dict(type="lifecycle", op="dormant", member=member, assessment=assessment["id"]))
+        return assessment
+
+    def retire(self, member, reason):
+        assessment = self.assess(member)
+        self.ctx.retire(self.capability, self.providers[member], assessment=assessment["id"], reason=reason)
+        self._write(dict(type="lifecycle", op="retire", member=member, assessment=assessment["id"]))
+        return assessment
+
+    def wake(self, member, *, budget, principal):
+        outcome = self.ctx.wake(self.capability, self.providers[member], budget=budget, principal=principal)
+        self._write(dict(type="lifecycle", op="wake", member=member, **outcome))
+        return outcome
+
+    def regenerate(self, member, *, budget, principal):
+        self.ctx.regenerate(self.capability, self.providers[member], budget=budget, principal=principal)
+        self._write(dict(type="lifecycle", op="regenerate", member=member))

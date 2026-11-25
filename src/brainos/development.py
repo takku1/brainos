@@ -11,8 +11,10 @@ This module never issues funding: budgets come from an operator.
 from collections import deque
 from dataclasses import asdict, dataclass
 import time
+from types import SimpleNamespace
 
 from .contracts import Refused, digest, uid
+from .devcontext import development_context
 from . import providers
 
 MAX_DEADLINE_SECONDS = 300
@@ -32,12 +34,13 @@ class CapabilityDemand:
 
 class CompositionSearch:
     def __init__(self, runtime):
-        self.runtime = runtime
+        # Keep only the restricted capability surface; never the Runtime itself.
+        self.ctx = runtime if isinstance(runtime, SimpleNamespace) else development_context(runtime)
 
     # --- provenance -------------------------------------------------------
     def _open_run(self, demand, principal, mode, cumulative, catalogue, admission_cases, budget, validation_budget):
-        rt = self.runtime
-        state = rt.manifest()
+        ctx = self.ctx
+        state = ctx.manifest()
         key = uid()
         definition = dict(asdict(demand), development_examples=[list(e) for e in demand.development_examples])
         record = dict(id=key, demand=demand.name, demand_definition=definition, demand_digest=digest(definition),
@@ -48,32 +51,25 @@ class CompositionSearch:
                             admission_cases_digest=digest(admission_cases) if admission_cases is not None else None),
             budgets=dict(search=budget, validation=validation_budget),
             started_wall=time.time(), status="RUNNING", consequences=[])
-        with rt.store.transaction():
-            rt.store.put("construction-run", key, record)
-            rt.store.event("construction-run-started", run=key, demand=demand.name)
+        ctx.write("construction-run", key, record, "construction-run-started", run=key, demand=demand.name)
         return record
 
     def _close_run(self, run, status, **totals):
-        rt = self.runtime
-        with rt.store.transaction():
-            run.update(status=status, **totals)
-            rt.store.put("construction-run", run["id"], run)
-            rt.store.event("construction-run-finished", run=run["id"], status=status)
+        run.update(status=status, **totals)
+        self.ctx.write("construction-run", run["id"], run, "construction-run-finished", run=run["id"], status=status)
 
     def _record(self, run, path, status, **details):
-        rt = self.runtime
+        ctx = self.ctx
         key = uid()
         lowered = set()
         for ref in path:
-            spec = rt.registry.store.get("provider", ref)
+            spec = ctx.get("provider", ref)
             lowered.update(spec.get("transitive_dependencies", [ref]))
         record = dict(id=key, run=run["id"] if run else None, demand=run["demand"] if run else None,
                       context=run["context"] if run else None, path=list(path),
                       dependencies=dict(direct=list(path), transitive=sorted(lowered)),
                       pinned=run["pinned"] if run else None, status=status, **details)
-        with rt.store.transaction():
-            rt.store.put("construction", key, record)
-            rt.store.event("construction-trial", trial=key, demand=record["demand"], status=status)
+        ctx.write("construction", key, record, "construction-trial", trial=key, demand=record["demand"], status=status)
         return key
 
     @staticmethod
@@ -83,11 +79,11 @@ class CompositionSearch:
                    for i, provider in enumerate(path)], output_node=f"n{len(path)-1}")
 
     def catalogue(self, *, cumulative, exclude_capability=None):
-        rt = self.runtime
+        ctx = self.ctx
         specs = {}
-        for key in rt.fabric.active_providers():
+        for key in ctx.active_providers():
             try:
-                spec = rt.registry.resolve(key)
+                spec = ctx.resolve(key)
             except Refused:
                 continue  # blocked by an impact: not available as a building block
             if spec["kind"] == "graph" and (not cumulative or spec["capability"] == exclude_capability):
@@ -113,7 +109,7 @@ class CompositionSearch:
                 or not 0 < demand.deadline_seconds <= MAX_DEADLINE_SECONDS
                 or mode not in ("typed", "memoized") or not demand.development_examples):
             raise Refused("invalid bounded capability demand or search policy")
-        runtime = self.runtime
+        ctx = self.ctx
         deadline = _deadline or time.monotonic() + demand.deadline_seconds
         catalogue = self.catalogue(cumulative=cumulative, exclude_capability=_run and _run.get("capability"))
         run = _run or self._open_run(demand, principal, mode, cumulative, catalogue, None, budget, None)
@@ -133,14 +129,14 @@ class CompositionSearch:
                 return
             path, schema = queue.popleft()
             try:
-                runtime.resources.charge(budget, principal, {"attempts": 1}, "typed-search-expansion")
+                ctx.charge(budget, principal, {"attempts": 1}, "typed-search-expansion")
                 attempts += 1
             except Refused as exc:
                 self._record(run, path, "NON_ATTAINMENT", reason=str(exc), expanded=expanded)
                 run["search"] = dict(expanded=expanded, attempts=attempts, seconds=time.monotonic() - started)
                 return
             expanded += 1
-            trivial = len(path) == 1 and runtime.registry.store.get("provider", path[0])["kind"] == "graph"
+            trivial = len(path) == 1 and ctx.get("provider", path[0])["kind"] == "graph"
             if path and schema == demand.output and path not in exclude_paths and not trivial:
                 trial_attempts, trial_started = 0, time.monotonic()
                 try:
@@ -150,14 +146,14 @@ class CompositionSearch:
                         for ref in path:
                             if out_of_time():
                                 raise Refused("construction deadline exceeded")
-                            spec = runtime.registry.resolve(ref)
+                            spec = ctx.resolve(ref)
                             key = digest([spec["id"], result, demand.context])
                             if mode == "memoized" and key in cache:
                                 result = cache[key]
                             else:
-                                runtime.resources.charge(budget, principal, spec["cost"], "development-example")
+                                ctx.charge(budget, principal, spec["cost"], "development-example")
                                 trial_attempts += spec["cost"]["attempts"]
-                                result = runtime.runner.compute(spec, result, max(0.05, min(5, deadline - time.monotonic())))
+                                result = ctx.compute(spec, result, max(0.05, min(5, deadline - time.monotonic())))
                                 cache[key] = result
                         if result != expected:
                             raise Refused("development example mismatch")
@@ -189,30 +185,26 @@ class CompositionSearch:
         The role defaults to the demand name and is bound only if it is free;
         further providers of the same capability join the population instead.
         """
-        rt = self.runtime
-        capability = rt.population.define(demand.name, demand.input, demand.output, admission_cases)
+        ctx = self.ctx
+        capability = ctx.define_capability(demand.name, demand.input, demand.output, admission_cases)
         deadline = time.monotonic() + demand.deadline_seconds
         catalogue = self.catalogue(cumulative=cumulative, exclude_capability=capability)
         run = self._open_run(demand, principal, mode, cumulative, catalogue, admission_cases, budget, validation_budget)
         run["capability"] = capability
         role = role or demand.name
-        val_before = rt.resources.budget(validation_budget, principal)["spent"]["attempts"]
+        val_before = ctx.spent(validation_budget, principal)["attempts"]
         for path in self.discover(demand, principal, budget, mode=mode, exclude_paths=exclude_paths,
                                   cumulative=cumulative, _run=run, _deadline=deadline):
             if time.monotonic() >= deadline:
                 self._record(run, path, "NON_ATTAINMENT", reason="construction deadline exceeded before admission")
                 break
             try:
-                provider = rt.fabric.register(self.definition(demand, path), capability)
-                member = rt.population.admit(capability, provider, budget=validation_budget, principal=principal)
+                provider = ctx.register_composite(self.definition(demand, path), capability)
+                member = ctx.admit(capability, provider, budget=validation_budget, principal=principal)
                 bound = None
-                if role not in rt.manifest()["bindings"]:
-                    candidate = rt.transactor.stage({role: provider})
-                    rt.transactor.validate(candidate, {role: admission_cases},
-                                           budget=validation_budget, principal=principal)
-                    rt.transactor.commit(candidate)
-                    bound = role
-                spent = rt.resources.budget(validation_budget, principal)["spent"]["attempts"] - val_before
+                if role not in ctx.manifest()["bindings"]:
+                    bound = ctx.bind_role(role, provider, admission_cases, validation_budget, principal)
+                spent = ctx.spent(validation_budget, principal)["attempts"] - val_before
                 trial = self._record(run, path, "ACQUIRED", provider=provider, mode=mode, member=member,
                                      bound_role=bound, evaluation=dict(validation_attempts=spent))
                 run["consequences"].append(dict(membership=member, provider=provider, bound_role=bound))
@@ -221,6 +213,6 @@ class CompositionSearch:
                             capability=capability, member=member, role=bound)
             except Refused as exc:
                 self._record(run, path, "REJECTED_ADMISSION", reason=str(exc), mode=mode)
-        spent = rt.resources.budget(validation_budget, principal)["spent"]["attempts"] - val_before
+        spent = ctx.spent(validation_budget, principal)["attempts"] - val_before
         self._close_run(run, "NON_ATTAINMENT", validation_attempts=spent)
         return dict(status="NON_ATTAINMENT", demand=demand.name, capability=capability, run=run["id"])

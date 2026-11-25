@@ -118,7 +118,10 @@ class Retention(unittest.TestCase):
 
 
 class PopulationIntegration(unittest.TestCase):
-    def test_retire_and_restore_through_brainos(self):
+    """All members agree on outputs; retirement now goes through a grounded assessment
+    (B14; see tests/test_retention.py for the full lifecycle)."""
+
+    def test_members_agree_and_unverified_retirement_is_refused(self):
         with tempfile.TemporaryDirectory() as d, Runtime(Path(d) / "c.db", profile="inprocess") as rt:
             cap = rt.population.define("range-count", "range-batch", "integers", run_ecology.ADMISSION)
             budget = rt.resources.create_budget("eco", {"attempts": 60})
@@ -131,15 +134,9 @@ class PopulationIntegration(unittest.TestCase):
                 task = rt.tasks.create_member_task("eco", cap, provider, value, budget)
                 outputs.add(tuple(rt.tasks.run_task(task, rt.tasks.authorize(task, "eco"), "eco")))
             self.assertEqual(outputs, {(3, 1)})
-            policy = Retention().populated()
-            evidence = policy.retirement_candidate()
-            rt.population.retire(cap, ids["range_scan"], reason="redundant", evidence=evidence)
-            self.assertEqual(len(rt.population.members(cap)), 3)
+            synthetic = Retention().populated().retirement_candidate()     # evidence about synthetic names
             with self.assertRaises(Refused):
-                rt.tasks.create_member_task("eco", cap, ids["range_scan"], value, budget)
-            stored = [r for r in rt.store.find("retirement")]
-            self.assertEqual(stored[0]["evidence"]["rule"], "redundant-within-margin-in-every-observed-context")
-            rt.population.restore(cap, ids["range_scan"], budget=budget, principal="eco")
+                rt.population.retire(cap, ids["range_scan"], assessment=synthetic.get("id"), reason="redundant")
             self.assertEqual(len(rt.population.members(cap)), 4)
 
 

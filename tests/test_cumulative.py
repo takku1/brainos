@@ -124,23 +124,18 @@ class CapabilityPopulation(Case):
         with self.assertRaisesRegex(Refused, "active member"):
             self.r.tasks.create_member_task("dev", bad_cases, scan, {"data": [], "queries": []}, self.dev)
 
-    def test_retirement_needs_evidence_and_restore_needs_validation(self):
+    def test_retirement_refuses_unverified_justification(self):
         capability = self.r.population.define("range-count", "range-batch", "integers",
                                               [({"data": [1, 5, 9], "queries": [[0, 5]]}, [2])])
         a, b = self.r.registry.register("range_scan"), self.r.registry.register("range_bisect")
         for p in (a, b):
             self.r.population.admit(capability, p, budget=self.val, principal="dev")
-        with self.assertRaises(Refused):
-            self.r.population.retire(capability, a, reason="slower on average", evidence={"justified": False})
-        self.r.population.retire(capability, a, reason="redundant", evidence={"justified": True})
-        with self.assertRaisesRegex(Refused, "last active member"):
-            self.r.population.retire(capability, b, reason="redundant", evidence={"justified": True})
-        with self.assertRaisesRegex(Refused, "active member"):
-            self.r.tasks.create_member_task("dev", capability, a, {"data": [], "queries": []}, self.dev)
-        spent = self.r.resources.budget(self.val, "dev")["spent"]["attempts"]
-        self.r.population.restore(capability, a, budget=self.val, principal="dev")
-        self.assertGreater(self.r.resources.budget(self.val, "dev")["spent"]["attempts"], spent)
-        self.assertEqual(len(self.r.population.members(capability)), 2)
+        for bogus in ("invented", None):
+            with self.assertRaises(Refused):
+                self.r.population.retire(capability, a, assessment=bogus, reason="slower on average")
+        self.assertEqual(self.r.population.state(capability, a), "ACTIVE")
+        with self.assertRaisesRegex(Refused, "archived"):
+            self.r.population.restore(capability, a, budget=self.val, principal="dev")
 
 
 class ClosureConformance(unittest.TestCase):
@@ -222,11 +217,12 @@ class FundingLifecycle(Case):
         self.assertEqual(self.r.resources.budget(budget, "dev")["available"]["attempts"], 5)  # once per period
         self.now[0] += 600
         record = self.r.resources.budget(budget, "dev")
-        self.assertEqual(record["available"]["attempts"], 8)                       # ceiling
+        # B15: the ceiling bounds unspent funding (available + 2 still held) = 8.
+        self.assertEqual(record["available"]["attempts"], 6)
         self.assertEqual(record["available"]["attempts"] + record["spent"]["attempts"]
-                         + 2, record["capacity"]["attempts"])                         # 2 still held
+                         + 2, record["capacity"]["attempts"])
         funded = [e for e in self.r.store.journal() if e["kind"] == "funded" and e["budget"] == budget]
-        self.assertEqual([e["added"]["attempts"] for e in funded], [5, 3])
+        self.assertEqual([e["added"]["attempts"] for e in funded], [5, 1])
 
     def test_development_principal_cannot_mint_or_self_fund(self):
         budget = self.r.resources.create_budget("dev", {"attempts": 1})

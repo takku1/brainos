@@ -59,7 +59,7 @@ class Runtime:
             self.transactor: Transactor = Transactor(self.store, self.control, self.registry, self.runner,
                                          failpoint, self.resources, budget)
             self.fabric = ComputationalFabric(self.store, self.control, self.registry, self.transactor, self.tasks)
-            self.population = CapabilityPopulation(self.store, self.registry, self.transactor)
+            self.population = CapabilityPopulation(self.store, self.registry, self.transactor, self.control)
             self.tasks.population = self.population
         except BaseException:
             self.runner.close()

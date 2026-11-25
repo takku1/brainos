@@ -1,0 +1,75 @@
+{
+ "B14": {
+  "reproduced": true,
+  "note": "retire accepted evidence naming another member, no capability/revision/observation binding"
+ },
+ "B15": {
+  "reproduced": true,
+  "available_after_refill": 100,
+  "unspent_after_release": 200,
+  "ceiling": 100
+ },
+ "B20": {
+  "reproduced": true,
+  "minted_capacity": {
+   "attempts": 1000000000
+  },
+  "note": "issued_by is an asserted string; CompositionSearch holds the full Runtime (resources, store)",
+  "search_holds_runtime": true
+ },
+ "B16": {
+  "reproduced": true,
+  "note": "EcologyPolicy evidence/contexts/archived/rng are in-process only; nothing persisted"
+ },
+ "B17": {
+  "reproduced": true,
+  "note": "ecology total = sum(compute_ns) + regeneration wall-clock ms"
+ },
+ "B18": {
+  "logic_discrepancy_confirmed": true,
+  "verdicts_changed": false,
+  "note": "implemented check takes per-request min over active members; preregistered quantifier needs one member",
+  "v1": {
+   "active": [
+    "range_bisect",
+    "range_scan"
+   ],
+   "implemented": {
+    "many-narrow": true,
+    "many-wide": true,
+    "single-wide": true
+   },
+   "exact": {
+    "many-narrow": true,
+    "many-wide": true,
+    "single-wide": true
+   },
+   "reported": false,
+   "exact_passed": false
+  },
+  "v2": {
+   "active": [
+    "range_bisect",
+    "range_hash",
+    "range_scan",
+    "range_scan_list"
+   ],
+   "implemented": {
+    "many-narrow": true,
+    "many-wide": true,
+    "single-wide": true
+   },
+   "exact": {
+    "many-narrow": true,
+    "many-wide": true,
+    "single-wide": true
+   },
+   "reported": true,
+   "exact_passed": true
+  }
+ },
+ "B19": {
+  "reproduced": true,
+  "note": "a single noisy 11x sample permanently stops exploration of member a in context c"
+ }
+}
