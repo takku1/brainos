@@ -18,8 +18,9 @@ execution, k-of-n validation and heterogeneous feasibility are
 implemented and tested (R-02-14, R-02-15) — no separate neural kernel
 and no special authority rules for language models. The Qwen probe ran
 disclosed and non-confirmatory (admission passed, irregular demand
-served where the deterministic parser refused); confirmatory execution
-awaits a reviewed prereg. Carried forward:
+served where the deterministic parser refused); the L2 confirmatory
+prereg is frozen and under review — no execution until approved.
+Carried forward:
 demand-triggered recruitment, incremental retention assessment, kernel
 overhead, non-vacuous assimilation validation, organizational fragility,
 adaptation latency, and economic comparison against independently
