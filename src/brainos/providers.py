@@ -4,6 +4,8 @@ from collections import Counter
 from dataclasses import dataclass
 from functools import lru_cache
 import inspect
+import json
+import re
 import time
 from .contracts import Refused, digest, encode
 
@@ -76,6 +78,19 @@ def count_items(value):
 
 def text_length(value):
     return len(value)
+
+
+def normalize_ws(value):
+    return " ".join(value.split())
+
+
+def parse_nl_sum(value):
+    """Canonical natural-language sums to a typed intermediate representation."""
+    match = re.match(r"^\s*add\s+up\s+(-?\d+)\s*(?:,|\band\b)\s*(-?\d+)\s*\.?\s*$",
+                     value, re.IGNORECASE)
+    if not match:
+        raise Refused("not a canonical sum request")
+    return json.dumps({"operation": "sum", "values": [int(match.group(1)), int(match.group(2))]})
 
 
 def negate(value):
@@ -174,6 +189,8 @@ PRIMITIVES = {
     "sum_loop": Primitive(sum_loop, "integers", "integer", "sum-integers"),
     "count": Primitive(count_items, "integers", "integer", "count-integers"),
     "text_length": Primitive(text_length, "text", "integer", "text-length"),
+    "normalize_ws": Primitive(normalize_ws, "text", "text", "text-normalize"),
+    "parse_nl_sum": Primitive(parse_nl_sum, "text", "text", "nl-arith"),
     "negate": Primitive(negate, "integer", "integer", "negate-integer"),
     "double": Primitive(double, "integer", "integer", "double-integer"),
     "range_scan": Primitive(range_scan, "range-batch", "integers", "range-count"),

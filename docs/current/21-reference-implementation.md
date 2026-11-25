@@ -38,7 +38,7 @@ do not edit by hand. Status per requirement: implemented (I✓), partial (I∼).
 | fabric.py | R-24-COMPOSE-02 | R-04-02, R-09-FUSE, R-29-03 |
 | gateways.py | R-09-ACT, R-12-F2, R-32-06, R-32-09 | R-09-03, R-09-08 |
 | graphs.py | R-24-COMPOSE, R-29-05 | R-02-03, R-02-05, R-02-13 |
-| population.py | R-17-01, R-25-04 | R-09-05, R-09-RETIRE, R-11-01, R-11-02, R-11-04, R-12-F13, R-12-F6, R-17-04, R-20-03, R-24-ADD, R-24-RETIRE |
+| population.py | R-02-15, R-17-01, R-25-04 | R-09-05, R-09-RETIRE, R-11-01, R-11-02, R-11-04, R-12-F13, R-12-F6, R-17-04, R-20-03, R-24-ADD, R-24-RETIRE |
 | providers.py | R-21-11 | R-02-01, R-02-02, R-02-09, R-03-04, R-12-F11 |
 | recovery.py | R-09-04, R-32-09 | — |
 | registry.py | R-02-14 | R-03-01, R-09-CONNECT, R-09-QUARANTINE, R-12-F16, R-19-02, R-29-02, R-29-03 |
@@ -46,10 +46,10 @@ do not edit by hand. Status per requirement: implemented (I✓), partial (I∼).
 | runner.py | R-21-09, R-32-06 | — |
 | runtime.py | R-21-04, R-31-01 | R-08-01, R-21-02, R-21-03 |
 | storage.py | R-32-02 | R-02-08, R-06-05, R-09-OBSERVE, R-24-01 |
-| transactor.py | R-09-10, R-09-BIND, R-09-COMMIT, R-09-VALIDATE, R-24-03, R-24-ASSIMILATE-02 | R-02-10, R-09-03, R-09-09, R-09-REBIND, R-12-F10, R-12-F17, R-12-F9, R-21-02, R-24-ASSIMILATE, R-24-REBIND |
+| transactor.py | R-02-15, R-09-10, R-09-BIND, R-09-COMMIT, R-09-VALIDATE, R-24-03, R-24-ASSIMILATE-02 | R-02-10, R-09-03, R-09-09, R-09-REBIND, R-12-F10, R-12-F17, R-12-F9, R-21-02, R-24-ASSIMILATE, R-24-REBIND |
 | worker.py | R-21-09 | — |
 
-Register totals: documentary 15, implemented 45, partial 70, specified 88.
+Register totals: documentary 15, implemented 46, partial 70, specified 87.
 
 <!-- traceability:end -->
 

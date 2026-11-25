@@ -9,7 +9,7 @@ from .recovery import RecoveryCoordinator
 from .registry import ProviderRegistry
 from .resources import ResourceLedger
 from .population import CapabilityPopulation
-from .runner import make_runner
+from .runner import ExternalDispatcher, make_runner
 from .storage import Store
 from .transactor import Transactor
 from .fabric import ComputationalFabric
@@ -33,7 +33,7 @@ class Runtime:
     VALIDATION_FUNDING = dict(period_seconds=3600, grant={"attempts": 128}, ceiling={"attempts": 256})
 
     def __init__(self, path, *, clock=time.time, failpoint=None, profile="subprocess",
-                 operators=frozenset({"operator"})):
+                 operators=frozenset({"operator"}), external_adapters=None):
         self.store = Store(path)
         failpoint = failpoint or (lambda name: None)
         self.control = ControlState(self.store)
@@ -41,7 +41,9 @@ class Runtime:
         self.evidence = EvidenceLedger(self.store, self.control, clock)
         self.registry = ProviderRegistry(self.store, operators)
         self.authority = Authority(self.store, self.control, self.evidence, clock)
-        self.runner = make_runner(profile, self.registry, self._runner_event)
+        external = (ExternalDispatcher(external_adapters, self._runner_event)
+                    if external_adapters else None)
+        self.runner = make_runner(profile, self.registry, self._runner_event, external=external)
         self.tasks = TaskExecutor(self.store, self.control, self.registry, self.runner,
                                   self.resources, self.authority, failpoint)
         self.effects = EffectGateway(self.store, self.control, self.resources,

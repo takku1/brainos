@@ -77,21 +77,26 @@ class CapabilityPopulation:
         self.control = control
 
     # --- contracts and operator configuration ---------------------------------
-    def define(self, name, input, output, admission_cases, *, input_unit=None, output_unit=None):
+    def define(self, name, input, output, admission_cases, *, input_unit=None, output_unit=None,
+                 abstain=()):
         if not name or not admission_cases or len(admission_cases) > 64:
             raise Refused("a capability needs a name and 1..64 admission cases")
         contract = dict(name=name, input=input, output=output,
                         input_unit=input_unit or graphs.unit(input), output_unit=output_unit or graphs.unit(output))
         key = f"capability:{name}@{digest(contract)[:16]}"
         cases = json.loads(encode(admission_cases))
+        abstained = list({encode(v): v for v in json.loads(encode(list(abstain)))}.values())
         with self.store.transaction():
             existing = next((c for c in self.store.find("capability") if c["id"] == key), None)
             if existing is not None:
                 if existing["cases_digest"] != digest(cases):
                     raise Refused("capability contract already defined with other admission cases")
+                if existing.get("abstain", []) != abstained:
+                    raise Refused("capability contract already defined with other abstain outputs")
                 return key
             self.store.put("capability", key, dict(contract, id=key, admission_cases=cases,
-                cases_digest=digest(cases), retention=dict(DEFAULT_RETENTION), period=0, maintenance={}))
+                cases_digest=digest(cases), abstain=abstained, retention=dict(DEFAULT_RETENTION),
+                period=0, maintenance={}))
             self.store.event("capability-defined", capability=key)
         return key
 
@@ -129,10 +134,23 @@ class CapabilityPopulation:
             return row["state"] if row else None
 
     def admit(self, capability, provider, *, budget, principal):
-        """Validate the provider on the contract's own admission cases, then admit (ACTIVE)."""
-        cases = self.contract(capability)["admission_cases"]
+        """Validate the provider on the contract's own admission cases, then admit (ACTIVE).
+
+        Nondeterministic providers take the k-of-n path (R-02-15) with the
+        admission policy pinned in their provider record and the abstain
+        outputs declared by the capability contract."""
+        contract = self.contract(capability)
+        cases = contract["admission_cases"]
         candidate = self.transactor.stage_membership(capability, provider)
-        self.transactor.validate(candidate, {capability: cases}, budget=budget, principal=principal)
+        spec = self.registry.resolve(provider)
+        if spec.get("nondeterministic"):
+            policy = spec.get("admission", {})
+            self.transactor.validate_nondeterministic(
+                candidate, {capability: cases}, n=policy.get("n"), k=policy.get("k"),
+                abstain=contract.get("abstain", []), budget=budget, principal=principal)
+        else:
+            self.transactor.validate(candidate, {capability: cases}, budget=budget,
+                                     principal=principal)
         return self.transactor.commit_membership(candidate)
 
     def members(self, capability, *, include_archived=False, states=("ACTIVE",)):

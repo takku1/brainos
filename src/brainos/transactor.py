@@ -1,7 +1,22 @@
 """Prepared and validated configurations publish with revision and epoch CAS."""
 import json
+import math
 import time
 from .contracts import Refused, ProviderRunner, digest, encode, uid
+
+
+DRAW_BUDGET = 64  # maximum total draws of one nondeterministic validation
+
+
+def wilson(hits, total, z=1.96):
+    """Approximate 95% Wilson score interval for an observed rate."""
+    if total <= 0:
+        return None, None
+    denominator = 1 + z * z / total
+    center = (hits / total + z * z / (2 * total)) / denominator
+    half = z * math.sqrt(hits / total * (1 - hits / total) / total
+                         + z * z / (4 * total * total)) / denominator
+    return max(0.0, center - half), min(1.0, center + half)
 
 
 class Transactor:
@@ -275,6 +290,135 @@ class Transactor:
                 self.store.put("candidate", candidate, record)
                 self.store.event("validated", candidate=candidate, cases=record["cases_digest"],
                                  attempts=attempts, elapsed_seconds=time.monotonic() - started)
+        except Exception as exc:
+            with self.store.transaction():
+                record["state"] = "REJECTED"
+                self.resources.release_tx(holding, principal)
+                self.store.put("candidate", candidate, record)
+                self.store.event("validation-failed", candidate=candidate, attempts=attempts,
+                                 elapsed_seconds=time.monotonic() - started, error=str(exc))
+            raise
+
+    def validate_nondeterministic(self, candidate, cases, *, n, k, abstain=(), budget=None,
+                                  principal=None, draw_timeout=30.0):
+        """k-of-n admission for nondeterministic providers (R-02-15).
+
+        Each case runs n independent draws; a case passes on k agreements
+        with the expected output, and every case must pass on its own —
+        pooled success never conceals a weak context. Draw outcomes are
+        correct, malformed, abstention, timeout or failure; abstention
+        counts as correct only for contract-declared abstain outputs.
+        Reported rates carry Wilson intervals: the evidence is empirical,
+        never a correctness guarantee. The full draw record, identities,
+        sampling snapshot and invalidation scope are stored on the
+        candidate; a new provider identity needs fresh evidence.
+        """
+        budget = self.validation_budget if budget is None else budget
+        principal = "_kernel_validation" if principal is None else principal
+        if type(n) is not int or type(k) is not int or not 1 <= k <= n:
+            raise Refused("nondeterministic validation needs 1 <= k <= n as integers")
+        if not draw_timeout > 0:
+            raise Refused("draw timeout must be positive")
+        abstained = list(json.loads(encode(list(abstain))))
+        with self.store.transaction():
+            record = self.store.get("candidate", candidate)
+            if record["state"] != "PREPARED":
+                raise Refused("validation requires a prepared candidate")
+            expected_roles = set(record["bindings"])
+            if set(cases) != expected_roles or any(not values for values in cases.values()):
+                raise Refused("every changed role requires independent test cases")
+            total_draws = n * sum(len(values) for values in cases.values())
+            if total_draws > DRAW_BUDGET:
+                raise Refused("nondeterministic validation exceeds its draw budget")
+            captured = self.control.read()
+            if any(record[k] != captured[k] for k in ("revision", "epoch", "evidence_revision")):
+                raise Refused("candidate base is stale")
+            cases = json.loads(encode(cases))
+            resolved = {role: self.registry.resolve(key) for role, key in record["bindings"].items()}
+            amount = total_draws * resolved[next(iter(resolved))]["cost"]["attempts"]
+            holding = self.resources.reserve_tx(budget, principal, {"attempts": amount}, "validation:" + candidate)
+            self.resources.allocate_tx(holding, principal)
+            record.update(validation_holding=holding, validation_principal=principal)
+            record["state"] = "VALIDATING"
+            self.store.put("candidate", candidate, record)
+            self.store.event("validation-started", candidate=candidate, draws=total_draws)
+        started = time.monotonic()
+        started_ns = time.perf_counter_ns()
+        grant = draw_timeout * total_draws + 10
+        attempts, compute_ns, total_ns, reasons = 0, 0, 0, []
+        draws, per_case, timings = [], {}, []
+        try:
+            for role, examples in cases.items():
+                for index, (value, expected) in enumerate(examples):
+                    correct = 0
+                    for draw in range(n):
+                        remaining = grant - (time.monotonic() - started)
+                        if remaining <= 0:
+                            raise Refused("validation exceeded its wall-clock grant")
+                        attempts += 1
+                        with self.store.transaction():
+                            self.resources.spend_tx(holding, resolved[role]["cost"])
+                        before = time.perf_counter_ns()
+                        try:
+                            output = self.runner.compute(resolved[role], value,
+                                                         min(draw_timeout, remaining),
+                                                         on_timing=lambda timing: timings.append(timing))
+                            elapsed = time.perf_counter_ns() - before
+                            compute_ns += timings[-1]["compute_ns"]
+                            total_ns += elapsed
+                        except Refused as exc:
+                            message = str(exc)
+                            if "wall-clock" in message:
+                                outcome, detail = "timeout", message
+                            elif "malformed" in message:
+                                outcome, detail = "malformed", message
+                            else:
+                                outcome, detail = "failure", message
+                            draws.append(dict(role=role, case=index, draw=draw, outcome=outcome,
+                                              detail=detail))
+                            continue
+                        if output == expected:
+                            outcome = "correct"
+                            correct += 1
+                        else:
+                            outcome, detail = "incorrect", None
+                            draws.append(dict(role=role, case=index, draw=draw, outcome=outcome,
+                                              output=output, expected=expected))
+                            continue
+                        draws.append(dict(role=role, case=index, draw=draw, outcome=outcome,
+                                          abstention=output in abstained,
+                                          compute_ns=timings[-1]["compute_ns"]))
+                    lo, hi = wilson(correct, n)
+                    per_case[role + ":" + str(index)] = dict(agreements=correct, draws=n,
+                                                             wilson=[lo, hi])
+                    if correct < k:
+                        reasons.append(f"{role} case {index}: {correct}/{n} agreements, needs {k}")
+            hits = sum(1 for d in draws if d["outcome"] == "correct")
+            pooled = wilson(hits, len(draws))
+            identity = {key: resolved[next(iter(resolved))].get(key)
+                        for key in ("implementation", "artifact", "artifact_algorithm",
+                                    "identities", "sampling", "nondeterministic",
+                                    "provider_digest")}
+            evidence = dict(n=n, k=k, abstain=abstained, draws=draws, per_case=per_case,
+                            wilson_pooled=list(pooled), identities=identity)
+            record["admission_evidence"] = evidence
+            if reasons:
+                raise Refused("nondeterministic admission failed: " + "; ".join(reasons))
+            with self.store.transaction():
+                if self.control.read() != captured:
+                    raise Refused("validation inputs changed")
+                if self.store.get("candidate", candidate)["state"] != "VALIDATING":
+                    raise Refused("candidate state changed during validation")
+                record.update(state="VALIDATED", cases_digest=digest(cases),
+                              validation_attempts=attempts, validation_compute_ns=compute_ns,
+                              validation_total_ns=total_ns,
+                              validation_wall_ns=time.perf_counter_ns() - started_ns,
+                              admission_evidence=evidence)
+                self.resources.release_tx(holding, principal)
+                self.store.put("candidate", candidate, record)
+                self.store.event("validated", candidate=candidate, cases=record["cases_digest"],
+                                 attempts=attempts, elapsed_seconds=time.monotonic() - started,
+                                 admission=True)
         except Exception as exc:
             with self.store.transaction():
                 record["state"] = "REJECTED"

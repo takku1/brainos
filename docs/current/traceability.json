@@ -146,7 +146,9 @@
    ],
    "tests": [
     "tests/test_external.py::ExternalRegistration",
-    "tests/test_external.py::ManifestVerification"
+    "tests/test_external.py::ManifestVerification",
+    "tests/test_external.py::HeterogeneousOrganization",
+    "tests/test_external.py::ExternalExecution"
    ],
    "verified": "full"
   },
@@ -596,7 +598,8 @@
     "src/brainos/providers.py::prepare_identity"
    ],
    "tests": [
-    "tests/test_assimilation.py::SharedRepresentation"
+    "tests/test_assimilation.py::SharedRepresentation",
+    "tests/test_external.py::PrimitiveContracts"
    ],
    "verified": "full"
   },
@@ -1283,6 +1286,17 @@
    "tests": [
     "tests/test_crash_recovery.py::CrashRecoveryTests",
     "tests/test_core.py::EndToEndTests.test_real_demo"
+   ],
+   "verified": "full"
+  },
+  "R-02-15": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/transactor.py::Transactor.validate_nondeterministic",
+    "src/brainos/population.py::CapabilityPopulation.admit"
+   ],
+   "tests": [
+    "tests/test_external.py::NondeterministicAdmission"
    ],
    "verified": "full"
   }

@@ -28,7 +28,7 @@ from .contracts import Refused
 from .population import FEATURIZERS
 from . import closure, providers
 from .registry import ProviderRegistry
-from .runner import make_runner
+from .runner import ExternalDispatcher, make_runner
 from .storage import Store
 
 NOV_COSTS = ("compute", "overhead", "construction", "validation", "assessment", "maintenance")
@@ -143,14 +143,22 @@ class _Admission:
     performed are counted so verdicts can report the budget they spent.
     """
 
-    def __init__(self, store, timeout):
+    def __init__(self, store, timeout, external_adapters=None):
         if not timeout > 0:
             raise Refused("admission timeout must be positive")
         self.registry = ProviderRegistry(store)
-        self.runner = make_runner("inprocess", self.registry, lambda kind, **fields: None)
+        external = (ExternalDispatcher(external_adapters, lambda kind, **fields: None)
+                    if external_adapters else None)
+        self.runner = make_runner("inprocess", self.registry, lambda kind, **fields: None,
+                                  external=external)
         self.timeout = timeout
         self.cache = {}
         self.evaluations = 0
+        self.external = external
+
+    def close(self):
+        if self.external is not None:
+            self.external.close()
 
     def check(self, provider, cases):
         key = (provider, len(cases))
@@ -186,12 +194,15 @@ def _contexts(contract, values):
 
 
 def measure(store, capability, task_ids, *, margin=0.10, latency_floor_ns=None,
-            admission_timeout=10):
+            admission_timeout=10, external_adapters=None):
     """Emergence meter for one capability over one window (R-25-06).
 
     Returns the section 25.13 quantities N/C/Q/R/D/L/V plus reuse and
     complexity, with the window, journal span and derivation notes needed to
     reproduce them. Reads kernel records only; writes nothing.
+    `external_adapters` maps implementation names to adapter commands so
+    admission re-checks reach external members through the same boundary
+    as live execution.
     """
     started = time.perf_counter_ns()
     margin = _margin(margin)
@@ -219,7 +230,7 @@ def measure(store, capability, task_ids, *, margin=0.10, latency_floor_ns=None,
     active = [p for p in by_state.get("ACTIVE", []) if p not in blocked]
     dormant = [p for p in by_state.get("DORMANT", []) if p not in blocked]
     population = {row["id"]: row for row in store.find("provider")}
-    admission = _Admission(store, admission_timeout)
+    admission = _Admission(store, admission_timeout, external_adapters)
 
     served, coverage = [], []
     for task in tasks:
@@ -417,7 +428,7 @@ def measure(store, capability, task_ids, *, margin=0.10, latency_floor_ns=None,
         affected, _ = closure.population_closure(population, {pid}, "support")
         closures.append(len(affected))
 
-    return {
+    report = {
         "N": dict(active=len(by_state.get("ACTIVE", [])), dormant=len(by_state.get("DORMANT", [])),
                   archived=len(by_state.get("ARCHIVED", [])),
                   providers=provider_ids,
@@ -448,6 +459,8 @@ def measure(store, capability, task_ids, *, margin=0.10, latency_floor_ns=None,
                      journal_span=[lo, hi], admission_evaluations=admission.evaluations,
                      meter_wall_ns=time.perf_counter_ns() - started, notes=notes),
     }
+    admission.close()
+    return report
 
 
 def _copy_store(store):
@@ -465,7 +478,8 @@ def _copy_store(store):
 
 
 def organizational_verdict(store, capability, *, margin=0.10, latency_floor_ns=None,
-                           admission_timeout=10, development_budget=None):
+                           admission_timeout=10, development_budget=None,
+                           external_adapters=None):
     """Organizational-capability test for one capability (R-25-07).
 
     (1) Structure dependence: no single catalogue primitive satisfies the
@@ -548,13 +562,17 @@ def organizational_verdict(store, capability, *, margin=0.10, latency_floor_ns=N
         catalogue_served = None
 
     tmp, copied = _copy_store(store)
+    present_probe = None
     try:
         copy_registry = ProviderRegistry(copied)
         present = sorted(row["id"] for row in copied.find("provider")
                          if row.get("kind") == "primitive"
                          and copy_registry.blocking_impact(row["id"]) is None)
-        present_hit, present_done = sweep_list(_Admission(copied, admission_timeout), present)
+        present_probe = _Admission(copied, admission_timeout, external_adapters)
+        present_hit, present_done = sweep_list(present_probe, present)
     finally:
+        if present_probe is not None:
+            present_probe.close()
         copied.close()
         tmp.cleanup()
 
@@ -571,10 +589,11 @@ def organizational_verdict(store, capability, *, margin=0.10, latency_floor_ns=N
                                      reason="development budget exhausted")
             continue
         tmp, copied = _copy_store(store)
+        probe = None
         try:
             copy_registry = ProviderRegistry(copied)
             copy_registry.record_impact([pid], "support", "emergence-meter substitution probe")
-            probe = _Admission(copied, admission_timeout)
+            probe = _Admission(copied, admission_timeout, external_adapters)
             states = [(m["provider"], m["state"]) for m in copied.find("member")
                       if m["capability"] == capability]
             path, served, done = None, False, True
@@ -595,6 +614,8 @@ def organizational_verdict(store, capability, *, margin=0.10, latency_floor_ns=N
             exhausted |= not done
             robust &= done and served
         finally:
+            if probe is not None:
+                probe.close()
             copied.close()
             tmp.cleanup()
 

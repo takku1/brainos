@@ -13,9 +13,13 @@ Not full Core conformance; not independently reviewed.
 W2: bring one external provider family (frozen checkpoints staged in
 `src/models/`) behind the existing contracts, with nondeterministic
 validation. The adapter design is specified (Doc 02 §2.12, Doc 07 §7.18,
-R-02-14, R-02-15, R-07-12); the external boundary and registration are
-implemented and tested (R-02-14, 8 tests) — no separate neural kernel
-and no special authority rules for language models. Carried forward:
+R-02-14, R-02-15, R-07-12); the external boundary, registration,
+execution, k-of-n validation and heterogeneous feasibility are
+implemented and tested (R-02-14, R-02-15) — no separate neural kernel
+and no special authority rules for language models. The Qwen probe ran
+disclosed and non-confirmatory (admission passed, irregular demand
+served where the deterministic parser refused); confirmatory execution
+awaits a reviewed prereg. Carried forward:
 demand-triggered recruitment, incremental retention assessment, kernel
 overhead, non-vacuous assimilation validation, organizational fragility,
 adaptation latency, and economic comparison against independently
@@ -25,7 +29,7 @@ initialized adaptive controls.
 
 `docs/current` is one consolidated specification with each rule owned by
 one document. The Doc 31 register is the source of truth — register: 218
-requirements (implemented 45, partial 70, specified 88, documentary 15),
+requirements (implemented 46, partial 70, specified 87, documentary 15),
 derived from `docs/current/traceability.json`, never copied from older
 status text. `src/brainos` implements a standard-library Python runtime:
 durable SQLite authority, scoped permits and epochs, transactor
@@ -58,9 +62,10 @@ specialist dormant in P1.
 | X3 | Correct rejection, state reduction and recovery held. The acceptance rule was unsound (4 incorrect acceptances) and the economics were undercounted. |
 | X4 | 5 seeds, all hypotheses pass. Developing NOV > fixed on every seed; adaptive > developing on every seed (descriptive, declared rates). Coverage 1.0, regret 0.0, retention 1.0 throughout. Verdicts: arith fragile, lookup redundant. Zero assimilation nominations after P1; P1 specialist dormancy on thin samples. |
 
-212 runtime tests pass, drift check reports zero errors, document checks
-19/19 and negatives 15/15 (verified 2026-11-25 on the X4 results commit;
-test counts are point-in-time, register counts are derived).
+243 runtime tests pass, drift check reports zero errors, document checks
+19/19 and negatives 15/15 (verified 2026-11-25 with the W2 boundary,
+registration, execution and admission work; test counts are
+point-in-time, register counts are derived).
 
 ## Key decisions
 
@@ -70,6 +75,11 @@ test counts are point-in-time, register counts are derived).
   check, verified by the same gate.
 - W1 closed: R-25-06 (meter), R-25-07 (capability test) and R-20-07
   (net-value ledger) implemented with positive and negative controls.
+- W2 feasibility probe (disclosed, non-confirmatory, no committed
+  results): Qwen3-0.6B admitted k-of-n on canonical sums and served an
+  irregular demand the deterministic parser refused; deterministic+neural
+  substitution, meter, verdict (redundant) and NOV all ran through the
+  existing kernel paths. Full details in the session record.
 - Store.journal() root fix: an event body carrying `seq` crashed every
   journal reader; the journal sequence now wins, with a regression test.
 - Model payloads are optional external assets: `src/models/` payloads are
@@ -92,5 +102,5 @@ test counts are point-in-time, register counts are derived).
 
 ## Last updated
 
-2026-11-25 (W1 closed and exercised in X4; STATUS.md is a drift-checked
-exit gate; model-payload decision recorded)
+2026-11-25 (W2 D1-D5 feasibility: external execution, k-of-n admission,
+heterogeneous demo and Qwen probe; confirmatory prereg pending)
