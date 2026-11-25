@@ -1,0 +1,30 @@
+{
+ "v1": {
+  "active": [
+   "range_bisect",
+   "range_scan"
+  ],
+  "per_context": {
+   "many-narrow": true,
+   "many-wide": true,
+   "single-wide": true
+  },
+  "exact_passed": false,
+  "originally_reported": false
+ },
+ "v2": {
+  "active": [
+   "range_bisect",
+   "range_hash",
+   "range_scan",
+   "range_scan_list"
+  ],
+  "per_context": {
+   "many-narrow": true,
+   "many-wide": true,
+   "single-wide": true
+  },
+  "exact_passed": true,
+  "originally_reported": true
+ }
+}

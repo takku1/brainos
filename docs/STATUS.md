@@ -76,9 +76,21 @@ three generations of cumulative acquisition passed; the bounded ecology
 failed coexistence (v1) and retention discipline (v2), and failed adaptation in
 both. Offline algorithm selection was far cheaper given calibration.
 
-Next: a retirement probation window (own preregistration), multi-input graph
-nodes, cheaper payload transport for the persistent profile, then
-assimilation/regeneration experiments. Full obligations remain in Doc 31.
+Grounded retention (Doc 21 section 21.12): B14-B20 were reproduced on
+9b9e7bd and resolved. Providers move through ACTIVE, DORMANT and ARCHIVED,
+with retirement justified by population-computed assessments. Ecology state
+is durable, costs are reported on separate ledgers, and developmental code
+works through a restricted context. Preregistered X2c (run 2; run 1 aborted
+by a disclosed defect): specialist loss fell from 6-7 to 0-1. Dormancy with
+LCB matched the strong control on 4 of 5 seeds and failed on one, a dormant
+specialist that was never recruited. Adaptation failed everywhere.
+Matched-repertoire X1b (descriptive): cumulative construction was cheapest.
+
+Next: the first bounded assimilation experiment (Doc 21 to be extended),
+with parents kept dormant rather than archived until the consolidated
+provider is validated. Known open items: incremental assessment, and
+demand-triggered waking of dormant members, which needs its own
+preregistration.
 
 ## Verification scope
 
@@ -96,11 +108,11 @@ remain unqualified. See Doc 21 section 21.9 for profile-specific limits.
 ## Historical material
 
 Predecessor Z:\newbrain results (231 tests; selective-repair cost 0.21-0.26x
-with retention failure) are historical only. The docx is retained in the working tree as historical material;
+with retention failure) are historical only. The original docx is archived as superseded in docs/archive/;
 Markdown is the current specification. Independent artifact/requirement review
 is still outstanding. Research ambition is preserved; empirical outcomes
 will be recorded when experiments run.
 
 ## Last updated
 
-2026-11-25 (B07-B13, execution profiles, cumulative construction, preregistered ecology)
+2026-11-25 (B14-B20, provider lifecycle, preregistered X2c/X1b)

@@ -1,0 +1,83 @@
+{
+ "x1b": {
+  "cumulative": {
+   "acquire_search": 43,
+   "acquire_validation": 54,
+   "reacquire_search": 43,
+   "reacquire_validation": 54,
+   "all_acquired": true,
+   "reacquired_all": true,
+   "reuse": {
+    "tasks": 60,
+    "attempts": 180,
+    "compute_ms": 0.272
+   },
+   "repertoire": {
+    "composites": 3,
+    "dependency_edges": 12
+   },
+   "impact_affected": 4
+  },
+  "primitive": {
+   "acquire_search": 143,
+   "acquire_validation": 54,
+   "reacquire_search": 129,
+   "reacquire_validation": 54,
+   "all_acquired": true,
+   "reacquired_all": true,
+   "reuse": {
+    "tasks": 60,
+    "attempts": 180,
+    "compute_ms": 0.275
+   },
+   "repertoire": {
+    "composites": 3,
+    "dependency_edges": 9
+   },
+   "impact_affected": 4
+  },
+  "memoized": {
+   "acquire_search": 81,
+   "acquire_validation": 54,
+   "reacquire_search": 75,
+   "reacquire_validation": 54,
+   "all_acquired": true,
+   "reacquired_all": true,
+   "reuse": {
+    "tasks": 60,
+    "attempts": 180,
+    "compute_ms": 0.282
+   },
+   "repertoire": {
+    "composites": 3,
+    "dependency_edges": 9
+   },
+   "impact_affected": 4
+  }
+ },
+ "x1b_h": {
+  "Y1": {
+   "passed": true
+  }
+ },
+ "x2c_h": {
+  "X2c-H1": {
+   "passed": true
+  },
+  "X2c-H2": {
+   "passed": true
+  },
+  "X2c-H3": {
+   "passed": true
+  },
+  "X2c-H4": {
+   "passed": true
+  },
+  "X2c-H5": {
+   "passed": false
+  },
+  "X2c-H6": {
+   "passed": true
+  }
+ }
+}

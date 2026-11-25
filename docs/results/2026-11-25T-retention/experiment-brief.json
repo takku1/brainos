@@ -1,0 +1,2101 @@
+{
+ "x1b_summary": {
+  "cumulative": {
+   "acquire_search": 43,
+   "acquire_validation": 54,
+   "reacquire_search": 43,
+   "reacquire_validation": 54,
+   "all_acquired": true,
+   "reacquired_all": true,
+   "reuse": {
+    "tasks": 60,
+    "attempts": 180,
+    "compute_ms": 0.272
+   },
+   "repertoire": {
+    "composites": 3,
+    "dependency_edges": 12
+   },
+   "impact_affected": 4
+  },
+  "primitive": {
+   "acquire_search": 143,
+   "acquire_validation": 54,
+   "reacquire_search": 129,
+   "reacquire_validation": 54,
+   "all_acquired": true,
+   "reacquired_all": true,
+   "reuse": {
+    "tasks": 60,
+    "attempts": 180,
+    "compute_ms": 0.275
+   },
+   "repertoire": {
+    "composites": 3,
+    "dependency_edges": 9
+   },
+   "impact_affected": 4
+  },
+  "memoized": {
+   "acquire_search": 81,
+   "acquire_validation": 54,
+   "reacquire_search": 75,
+   "reacquire_validation": 54,
+   "all_acquired": true,
+   "reacquired_all": true,
+   "reuse": {
+    "tasks": 60,
+    "attempts": 180,
+    "compute_ms": 0.282
+   },
+   "repertoire": {
+    "composites": 3,
+    "dependency_edges": 9
+   },
+   "impact_affected": 4
+  }
+ },
+ "x1b_hypotheses": {
+  "Y1": {
+   "passed": true
+  }
+ },
+ "x2c_hypotheses": {
+  "X2c-H1": {
+   "passed": true
+  },
+  "X2c-H2": {
+   "passed": true
+  },
+  "X2c-H3": {
+   "passed": true
+  },
+  "X2c-H4": {
+   "passed": true
+  },
+  "X2c-H5": {
+   "passed": false
+  },
+  "X2c-H6": {
+   "passed": true
+  }
+ },
+ "x2c": {
+  "101": {
+   "R0": {
+    "ledgers": {
+     "compute_ms": 805.245,
+     "e2e_ms": 3508.81,
+     "organizational": {
+      "exploration_runs": 34,
+      "validations": 2,
+      "validation_attempts": 6,
+      "validation_compute_ms": 0.015,
+      "validation_wall_ms": 169.38,
+      "assessments": 52,
+      "assessment_wall_ms": 2714.07,
+      "maintenance_units": 8700
+     }
+    },
+    "total_cost_ms": 813.961,
+    "regret_ms": 751.995,
+    "near_optimal_rate": 0.727,
+    "adaptation_latency": {
+     "E1": 8,
+     "E2": 23,
+     "E3": 3,
+     "E4": 1,
+     "E5": 7
+    },
+    "competence_retention": 1.0,
+    "mean_active": 3.73,
+    "mean_dormant": 0.0,
+    "retirements": [
+     "range_bisect",
+     "range_scan",
+     "range_scan"
+    ],
+    "retirement_errors": 1,
+    "regenerations": 2,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R1": {
+    "ledgers": {
+     "compute_ms": 719.637,
+     "e2e_ms": 3418.47,
+     "organizational": {
+      "exploration_runs": 34,
+      "validations": 1,
+      "validation_attempts": 3,
+      "validation_compute_ms": 0.006,
+      "validation_wall_ms": 148.96,
+      "assessments": 57,
+      "assessment_wall_ms": 2824.84,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 728.643,
+    "regret_ms": 666.386,
+    "near_optimal_rate": 0.753,
+    "adaptation_latency": {
+     "E1": 8,
+     "E2": 20,
+     "E3": 3,
+     "E4": 0,
+     "E5": 7
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [
+     "range_bisect"
+    ],
+    "retirement_errors": 1,
+    "regenerations": 1,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R2": {
+    "ledgers": {
+     "compute_ms": 839.079,
+     "e2e_ms": 3558.17,
+     "organizational": {
+      "exploration_runs": 34,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 59,
+      "assessment_wall_ms": 2787.36,
+      "maintenance_units": 8950
+     }
+    },
+    "total_cost_ms": 848.029,
+    "regret_ms": 785.828,
+    "near_optimal_rate": 0.713,
+    "adaptation_latency": {
+     "E1": 8,
+     "E2": 24,
+     "E3": 3,
+     "E4": 1,
+     "E5": 7
+    },
+    "competence_retention": 1.0,
+    "mean_active": 3.93,
+    "mean_dormant": 0.0,
+    "retirements": [
+     "range_scan_list"
+    ],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R3": {
+    "ledgers": {
+     "compute_ms": 779.853,
+     "e2e_ms": 3479.39,
+     "organizational": {
+      "exploration_runs": 32,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 11.08,
+      "assessments": 57,
+      "assessment_wall_ms": 2821.1,
+      "maintenance_units": 4160
+     }
+    },
+    "total_cost_ms": 784.013,
+    "regret_ms": 726.603,
+    "near_optimal_rate": 0.667,
+    "adaptation_latency": {
+     "E1": 8,
+     "E2": null,
+     "E3": 3,
+     "E4": 0,
+     "E5": null
+    },
+    "competence_retention": 1.0,
+    "mean_active": 2.13,
+    "mean_dormant": 1.87,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 3,
+    "refused": [
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     }
+    ],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R4": {
+    "ledgers": {
+     "compute_ms": 241.723,
+     "e2e_ms": 2928.72,
+     "organizational": {
+      "exploration_runs": 17,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 9.91,
+      "assessments": 57,
+      "assessment_wall_ms": 2794.94,
+      "maintenance_units": 4160
+     }
+    },
+    "total_cost_ms": 245.883,
+    "regret_ms": 188.472,
+    "near_optimal_rate": 0.733,
+    "adaptation_latency": {
+     "E1": 10,
+     "E2": 15,
+     "E3": 3,
+     "E4": 0,
+     "E5": 18
+    },
+    "competence_retention": 1.0,
+    "mean_active": 2.13,
+    "mean_dormant": 1.87,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 3,
+    "refused": [
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     }
+    ],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "C1": {
+    "ledgers": {
+     "compute_ms": 1566.474,
+     "e2e_ms": 4284.64,
+     "organizational": {
+      "exploration_runs": 45,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 0,
+      "assessment_wall_ms": 0.0,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 1575.474,
+    "regret_ms": 1513.224,
+    "near_optimal_rate": 0.627,
+    "adaptation_latency": {
+     "E1": 7,
+     "E2": 2,
+     "E3": 3,
+     "E4": 13,
+     "E5": null
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "C2": {
+    "ledgers": {
+     "compute_ms": 412.456,
+     "e2e_ms": 3120.29,
+     "organizational": {
+      "exploration_runs": 51,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 0,
+      "assessment_wall_ms": 0.0,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 421.456,
+    "regret_ms": 359.205,
+    "near_optimal_rate": 0.693,
+    "adaptation_latency": {
+     "E1": 14,
+     "E2": null,
+     "E3": 23,
+     "E4": 1,
+     "E5": 7
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "offline_as": {
+    "choice": {
+     "single-wide": "range_scan_list",
+     "many-narrow": "range_hash",
+     "many-wide": "range_bisect"
+    },
+    "compute_ms": 57.249,
+    "calibration_compute_ms": 761.37,
+    "regret_ms": 3.999
+   },
+   "oracle_ms": 53.251,
+   "agree": true,
+   "live_r4": {
+    "seed": 101,
+    "compute_ms": 159.002,
+    "e2e_ms": 2710.12,
+    "note": "no lifecycle reviews; selection only, to compare live vs replay cost boundaries"
+   }
+  },
+  "102": {
+   "R0": {
+    "ledgers": {
+     "compute_ms": 614.79,
+     "e2e_ms": 2895.61,
+     "organizational": {
+      "exploration_runs": 31,
+      "validations": 2,
+      "validation_attempts": 6,
+      "validation_compute_ms": 0.015,
+      "validation_wall_ms": 129.73,
+      "assessments": 53,
+      "assessment_wall_ms": 1670.7,
+      "maintenance_units": 8750
+     }
+    },
+    "total_cost_ms": 623.554,
+    "regret_ms": 565.001,
+    "near_optimal_rate": 0.773,
+    "adaptation_latency": {
+     "E1": 9,
+     "E2": 16,
+     "E3": 15,
+     "E4": 1,
+     "E5": 0
+    },
+    "competence_retention": 1.0,
+    "mean_active": 3.8,
+    "mean_dormant": 0.0,
+    "retirements": [
+     "range_bisect",
+     "range_scan"
+    ],
+    "retirement_errors": 1,
+    "regenerations": 2,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R1": {
+    "ledgers": {
+     "compute_ms": 549.488,
+     "e2e_ms": 2834.58,
+     "organizational": {
+      "exploration_runs": 31,
+      "validations": 1,
+      "validation_attempts": 3,
+      "validation_compute_ms": 0.006,
+      "validation_wall_ms": 127.43,
+      "assessments": 57,
+      "assessment_wall_ms": 1690.3,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 558.495,
+    "regret_ms": 499.699,
+    "near_optimal_rate": 0.78,
+    "adaptation_latency": {
+     "E1": 9,
+     "E2": 17,
+     "E3": 15,
+     "E4": 0,
+     "E5": 0
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [
+     "range_bisect"
+    ],
+    "retirement_errors": 1,
+    "regenerations": 1,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R2": {
+    "ledgers": {
+     "compute_ms": 590.077,
+     "e2e_ms": 2857.03,
+     "organizational": {
+      "exploration_runs": 31,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 60,
+      "assessment_wall_ms": 2158.03,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 599.077,
+    "regret_ms": 540.288,
+    "near_optimal_rate": 0.66,
+    "adaptation_latency": {
+     "E1": 9,
+     "E2": 17,
+     "E3": 15,
+     "E4": 1,
+     "E5": null
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R3": {
+    "ledgers": {
+     "compute_ms": 557.029,
+     "e2e_ms": 2823.97,
+     "organizational": {
+      "exploration_runs": 29,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 9.19,
+      "assessments": 57,
+      "assessment_wall_ms": 2192.95,
+      "maintenance_units": 6080
+     }
+    },
+    "total_cost_ms": 563.109,
+    "regret_ms": 507.24,
+    "near_optimal_rate": 0.66,
+    "adaptation_latency": {
+     "E1": 9,
+     "E2": 17,
+     "E3": 15,
+     "E4": 0,
+     "E5": null
+    },
+    "competence_retention": 1.0,
+    "mean_active": 2.53,
+    "mean_dormant": 1.47,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 3,
+    "refused": [
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     }
+    ],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R4": {
+    "ledgers": {
+     "compute_ms": 324.907,
+     "e2e_ms": 2607.2,
+     "organizational": {
+      "exploration_runs": 25,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 8.67,
+      "assessments": 57,
+      "assessment_wall_ms": 2084.78,
+      "maintenance_units": 7680
+     }
+    },
+    "total_cost_ms": 332.587,
+    "regret_ms": 275.118,
+    "near_optimal_rate": 0.82,
+    "adaptation_latency": {
+     "E1": 10,
+     "E2": 10,
+     "E3": 16,
+     "E4": 0,
+     "E5": 1
+    },
+    "competence_retention": 1.0,
+    "mean_active": 2.87,
+    "mean_dormant": 1.13,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 3,
+    "refused": [
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     }
+    ],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "C1": {
+    "ledgers": {
+     "compute_ms": 1221.535,
+     "e2e_ms": 3505.72,
+     "organizational": {
+      "exploration_runs": 42,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 0,
+      "assessment_wall_ms": 0.0,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 1230.535,
+    "regret_ms": 1171.746,
+    "near_optimal_rate": 0.58,
+    "adaptation_latency": {
+     "E1": 9,
+     "E2": null,
+     "E3": 15,
+     "E4": 9,
+     "E5": null
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "C2": {
+    "ledgers": {
+     "compute_ms": 407.153,
+     "e2e_ms": 2689.45,
+     "organizational": {
+      "exploration_runs": 42,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 0,
+      "assessment_wall_ms": 0.0,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 416.153,
+    "regret_ms": 357.364,
+    "near_optimal_rate": 0.773,
+    "adaptation_latency": {
+     "E1": 12,
+     "E2": 10,
+     "E3": 16,
+     "E4": 1,
+     "E5": 1
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "offline_as": {
+    "choice": {
+     "single-wide": "range_scan_list",
+     "many-narrow": "range_hash",
+     "many-wide": "range_bisect"
+    },
+    "compute_ms": 51.706,
+    "calibration_compute_ms": 543.922,
+    "regret_ms": 1.917
+   },
+   "oracle_ms": 49.789,
+   "agree": true,
+   "live_r4": null
+  },
+  "103": {
+   "R0": {
+    "ledgers": {
+     "compute_ms": 354.816,
+     "e2e_ms": 2564.2,
+     "organizational": {
+      "exploration_runs": 28,
+      "validations": 2,
+      "validation_attempts": 6,
+      "validation_compute_ms": 0.013,
+      "validation_wall_ms": 133.67,
+      "assessments": 53,
+      "assessment_wall_ms": 2141.71,
+      "maintenance_units": 8750
+     }
+    },
+    "total_cost_ms": 363.579,
+    "regret_ms": 306.266,
+    "near_optimal_rate": 0.627,
+    "adaptation_latency": {
+     "E1": 11,
+     "E2": null,
+     "E3": 5,
+     "E4": 1,
+     "E5": null
+    },
+    "competence_retention": 1.0,
+    "mean_active": 3.8,
+    "mean_dormant": 0.0,
+    "retirements": [
+     "range_bisect",
+     "range_scan"
+    ],
+    "retirement_errors": 1,
+    "regenerations": 2,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R1": {
+    "ledgers": {
+     "compute_ms": 331.967,
+     "e2e_ms": 2540.21,
+     "organizational": {
+      "exploration_runs": 28,
+      "validations": 1,
+      "validation_attempts": 3,
+      "validation_compute_ms": 0.005,
+      "validation_wall_ms": 118.28,
+      "assessments": 57,
+      "assessment_wall_ms": 2062.18,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 340.972,
+    "regret_ms": 283.416,
+    "near_optimal_rate": 0.64,
+    "adaptation_latency": {
+     "E1": 11,
+     "E2": null,
+     "E3": 5,
+     "E4": 0,
+     "E5": null
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [
+     "range_bisect"
+    ],
+    "retirement_errors": 1,
+    "regenerations": 1,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R2": {
+    "ledgers": {
+     "compute_ms": 339.89,
+     "e2e_ms": 2547.64,
+     "organizational": {
+      "exploration_runs": 28,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 60,
+      "assessment_wall_ms": 2117.38,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 348.89,
+    "regret_ms": 291.34,
+    "near_optimal_rate": 0.64,
+    "adaptation_latency": {
+     "E1": 11,
+     "E2": null,
+     "E3": 5,
+     "E4": 1,
+     "E5": null
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R3": {
+    "ledgers": {
+     "compute_ms": 230.475,
+     "e2e_ms": 2443.72,
+     "organizational": {
+      "exploration_runs": 25,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 7.64,
+      "assessments": 57,
+      "assessment_wall_ms": 1682.9,
+      "maintenance_units": 4480
+     }
+    },
+    "total_cost_ms": 234.955,
+    "regret_ms": 181.925,
+    "near_optimal_rate": 0.667,
+    "adaptation_latency": {
+     "E1": 9,
+     "E2": null,
+     "E3": 5,
+     "E4": 0,
+     "E5": null
+    },
+    "competence_retention": 1.0,
+    "mean_active": 2.2,
+    "mean_dormant": 1.8,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 3,
+    "refused": [
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     }
+    ],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R4": {
+    "ledgers": {
+     "compute_ms": 300.038,
+     "e2e_ms": 2477.36,
+     "organizational": {
+      "exploration_runs": 30,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 8.01,
+      "assessments": 57,
+      "assessment_wall_ms": 1693.87,
+      "maintenance_units": 7680
+     }
+    },
+    "total_cost_ms": 307.718,
+    "regret_ms": 251.488,
+    "near_optimal_rate": 0.767,
+    "adaptation_latency": {
+     "E1": 10,
+     "E2": null,
+     "E3": 1,
+     "E4": 0,
+     "E5": 0
+    },
+    "competence_retention": 1.0,
+    "mean_active": 2.87,
+    "mean_dormant": 1.13,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 3,
+    "refused": [
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     }
+    ],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "C1": {
+    "ledgers": {
+     "compute_ms": 1029.167,
+     "e2e_ms": 3235.59,
+     "organizational": {
+      "exploration_runs": 39,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 0,
+      "assessment_wall_ms": 0.0,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 1038.167,
+    "regret_ms": 980.617,
+    "near_optimal_rate": 0.74,
+    "adaptation_latency": {
+     "E1": 9,
+     "E2": 14,
+     "E3": 5,
+     "E4": 9,
+     "E5": 0
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "C2": {
+    "ledgers": {
+     "compute_ms": 337.121,
+     "e2e_ms": 2504.9,
+     "organizational": {
+      "exploration_runs": 48,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 0,
+      "assessment_wall_ms": 0.0,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 346.121,
+    "regret_ms": 288.571,
+    "near_optimal_rate": 0.7,
+    "adaptation_latency": {
+     "E1": 11,
+     "E2": 15,
+     "E3": 2,
+     "E4": 1,
+     "E5": 0
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "offline_as": {
+    "choice": {
+     "single-wide": "range_scan",
+     "many-narrow": "range_hash",
+     "many-wide": "range_bisect"
+    },
+    "compute_ms": 51.906,
+    "calibration_compute_ms": 635.463,
+    "regret_ms": 3.355
+   },
+   "oracle_ms": 48.55,
+   "agree": true,
+   "live_r4": null
+  },
+  "104": {
+   "R0": {
+    "ledgers": {
+     "compute_ms": 431.436,
+     "e2e_ms": 2467.01,
+     "organizational": {
+      "exploration_runs": 27,
+      "validations": 3,
+      "validation_attempts": 9,
+      "validation_compute_ms": 0.022,
+      "validation_wall_ms": 170.03,
+      "assessments": 52,
+      "assessment_wall_ms": 2518.71,
+      "maintenance_units": 8750
+     }
+    },
+    "total_cost_ms": 440.208,
+    "regret_ms": 383.872,
+    "near_optimal_rate": 0.827,
+    "adaptation_latency": {
+     "E1": 9,
+     "E2": 8,
+     "E3": 1,
+     "E4": 1,
+     "E5": 20
+    },
+    "competence_retention": 1.0,
+    "mean_active": 3.78,
+    "mean_dormant": 0.0,
+    "retirements": [
+     "range_bisect",
+     "range_scan",
+     "range_bisect"
+    ],
+    "retirement_errors": 2,
+    "regenerations": 3,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R1": {
+    "ledgers": {
+     "compute_ms": 441.004,
+     "e2e_ms": 2474.91,
+     "organizational": {
+      "exploration_runs": 27,
+      "validations": 1,
+      "validation_attempts": 3,
+      "validation_compute_ms": 0.006,
+      "validation_wall_ms": 136.0,
+      "assessments": 57,
+      "assessment_wall_ms": 2611.28,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 450.01,
+    "regret_ms": 393.44,
+    "near_optimal_rate": 0.833,
+    "adaptation_latency": {
+     "E1": 9,
+     "E2": 8,
+     "E3": 1,
+     "E4": 1,
+     "E5": 20
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [
+     "range_bisect"
+    ],
+    "retirement_errors": 1,
+    "regenerations": 1,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R2": {
+    "ledgers": {
+     "compute_ms": 377.602,
+     "e2e_ms": 2409.25,
+     "organizational": {
+      "exploration_runs": 27,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 60,
+      "assessment_wall_ms": 2620.6,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 386.602,
+    "regret_ms": 330.038,
+    "near_optimal_rate": 0.827,
+    "adaptation_latency": {
+     "E1": 9,
+     "E2": 7,
+     "E3": 1,
+     "E4": 2,
+     "E5": 20
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R3": {
+    "ledgers": {
+     "compute_ms": 2060.404,
+     "e2e_ms": 4135.9,
+     "organizational": {
+      "exploration_runs": 27,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 16.97,
+      "assessments": 57,
+      "assessment_wall_ms": 2749.5,
+      "maintenance_units": 6920
+     }
+    },
+    "total_cost_ms": 2067.324,
+    "regret_ms": 2012.84,
+    "near_optimal_rate": 0.64,
+    "adaptation_latency": {
+     "E1": 9,
+     "E2": 7,
+     "E3": 1,
+     "E4": null,
+     "E5": 20
+    },
+    "competence_retention": 1.0,
+    "mean_active": 2.23,
+    "mean_dormant": 1.77,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 5,
+    "refused": [
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     }
+    ],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R4": {
+    "ledgers": {
+     "compute_ms": 1997.336,
+     "e2e_ms": 4072.17,
+     "organizational": {
+      "exploration_runs": 31,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 17.05,
+      "assessments": 57,
+      "assessment_wall_ms": 2783.05,
+      "maintenance_units": 6920
+     }
+    },
+    "total_cost_ms": 2004.256,
+    "regret_ms": 1949.772,
+    "near_optimal_rate": 0.633,
+    "adaptation_latency": {
+     "E1": 10,
+     "E2": 8,
+     "E3": 0,
+     "E4": null,
+     "E5": 20
+    },
+    "competence_retention": 1.0,
+    "mean_active": 2.23,
+    "mean_dormant": 1.77,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 5,
+    "refused": [
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     }
+    ],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "C1": {
+    "ledgers": {
+     "compute_ms": 917.284,
+     "e2e_ms": 2960.29,
+     "organizational": {
+      "exploration_runs": 39,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 0,
+      "assessment_wall_ms": 0.0,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 926.284,
+    "regret_ms": 869.72,
+    "near_optimal_rate": 0.753,
+    "adaptation_latency": {
+     "E1": 9,
+     "E2": 12,
+     "E3": 1,
+     "E4": 10,
+     "E5": 20
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "C2": {
+    "ledgers": {
+     "compute_ms": 319.131,
+     "e2e_ms": 2344.2,
+     "organizational": {
+      "exploration_runs": 44,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 0,
+      "assessment_wall_ms": 0.0,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 328.131,
+    "regret_ms": 271.567,
+    "near_optimal_rate": 0.74,
+    "adaptation_latency": {
+     "E1": 22,
+     "E2": null,
+     "E3": 3,
+     "E4": 2,
+     "E5": 20
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "offline_as": {
+    "choice": {
+     "single-wide": "range_scan_list",
+     "many-narrow": "range_hash",
+     "many-wide": "range_bisect"
+    },
+    "compute_ms": 48.865,
+    "calibration_compute_ms": 669.852,
+    "regret_ms": 1.301
+   },
+   "oracle_ms": 47.564,
+   "agree": true,
+   "live_r4": null
+  },
+  "105": {
+   "R0": {
+    "ledgers": {
+     "compute_ms": 534.802,
+     "e2e_ms": 2458.06,
+     "organizational": {
+      "exploration_runs": 30,
+      "validations": 3,
+      "validation_attempts": 9,
+      "validation_compute_ms": 0.02,
+      "validation_wall_ms": 156.46,
+      "assessments": 47,
+      "assessment_wall_ms": 1914.78,
+      "maintenance_units": 8250
+     }
+    },
+    "total_cost_ms": 543.072,
+    "regret_ms": 491.169,
+    "near_optimal_rate": 0.853,
+    "adaptation_latency": {
+     "E1": 12,
+     "E2": 8,
+     "E3": 0,
+     "E4": 3,
+     "E5": 0
+    },
+    "competence_retention": 0.9933,
+    "mean_active": 3.47,
+    "mean_dormant": 0.0,
+    "retirements": [
+     "range_bisect",
+     "range_scan",
+     "range_bisect"
+    ],
+    "retirement_errors": 2,
+    "regenerations": 3,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R1": {
+    "ledgers": {
+     "compute_ms": 532.8,
+     "e2e_ms": 2453.58,
+     "organizational": {
+      "exploration_runs": 30,
+      "validations": 2,
+      "validation_attempts": 6,
+      "validation_compute_ms": 0.011,
+      "validation_wall_ms": 132.64,
+      "assessments": 54,
+      "assessment_wall_ms": 1958.15,
+      "maintenance_units": 8700
+     }
+    },
+    "total_cost_ms": 541.511,
+    "regret_ms": 489.167,
+    "near_optimal_rate": 0.853,
+    "adaptation_latency": {
+     "E1": 12,
+     "E2": 8,
+     "E3": 0,
+     "E4": 3,
+     "E5": 0
+    },
+    "competence_retention": 1.0,
+    "mean_active": 3.8,
+    "mean_dormant": 0.0,
+    "retirements": [
+     "range_bisect",
+     "range_bisect"
+    ],
+    "retirement_errors": 2,
+    "regenerations": 2,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R2": {
+    "ledgers": {
+     "compute_ms": 532.909,
+     "e2e_ms": 2469.27,
+     "organizational": {
+      "exploration_runs": 30,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 60,
+      "assessment_wall_ms": 1957.1,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 541.909,
+    "regret_ms": 489.275,
+    "near_optimal_rate": 0.847,
+    "adaptation_latency": {
+     "E1": 12,
+     "E2": 7,
+     "E3": 0,
+     "E4": 4,
+     "E5": 0
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R3": {
+    "ledgers": {
+     "compute_ms": 533.893,
+     "e2e_ms": 2456.1,
+     "organizational": {
+      "exploration_runs": 30,
+      "validations": 1,
+      "validation_attempts": 3,
+      "validation_compute_ms": 0.005,
+      "validation_wall_ms": 136.67,
+      "assessments": 54,
+      "assessment_wall_ms": 1719.62,
+      "maintenance_units": 7280
+     }
+    },
+    "total_cost_ms": 541.178,
+    "regret_ms": 490.26,
+    "near_optimal_rate": 0.847,
+    "adaptation_latency": {
+     "E1": 12,
+     "E2": 7,
+     "E3": 0,
+     "E4": 3,
+     "E5": 0
+    },
+    "competence_retention": 1.0,
+    "mean_active": 2.6,
+    "mean_dormant": 1.27,
+    "retirements": [
+     "range_bisect"
+    ],
+    "retirement_errors": 1,
+    "regenerations": 1,
+    "wakes": 4,
+    "refused": [
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 49,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 59,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     }
+    ],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "R4": {
+    "ledgers": {
+     "compute_ms": 319.299,
+     "e2e_ms": 2237.79,
+     "organizational": {
+      "exploration_runs": 26,
+      "validations": 1,
+      "validation_attempts": 3,
+      "validation_compute_ms": 0.006,
+      "validation_wall_ms": 131.25,
+      "assessments": 54,
+      "assessment_wall_ms": 1755.08,
+      "maintenance_units": 7280
+     }
+    },
+    "total_cost_ms": 326.586,
+    "regret_ms": 275.666,
+    "near_optimal_rate": 0.833,
+    "adaptation_latency": {
+     "E1": 12,
+     "E2": 8,
+     "E3": 0,
+     "E4": 3,
+     "E5": 9
+    },
+    "competence_retention": 1.0,
+    "mean_active": 2.6,
+    "mean_dormant": 1.27,
+    "retirements": [
+     "range_bisect"
+    ],
+    "retirement_errors": 1,
+    "regenerations": 1,
+    "wakes": 4,
+    "refused": [
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 19,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 29,
+      "op": "retire-refused",
+      "member": "range_scan",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 49,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     },
+     {
+      "at": 59,
+      "op": "retire-refused",
+      "member": "range_bisect",
+      "reason": "member has not been dormant long enough"
+     }
+    ],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "C1": {
+    "ledgers": {
+     "compute_ms": 1022.659,
+     "e2e_ms": 2970.36,
+     "organizational": {
+      "exploration_runs": 41,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 0,
+      "assessment_wall_ms": 0.0,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 1031.659,
+    "regret_ms": 979.026,
+    "near_optimal_rate": 0.773,
+    "adaptation_latency": {
+     "E1": 12,
+     "E2": 12,
+     "E3": 0,
+     "E4": 12,
+     "E5": 0
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "C2": {
+    "ledgers": {
+     "compute_ms": 319.211,
+     "e2e_ms": 2250.66,
+     "organizational": {
+      "exploration_runs": 42,
+      "validations": 0,
+      "validation_attempts": 0,
+      "validation_compute_ms": 0.0,
+      "validation_wall_ms": 0.0,
+      "assessments": 0,
+      "assessment_wall_ms": 0.0,
+      "maintenance_units": 9000
+     }
+    },
+    "total_cost_ms": 328.211,
+    "regret_ms": 275.578,
+    "near_optimal_rate": 0.82,
+    "adaptation_latency": {
+     "E1": 10,
+     "E2": null,
+     "E3": 0,
+     "E4": 4,
+     "E5": 0
+    },
+    "competence_retention": 1.0,
+    "mean_active": 4.0,
+    "mean_dormant": 0.0,
+    "retirements": [],
+    "retirement_errors": 0,
+    "regenerations": 0,
+    "wakes": 0,
+    "refused": [],
+    "final_retained": [
+     "range_bisect",
+     "range_hash",
+     "range_scan",
+     "range_scan_list"
+    ],
+    "coexistence": {
+     "many-narrow": true,
+     "many-wide": true,
+     "single-wide": true
+    }
+   },
+   "offline_as": {
+    "choice": {
+     "single-wide": "range_scan_list",
+     "many-narrow": "range_hash",
+     "many-wide": "range_bisect"
+    },
+    "compute_ms": 44.218,
+    "calibration_compute_ms": 540.876,
+    "regret_ms": 0.585
+   },
+   "oracle_ms": 43.633,
+   "agree": true,
+   "live_r4": null
+  }
+ },
+ "specialists": {
+  "101": {
+   "many-wide": "range_bisect"
+  },
+  "102": {
+   "many-narrow": "range_hash",
+   "many-wide": "range_bisect",
+   "single-wide": "range_scan_list"
+  },
+  "103": {
+   "many-narrow": "range_hash",
+   "many-wide": "range_bisect",
+   "single-wide": "range_scan_list"
+  },
+  "104": {
+   "many-narrow": "range_hash",
+   "many-wide": "range_bisect"
+  },
+  "105": {
+   "many-narrow": "range_hash",
+   "many-wide": "range_bisect",
+   "single-wide": "range_scan_list"
+  }
+ },
+ "coexistence_correction": {
+  "v1": {
+   "active": [
+    "range_bisect",
+    "range_scan"
+   ],
+   "per_context": {
+    "many-narrow": true,
+    "many-wide": true,
+    "single-wide": true
+   },
+   "exact_passed": false,
+   "originally_reported": false
+  },
+  "v2": {
+   "active": [
+    "range_bisect",
+    "range_hash",
+    "range_scan",
+    "range_scan_list"
+   ],
+   "per_context": {
+    "many-narrow": true,
+    "many-wide": true,
+    "single-wide": true
+   },
+   "exact_passed": true,
+   "originally_reported": true
+  }
+ }
+}

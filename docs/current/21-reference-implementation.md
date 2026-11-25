@@ -496,17 +496,25 @@ Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 
 
 | ID | Discipline | Claim | Could fail by | Control (owner) | Check | Evidence |
 |---|---|---|---|---|---|---|
-| A-24 | verification | Retirement and dormancy succeed only with a current assessment derived from real invocations of that exact provider and capability (B14) | Forged or mismatched evidence | Durable retention assessment in population.py | tests/test_retention.py GroundedRetirement | unknown |
-| A-25 | reliability | Periodic funding never raises unspent funding (available plus held) above the ceiling, including across release (B15) | Refill ignores outstanding holdings | Ceiling room in resources.py | tests/test_retention.py FundingCeiling | unknown |
-| A-26 | reliability | A restarted ecology replays its durable decisions to identical state and subsequent decisions (B16) | In-memory policy state | EcologyService records in ecology.py | tests/test_retention.py RecoverableEcology | unknown |
-| A-27 | observability | Compute, end-to-end and organizational costs are recorded and reported on separate ledgers (B17) | Mixed measurement boundaries | Validation timing in transactor.py; X2c accounting in tools/run_retention.py | tests/test_retention.py CostBoundaries | unknown |
-| A-28 | verification | Coexistence is scored with the preregistered quantifier; corrected v1/v2 scores are published separately (B18) | Weaker quantifier | Scoring function in tools/run_retention.py | tests/test_retention.py CoexistenceQuantifier | unknown |
-| A-29 | verification | Exploration pruning requires confidence-bound separation, not one sample at a fixed ratio (B19) | Single noisy sample prunes a member | LCB/UCB policy in ecology.py | tests/test_retention.py UncertaintyAwareExploration | unknown |
-| A-30 | maintainability | Developmental code holds no funding authority: no ledger, raw store or runtime reference (B20) | Search/ecology minting budgets | DevelopmentContext (devcontext.py) | tests/test_retention.py DevelopmentBoundary | unknown |
-| A-31 | reliability | Lifecycle transitions follow the table above; dormant members cannot execute, and stale dormant members revalidate on wake | Waking stale competence without checks | population.py lifecycle | tests/test_retention.py ProviderLifecycle | unknown |
-| A-32 | verification | X2c and X1b run only from a committed, digest-matched preregistration and runner | Post-hoc criteria or code | Digest and git-commit check in tools/run_retention.py | tests/test_retention.py FrozenPreregistration | unknown |
-| A-33 | operations | All existing suites, crash recovery, the demo and earlier experiment runners still pass | Regression from contract changes | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py tests/test_cumulative.py tests/test_runners.py tests/test_ecology.py | unknown |
-| A-34 | performance | Retention machinery overhead (assessment, validation, maintenance, regeneration) is measured and reported per condition rather than assumed | Unmeasured overhead hidden in totals | Per-transition timing in population.py; X2c ledgers | tests/test_retention.py CostBoundaries | unknown |
+| A-24 | verification | Retirement and dormancy succeed only with a current assessment derived from real invocations of that exact provider and capability (B14) | Forged or mismatched evidence | Durable retention assessment in population.py | tests/test_retention.py GroundedRetirement | tested |
+| A-25 | reliability | Periodic funding never raises unspent funding (available plus held) above the ceiling, including across release (B15) | Refill ignores outstanding holdings | Ceiling room in resources.py | tests/test_retention.py FundingCeiling | tested |
+| A-26 | reliability | A restarted ecology replays its durable decisions to identical state and subsequent decisions (B16) | In-memory policy state | EcologyService records in ecology.py | tests/test_retention.py RecoverableEcology | tested |
+| A-27 | observability | Compute, end-to-end and organizational costs are recorded and reported on separate ledgers (B17) | Mixed measurement boundaries | Validation timing in transactor.py; X2c accounting in tools/run_retention.py | tests/test_retention.py CostBoundaries | tested |
+| A-28 | verification | Coexistence is scored with the preregistered quantifier; corrected v1/v2 scores are published separately (B18) | Weaker quantifier | Scoring function in tools/run_retention.py | tests/test_retention.py CoexistenceQuantifier | tested |
+| A-29 | verification | Exploration pruning requires confidence-bound separation, not one sample at a fixed ratio (B19) | Single noisy sample prunes a member | LCB/UCB policy in ecology.py | tests/test_retention.py UncertaintyAwareExploration | tested |
+| A-30 | maintainability | Developmental code holds no funding authority: no ledger, raw store or runtime reference (B20) | Search/ecology minting budgets | DevelopmentContext (devcontext.py) | tests/test_retention.py DevelopmentBoundary | tested |
+| A-31 | reliability | Lifecycle transitions follow the table above; dormant members cannot execute, and stale dormant members revalidate on wake | Waking stale competence without checks | population.py lifecycle | tests/test_retention.py ProviderLifecycle | tested |
+| A-32 | verification | X2c and X1b run only from a committed, digest-matched preregistration and runner | Post-hoc criteria or code | Digest and git-commit check in tools/run_retention.py | tests/test_retention.py FrozenPreregistration | tested |
+| A-33 | operations | All existing suites, crash recovery, the demo and earlier experiment runners still pass | Regression from contract changes | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py tests/test_cumulative.py tests/test_runners.py tests/test_ecology.py | tested |
+| A-34 | performance | Retention machinery overhead (assessment, validation, maintenance, regeneration) is measured and reported per condition rather than assumed | Unmeasured overhead hidden in totals | Per-transition timing in population.py; X2c ledgers | tests/test_retention.py CostBoundaries | tested |
+
+Measured outcome (docs/results/2026-11-25T-retention/RESULTS.md, run 2 from 63fdec4):
+grounded retirement with coverage probation or dormancy reduced specialist
+retirements from 6-7 to 0-1 over five seeds. Dormancy with uncertainty-aware
+selection matched the strong control on 4 of 5 seeds but failed on one: a
+dormant specialist was never recruited, because waking fires only for new
+contexts. No condition met the adaptation criterion. Retention assessment
+(about 2.1 s per seed) cost more than the computation it managed.
 
 ## Assurance 21.12a (X2c run-1 defect fix)
 
@@ -520,9 +528,9 @@ Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 
 
 | ID | Discipline | Claim | Could fail by | Control (owner) | Check | Evidence |
 |---|---|---|---|---|---|---|
-| A-35 | reliability | Retiring a DORMANT or ACTIVE member updates ecology state to match the population, live and on restart | List bookkeeping assumes ACTIVE | EcologyService._apply (ecology.py) | tests/test_retention.py ServiceLifecycleConsistency | unknown |
-| A-36 | observability | The runner records only population refusals as refused transitions; any other error stops the run | Broad exception masks a defect | review() in tools/run_retention.py | tests/test_retention.py ServiceLifecycleConsistency | unknown |
-| A-37 | verification | The rerun executes only from the original preregistration plus a committed, digest-matched amendment | Undisclosed change to frozen experiment | verify_frozen in tools/run_retention.py | tests/test_retention.py FrozenPreregistration | unknown |
-| A-38 | performance | The rerun's cost ledgers are measured exactly as preregistered (no change to measurement code) | Fix alters measurement | Diff limited to bookkeeping and exception handling | tests/test_retention.py CostBoundaries | unknown |
-| A-39 | operations | All existing suites still pass | Regression | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py tests/test_cumulative.py tests/test_runners.py tests/test_ecology.py | unknown |
-| A-40 | maintainability | One lifecycle-bookkeeping path handles every state transition (no per-state assumptions duplicated in the runner) | Runner and service diverge again | EcologyService._apply as the single owner | tests/test_retention.py ServiceLifecycleConsistency | unknown |
+| A-35 | reliability | Retiring a DORMANT or ACTIVE member updates ecology state to match the population, live and on restart | List bookkeeping assumes ACTIVE | EcologyService._apply (ecology.py) | tests/test_retention.py ServiceLifecycleConsistency | tested |
+| A-36 | observability | The runner records only population refusals as refused transitions; any other error stops the run | Broad exception masks a defect | review() in tools/run_retention.py | tests/test_retention.py ServiceLifecycleConsistency | tested |
+| A-37 | verification | The rerun executes only from the original preregistration plus a committed, digest-matched amendment | Undisclosed change to frozen experiment | verify_frozen in tools/run_retention.py | tests/test_retention.py FrozenPreregistration | tested |
+| A-38 | performance | The rerun's cost ledgers are measured exactly as preregistered (no change to measurement code) | Fix alters measurement | Diff limited to bookkeeping and exception handling | tests/test_retention.py CostBoundaries | tested |
+| A-39 | operations | All existing suites still pass | Regression | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py tests/test_cumulative.py tests/test_runners.py tests/test_ecology.py | tested |
+| A-40 | maintainability | One lifecycle-bookkeeping path handles every state transition (no per-state assumptions duplicated in the runner) | Runner and service diverge again | EcologyService._apply as the single owner | tests/test_retention.py ServiceLifecycleConsistency | tested |
