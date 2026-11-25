@@ -7,6 +7,9 @@ from uuid import uuid4
 from typing import Protocol, TypedDict
 
 
+PROTOCOL_LIMIT = 1 << 20  # bytes per worker request or reply, every profile
+
+
 class Refused(ValueError):
     """A request failed an explicit admission or execution constraint."""
 

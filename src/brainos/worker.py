@@ -1,24 +1,48 @@
-"""Bounded subprocess protocol for catalogue providers; not a hostile-code sandbox."""
+"""Trusted catalogue worker protocol; not a hostile-code sandbox.
+
+`python -m brainos.worker` answers one request on stdin (fresh-subprocess
+profile). `python -m brainos.worker --serve` answers line-delimited requests
+until stdin closes (persistent profile). Both use `answer`, which the
+in-process profile also calls, so every profile verifies the same artifact.
+"""
 import json
+import os
 import sys
 
-from .contracts import encode
-from .providers import compute, specification
+from .contracts import PROTOCOL_LIMIT, encode
+from .providers import specification, timed_compute
 
 
-def main():
+def answer(raw):
+    """Verify the request against the trusted catalogue and compute it."""
     try:
-        raw = sys.stdin.buffer.read(65537)
-        if len(raw) > 65536:
+        if len(raw) > PROTOCOL_LIMIT:
             raise ValueError("input exceeds protocol limit")
         request = json.loads(raw)
         spec = specification(request["implementation"])
         if request["artifact"] != spec["artifact"]:
             raise ValueError("artifact digest mismatch")
-        result = {"ok": True, "result": compute(spec["implementation"], request["value"])}
+        result, compute_ns = timed_compute(spec, request["value"])
+        return {"ok": True, "result": result, "compute_ns": compute_ns}
     except Exception as exc:
-        result = {"ok": False, "error": str(exc)}
-    sys.stdout.write(encode(result))
+        return {"ok": False, "error": str(exc)}
+
+
+def serve():
+    out = sys.stdout
+    out.write(encode({"ready": True, "pid": os.getpid()}) + "\n")
+    out.flush()
+    for line in sys.stdin.buffer:
+        out.write(encode(answer(line.rstrip(b"\r\n"))) + "\n")
+        out.flush()
+
+
+def main():
+    if "--serve" in sys.argv[1:]:
+        serve()
+        return
+    raw = sys.stdin.buffer.read(PROTOCOL_LIMIT + 1)
+    sys.stdout.write(encode(answer(raw)))
 
 
 if __name__ == "__main__":

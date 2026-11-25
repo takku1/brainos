@@ -64,9 +64,21 @@ exclusion, node-boundary cancellation) now runs through the same Core. The first
 developmental composition discovered parse_csv -> sum from a demand, validated it
 on independent cases and published it without rebinding parents (docs/results/).
 
-Next: competitive ecology over acquired compositions (needs a cheaper invocation
-path to measure differences), nested graphs/adapters, scheduling/backpressure,
-then abstraction learning (Doc 27 section 27.8). Full obligations remain in Doc 31.
+Cumulative development and ecology (Doc 21 section 21.11): findings B07-B13
+were reproduced on 08d29f3 and resolved. Capability contracts, validated
+provider populations and role bindings are separate; composites lower into
+primitive execution, so acquisitions serve as building blocks. Runtime closure
+matches the reference model and impacts are enforced. Funding is
+operator-issued and periodic. Construction has an overall deadline and full
+provenance. Three execution profiles (subprocess, persistent, inprocess)
+share one adapter. Preregistered results (docs/results/2026-11-25T-ecology/):
+three generations of cumulative acquisition passed; the bounded ecology
+failed coexistence (v1) and retention discipline (v2), and failed adaptation in
+both. Offline algorithm selection was far cheaper given calibration.
+
+Next: a retirement probation window (own preregistration), multi-input graph
+nodes, cheaper payload transport for the persistent profile, then
+assimilation/regeneration experiments. Full obligations remain in Doc 31.
 
 ## Verification scope
 
@@ -84,11 +96,11 @@ remain unqualified. See Doc 21 section 21.9 for profile-specific limits.
 ## Historical material
 
 Predecessor Z:\newbrain results (231 tests; selective-repair cost 0.21-0.26x
-with retention failure) are historical only. The docx is deleted from the working tree
-(not by the implementation work); Markdown is the current specification. Independent artifact/requirement review
+with retention failure) are historical only. The docx is retained in the working tree as historical material;
+Markdown is the current specification. Independent artifact/requirement review
 is still outstanding. Research ambition is preserved; empirical outcomes
 will be recorded when experiments run.
 
 ## Last updated
 
-2026-11-25 (corrective pass, typed fabric, first developmental composition)
+2026-11-25 (B07-B13, execution profiles, cumulative construction, preregistered ecology)

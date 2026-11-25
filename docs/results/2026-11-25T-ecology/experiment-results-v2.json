@@ -1,0 +1,2689 @@
+{
+ "preregistration_sha256": "93af226e0da0e3ffeb902dce92b5325316f105993dbdcd6747b097a09bd8f5b0",
+ "started": 1795585237.1597004,
+ "seconds": 17.6,
+ "python": "3.12.10",
+ "x1": null,
+ "x2": {
+  "variant": "v2",
+  "regenerations": [
+   {
+    "phase": "P2",
+    "context": "many-narrow",
+    "member": "range_bisect",
+    "wall_ms": 11.49,
+    "validation_attempts": 3
+   },
+   {
+    "phase": "P3",
+    "context": "many-wide",
+    "member": "range_scan",
+    "wall_ms": 10.9,
+    "validation_attempts": 3
+   }
+  ],
+  "correctness": {
+   "all_members_agree": true
+  },
+  "contexts": {
+   "many-narrow": {
+    "majority_best": "range_hash",
+    "wins": {
+     "range_scan": 0,
+     "range_scan_list": 0,
+     "range_bisect": 7,
+     "range_hash": 23
+    },
+    "median_ms": {
+     "range_scan": 55.737,
+     "range_scan_list": 53.868,
+     "range_bisect": 0.411,
+     "range_hash": 0.364
+    },
+    "specialist": true
+   },
+   "many-wide": {
+    "majority_best": "range_bisect",
+    "wins": {
+     "range_scan": 0,
+     "range_scan_list": 0,
+     "range_bisect": 30,
+     "range_hash": 0
+    },
+    "median_ms": {
+     "range_scan": 57.992,
+     "range_scan_list": 54.453,
+     "range_bisect": 0.415,
+     "range_hash": 52.834
+    },
+    "specialist": true
+   },
+   "single-wide": {
+    "majority_best": "range_scan_list",
+    "wins": {
+     "range_scan": 12,
+     "range_scan_list": 48,
+     "range_bisect": 0,
+     "range_hash": 0
+    },
+    "median_ms": {
+     "range_scan": 0.192,
+     "range_scan_list": 0.176,
+     "range_bisect": 0.323,
+     "range_hash": 2.73
+    },
+    "specialist": false
+   }
+  },
+  "summary": {
+   "ecology": {
+    "P1": {
+     "cost_ms": 9.16,
+     "regret_ms": 3.95,
+     "near_optimal_rate": 0.667,
+     "adaptation_latency": 10,
+     "explorations": 11
+    },
+    "P2": {
+     "cost_ms": 249.54,
+     "regret_ms": 238.3,
+     "near_optimal_rate": 0.633,
+     "adaptation_latency": 24,
+     "explorations": 11
+    },
+    "P3": {
+     "cost_ms": 282.4,
+     "regret_ms": 269.71,
+     "near_optimal_rate": 0.833,
+     "adaptation_latency": 4,
+     "explorations": 8
+    },
+    "P4": {
+     "cost_ms": 5.75,
+     "regret_ms": 0.22,
+     "near_optimal_rate": 0.9,
+     "adaptation_latency": 4,
+     "explorations": 0
+    },
+    "total_cost_ms": 546.85,
+    "regeneration_ms": 22.39,
+    "total_including_regeneration_ms": 569.24
+   },
+   "aggregate-retire": {
+    "P1": {
+     "cost_ms": 9.16,
+     "regret_ms": 3.95,
+     "near_optimal_rate": 0.667,
+     "adaptation_latency": 10,
+     "explorations": 11
+    },
+    "P2": {
+     "cost_ms": 249.37,
+     "regret_ms": 238.13,
+     "near_optimal_rate": 0.7,
+     "adaptation_latency": 24,
+     "explorations": 11
+    },
+    "P3": {
+     "cost_ms": 286.77,
+     "regret_ms": 274.09,
+     "near_optimal_rate": 0.833,
+     "adaptation_latency": 4,
+     "explorations": 8
+    },
+    "P4": {
+     "cost_ms": 11.4,
+     "regret_ms": 5.86,
+     "near_optimal_rate": 0.0,
+     "adaptation_latency": null,
+     "explorations": 0
+    },
+    "total_cost_ms": 556.7
+   },
+   "static": {
+    "P1": {
+     "cost_ms": 9.59,
+     "regret_ms": 4.38,
+     "near_optimal_rate": 0.0,
+     "adaptation_latency": null,
+     "explorations": 0
+    },
+    "P2": {
+     "cost_ms": 12.89,
+     "regret_ms": 1.65,
+     "near_optimal_rate": 0.433,
+     "adaptation_latency": null,
+     "explorations": 0
+    },
+    "P3": {
+     "cost_ms": 12.69,
+     "regret_ms": 0.0,
+     "near_optimal_rate": 1.0,
+     "adaptation_latency": 0,
+     "explorations": 0
+    },
+    "P4": {
+     "cost_ms": 11.4,
+     "regret_ms": 5.86,
+     "near_optimal_rate": 0.0,
+     "adaptation_latency": null,
+     "explorations": 0
+    },
+    "total_cost_ms": 46.56,
+    "calibration_cost_ms": 1090.76,
+    "choice": "range_bisect"
+   },
+   "offline-AS": {
+    "P1": {
+     "cost_ms": 5.32,
+     "regret_ms": 0.11,
+     "near_optimal_rate": 0.9,
+     "adaptation_latency": 0,
+     "explorations": 0
+    },
+    "P2": {
+     "cost_ms": 11.73,
+     "regret_ms": 0.5,
+     "near_optimal_rate": 0.867,
+     "adaptation_latency": 0,
+     "explorations": 0
+    },
+    "P3": {
+     "cost_ms": 12.69,
+     "regret_ms": 0.0,
+     "near_optimal_rate": 1.0,
+     "adaptation_latency": 0,
+     "explorations": 0
+    },
+    "P4": {
+     "cost_ms": 5.75,
+     "regret_ms": 0.22,
+     "near_optimal_rate": 0.9,
+     "adaptation_latency": 4,
+     "explorations": 0
+    },
+    "total_cost_ms": 35.49,
+    "calibration_cost_ms": 1090.76,
+    "choice": {
+     "single-wide": "range_scan_list",
+     "many-narrow": "range_hash",
+     "many-wide": "range_bisect"
+    }
+   },
+   "portfolio": {
+    "P1": {
+     "cost_ms": 93.26,
+     "regret_ms": 88.05,
+     "near_optimal_rate": 0.0,
+     "adaptation_latency": null,
+     "explorations": 0
+    },
+    "P2": {
+     "cost_ms": 3348.46,
+     "regret_ms": 3337.23,
+     "near_optimal_rate": 0.0,
+     "adaptation_latency": null,
+     "explorations": 0
+    },
+    "P3": {
+     "cost_ms": 5129.32,
+     "regret_ms": 5116.64,
+     "near_optimal_rate": 0.0,
+     "adaptation_latency": null,
+     "explorations": 0
+    },
+    "P4": {
+     "cost_ms": 117.09,
+     "regret_ms": 111.56,
+     "near_optimal_rate": 0.0,
+     "adaptation_latency": null,
+     "explorations": 0
+    },
+    "total_cost_ms": 8688.14
+   },
+   "oracle": {
+    "P1": {
+     "cost_ms": 5.21,
+     "regret_ms": 0.0,
+     "near_optimal_rate": 1.0,
+     "adaptation_latency": 0,
+     "explorations": 0
+    },
+    "P2": {
+     "cost_ms": 11.24,
+     "regret_ms": 0.0,
+     "near_optimal_rate": 1.0,
+     "adaptation_latency": 0,
+     "explorations": 0
+    },
+    "P3": {
+     "cost_ms": 12.69,
+     "regret_ms": 0.0,
+     "near_optimal_rate": 1.0,
+     "adaptation_latency": 0,
+     "explorations": 0
+    },
+    "P4": {
+     "cost_ms": 5.54,
+     "regret_ms": 0.0,
+     "near_optimal_rate": 1.0,
+     "adaptation_latency": 0,
+     "explorations": 0
+    },
+    "total_cost_ms": 34.67
+   }
+  },
+  "retirements": [
+   {
+    "after": "P1",
+    "member": "range_bisect",
+    "evidence": {
+     "member": "range_bisect",
+     "justified": true,
+     "margin": 0.1,
+     "min_samples": 3,
+     "contexts": {
+      "single-wide": {
+       "own_median": 320650.0,
+       "covered_by": [
+        "range_scan",
+        "range_scan_list"
+       ],
+       "rivals": {
+        "range_scan": 196000,
+        "range_scan_list": 172200.0
+       },
+       "verdict": "redundant"
+      }
+     },
+     "rule": "redundant-within-margin-in-every-observed-context"
+    }
+   },
+   {
+    "after": "P2",
+    "member": "range_scan",
+    "evidence": {
+     "member": "range_scan",
+     "justified": true,
+     "margin": 0.1,
+     "min_samples": 3,
+     "contexts": {
+      "single-wide": {
+       "own_median": 196000,
+       "covered_by": [
+        "range_scan_list"
+       ],
+       "rivals": {
+        "range_scan_list": 172200.0,
+        "range_bisect": 320650.0
+       },
+       "verdict": "redundant"
+      },
+      "many-narrow": {
+       "own_median": 63562500,
+       "covered_by": [
+        "range_bisect",
+        "range_hash"
+       ],
+       "rivals": {
+        "range_hash": 363050.0,
+        "range_bisect": 447450.0
+       },
+       "verdict": "redundant"
+      }
+     },
+     "rule": "redundant-within-margin-in-every-observed-context"
+    }
+   },
+   {
+    "after": "P3",
+    "policy": "aggregate-retire",
+    "kept": [
+     "range_bisect",
+     "range_hash"
+    ],
+    "dropped": [
+     "range_scan_list",
+     "range_scan"
+    ]
+   }
+  ],
+  "active_members": [
+   "range_bisect",
+   "range_hash",
+   "range_scan",
+   "range_scan_list"
+  ],
+  "retired_member_task_refused": false,
+  "exploration_budget": {
+   "available": {
+    "attempts": 24
+   },
+   "capacity": {
+    "attempts": 54
+   },
+   "id": "c2c6e7ff9126448f890751791780e000",
+   "issued_by": "operator",
+   "policy": {
+    "anchor": 0.0,
+    "ceiling": {
+     "attempts": 24
+    },
+    "grant": {
+     "attempts": 16
+    },
+    "issued_by": "operator",
+    "period_seconds": 1,
+    "periods_funded": 3
+   },
+   "principal": "eco",
+   "spent": {
+    "attempts": 30
+   }
+  },
+  "execution_budget_spent": {
+   "attempts": 528
+  },
+  "hypotheses": {
+   "X2b-H1": {
+    "passed": true
+   },
+   "X2b-H2": {
+    "passed": false
+   },
+   "X2b-H3": {
+    "passed": true
+   },
+   "X2b-H4": {
+    "passed": false
+   },
+   "X2b-H5": {
+    "descriptive": true
+   }
+  },
+  "table": [
+   {
+    "phase": "P1",
+    "index": 0,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 168900,
+     "range_hash": 2366200,
+     "range_scan": 202400,
+     "range_bisect": 326600
+    },
+    "totals": {
+     "range_scan_list": 1098200,
+     "range_hash": 3222300,
+     "range_scan": 1263200,
+     "range_bisect": 1270300
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 1,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 1784900,
+     "range_scan": 163000,
+     "range_bisect": 323600,
+     "range_scan_list": 173100
+    },
+    "totals": {
+     "range_hash": 2878600,
+     "range_scan": 1153400,
+     "range_bisect": 1202100,
+     "range_scan_list": 1079700
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 2,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 313100,
+     "range_scan": 181700,
+     "range_scan_list": 176100,
+     "range_hash": 1948900
+    },
+    "totals": {
+     "range_bisect": 1204700,
+     "range_scan": 1057800,
+     "range_scan_list": 1098300,
+     "range_hash": 2894900
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 3,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 3397500,
+     "range_scan": 205600,
+     "range_scan_list": 180400,
+     "range_bisect": 331400
+    },
+    "totals": {
+     "range_hash": 4383800,
+     "range_scan": 1102900,
+     "range_scan_list": 1038800,
+     "range_bisect": 1235300
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 4,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 312700,
+     "range_scan": 179500,
+     "range_hash": 1863400,
+     "range_scan_list": 179200
+    },
+    "totals": {
+     "range_bisect": 1211200,
+     "range_scan": 1052200,
+     "range_hash": 2779600,
+     "range_scan_list": 1084700
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 5,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 3122400,
+     "range_scan": 199500,
+     "range_scan_list": 169800,
+     "range_bisect": 313500
+    },
+    "totals": {
+     "range_hash": 4145300,
+     "range_scan": 1092800,
+     "range_scan_list": 1036900,
+     "range_bisect": 1190700
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 6,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 1793200,
+     "range_scan_list": 167900,
+     "range_scan": 181100,
+     "range_bisect": 325100
+    },
+    "totals": {
+     "range_hash": 2679400,
+     "range_scan_list": 1062500,
+     "range_scan": 1044800,
+     "range_bisect": 1231500
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 7,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 196000,
+     "range_hash": 3241200,
+     "range_scan_list": 167700,
+     "range_bisect": 332200
+    },
+    "totals": {
+     "range_scan": 1113900,
+     "range_hash": 4158400,
+     "range_scan_list": 1045000,
+     "range_bisect": 1223000
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 8,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 2890600,
+     "range_scan_list": 193000,
+     "range_scan": 197200,
+     "range_bisect": 322100
+    },
+    "totals": {
+     "range_hash": 3892400,
+     "range_scan_list": 1164700,
+     "range_scan": 1207200,
+     "range_bisect": 1211500
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 9,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 189700,
+     "range_scan": 199800,
+     "range_bisect": 320600,
+     "range_hash": 2847500
+    },
+    "totals": {
+     "range_scan_list": 1097800,
+     "range_scan": 1121600,
+     "range_bisect": 1355000,
+     "range_hash": 3780000
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 10,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 318300,
+     "range_hash": 2080600,
+     "range_scan_list": 174300,
+     "range_scan": 191700
+    },
+    "totals": {
+     "range_bisect": 1281000,
+     "range_hash": 3100400,
+     "range_scan_list": 1145300,
+     "range_scan": 1169500
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 11,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 2449400,
+     "range_scan": 174000,
+     "range_scan_list": 158200,
+     "range_bisect": 318100
+    },
+    "totals": {
+     "range_hash": 3534800,
+     "range_scan": 1078900,
+     "range_scan_list": 1062600,
+     "range_bisect": 1193000
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 12,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 203100,
+     "range_bisect": 316100,
+     "range_scan_list": 174100,
+     "range_hash": 3657900
+    },
+    "totals": {
+     "range_scan": 1077600,
+     "range_bisect": 1196600,
+     "range_scan_list": 1027900,
+     "range_hash": 4667300
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 13,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 324800,
+     "range_hash": 2981200,
+     "range_scan_list": 175900,
+     "range_scan": 189500
+    },
+    "totals": {
+     "range_bisect": 1229500,
+     "range_hash": 3952000,
+     "range_scan_list": 1107100,
+     "range_scan": 1059500
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 14,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 2668300,
+     "range_scan": 189600,
+     "range_bisect": 360100,
+     "range_scan_list": 171200
+    },
+    "totals": {
+     "range_hash": 3559000,
+     "range_scan": 1083400,
+     "range_bisect": 1298600,
+     "range_scan_list": 1027700
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 15,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 309800,
+     "range_scan_list": 160700,
+     "range_hash": 1438100,
+     "range_scan": 174600
+    },
+    "totals": {
+     "range_bisect": 1179100,
+     "range_scan_list": 1029900,
+     "range_hash": 2343600,
+     "range_scan": 1100100
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 16,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 188800,
+     "range_scan_list": 198900,
+     "range_hash": 2791900,
+     "range_bisect": 315900
+    },
+    "totals": {
+     "range_scan": 1091900,
+     "range_scan_list": 1149700,
+     "range_hash": 3667600,
+     "range_bisect": 1204000
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 17,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 1361200,
+     "range_scan": 157500,
+     "range_scan_list": 152300,
+     "range_bisect": 319900
+    },
+    "totals": {
+     "range_hash": 2271500,
+     "range_scan": 1057700,
+     "range_scan_list": 1002300,
+     "range_bisect": 1320100
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 18,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 1685900,
+     "range_scan": 174300,
+     "range_scan_list": 164500,
+     "range_bisect": 318600
+    },
+    "totals": {
+     "range_hash": 2581600,
+     "range_scan": 1062000,
+     "range_scan_list": 1027000,
+     "range_bisect": 1231100
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 19,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 180700,
+     "range_bisect": 309700,
+     "range_scan": 192000,
+     "range_hash": 2445900
+    },
+    "totals": {
+     "range_scan_list": 1136300,
+     "range_bisect": 1176900,
+     "range_scan": 1106100,
+     "range_hash": 3425400
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 20,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 190700,
+     "range_scan_list": 218200,
+     "range_hash": 2852200,
+     "range_bisect": 322600
+    },
+    "totals": {
+     "range_scan": 1297000,
+     "range_scan_list": 1275300,
+     "range_hash": 3748200,
+     "range_bisect": 1251400
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 21,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 169900,
+     "range_bisect": 313700,
+     "range_hash": 1493800,
+     "range_scan_list": 165200
+    },
+    "totals": {
+     "range_scan": 1049400,
+     "range_bisect": 1302500,
+     "range_hash": 2401000,
+     "range_scan_list": 1051000
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 22,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 2119100,
+     "range_bisect": 317000,
+     "range_scan_list": 171300,
+     "range_scan": 179700
+    },
+    "totals": {
+     "range_hash": 3005700,
+     "range_bisect": 1290000,
+     "range_scan_list": 1015100,
+     "range_scan": 1044700
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 23,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 171200,
+     "range_hash": 3540400,
+     "range_scan": 192600,
+     "range_bisect": 302000
+    },
+    "totals": {
+     "range_scan_list": 1059300,
+     "range_hash": 4391500,
+     "range_scan": 1036300,
+     "range_bisect": 1162600
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 24,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 194500,
+     "range_hash": 3534200,
+     "range_bisect": 307700,
+     "range_scan_list": 178100
+    },
+    "totals": {
+     "range_scan": 1092900,
+     "range_hash": 4497900,
+     "range_bisect": 1204000,
+     "range_scan_list": 1142600
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 25,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 182200,
+     "range_bisect": 320700,
+     "range_scan": 200300,
+     "range_hash": 3312000
+    },
+    "totals": {
+     "range_scan_list": 1088400,
+     "range_bisect": 1740700,
+     "range_scan": 1067200,
+     "range_hash": 4250600
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 26,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 1879700,
+     "range_scan_list": 170300,
+     "range_bisect": 309500,
+     "range_scan": 179500
+    },
+    "totals": {
+     "range_hash": 2805400,
+     "range_scan_list": 1121300,
+     "range_bisect": 1186900,
+     "range_scan": 1050500
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 27,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 310100,
+     "range_scan_list": 195000,
+     "range_hash": 1575700,
+     "range_scan": 173500
+    },
+    "totals": {
+     "range_bisect": 1188900,
+     "range_scan_list": 1206100,
+     "range_hash": 2535700,
+     "range_scan": 1077300
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 28,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 172200,
+     "range_hash": 1654100,
+     "range_scan_list": 168300,
+     "range_bisect": 315700
+    },
+    "totals": {
+     "range_scan": 1141400,
+     "range_hash": 2576100,
+     "range_scan_list": 1088300,
+     "range_bisect": 1529900
+    }
+   },
+   {
+    "phase": "P1",
+    "index": 29,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 1995300,
+     "range_bisect": 339600,
+     "range_scan": 182500,
+     "range_scan_list": 219900
+    },
+    "totals": {
+     "range_hash": 2934800,
+     "range_bisect": 1327900,
+     "range_scan": 1466600,
+     "range_scan_list": 1687700
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 0,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_bisect": 431500,
+     "range_scan": 65256500,
+     "range_scan_list": 52380300,
+     "range_hash": 395300
+    },
+    "totals": {
+     "range_bisect": 1738800,
+     "range_scan": 67380800,
+     "range_scan_list": 53720600,
+     "range_hash": 1814500
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 1,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_hash": 424000,
+     "range_scan": 54512100,
+     "range_bisect": 410500,
+     "range_scan_list": 54888900
+    },
+    "totals": {
+     "range_hash": 1793900,
+     "range_scan": 55941800,
+     "range_bisect": 1704900,
+     "range_scan_list": 56299800
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 2,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 53577100,
+     "range_bisect": 430500,
+     "range_scan": 54706000,
+     "range_hash": 414600
+    },
+    "totals": {
+     "range_scan_list": 54895500,
+     "range_bisect": 1763400,
+     "range_scan": 56110400,
+     "range_hash": 1869800
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 3,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_bisect": 577300,
+     "range_scan": 57197400,
+     "range_scan_list": 56370900,
+     "range_hash": 358400
+    },
+    "totals": {
+     "range_bisect": 2271200,
+     "range_scan": 59368800,
+     "range_scan_list": 57705800,
+     "range_hash": 1682100
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 4,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_hash": 386700,
+     "range_bisect": 410900,
+     "range_scan_list": 54239400,
+     "range_scan": 56754400
+    },
+    "totals": {
+     "range_hash": 1791100,
+     "range_bisect": 1782200,
+     "range_scan_list": 55885700,
+     "range_scan": 58108000
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 5,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_bisect": 457900,
+     "range_scan": 55708100,
+     "range_hash": 360000,
+     "range_scan_list": 55161900
+    },
+    "totals": {
+     "range_bisect": 1771400,
+     "range_scan": 57045800,
+     "range_hash": 1612100,
+     "range_scan_list": 56597500
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 6,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan": 63736500,
+     "range_bisect": 521300,
+     "range_scan_list": 54450500,
+     "range_hash": 350300
+    },
+    "totals": {
+     "range_scan": 65181700,
+     "range_bisect": 2227000,
+     "range_scan_list": 55789200,
+     "range_hash": 1627800
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 7,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan": 57196700,
+     "range_bisect": 411200,
+     "range_scan_list": 53551600,
+     "range_hash": 347900
+    },
+    "totals": {
+     "range_scan": 58615500,
+     "range_bisect": 1706600,
+     "range_scan_list": 55086100,
+     "range_hash": 1611800
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 8,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_bisect": 437000,
+     "range_scan": 55959600,
+     "range_scan_list": 52835500,
+     "range_hash": 398700
+    },
+    "totals": {
+     "range_bisect": 1758500,
+     "range_scan": 57234700,
+     "range_scan_list": 54203300,
+     "range_hash": 1732100
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 9,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_bisect": 419800,
+     "range_hash": 350400,
+     "range_scan_list": 54141000,
+     "range_scan": 54211300
+    },
+    "totals": {
+     "range_bisect": 1670100,
+     "range_hash": 1673600,
+     "range_scan_list": 55487500,
+     "range_scan": 55563000
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 10,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_bisect": 404300,
+     "range_scan": 55281400,
+     "range_scan_list": 53950700,
+     "range_hash": 417800
+    },
+    "totals": {
+     "range_bisect": 1613400,
+     "range_scan": 56588200,
+     "range_scan_list": 55426100,
+     "range_hash": 1693100
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 11,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_hash": 448000,
+     "range_bisect": 412300,
+     "range_scan_list": 52201900,
+     "range_scan": 54221000
+    },
+    "totals": {
+     "range_hash": 1742500,
+     "range_bisect": 1749400,
+     "range_scan_list": 53580800,
+     "range_scan": 55578600
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 12,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_hash": 345000,
+     "range_scan_list": 63369200,
+     "range_scan": 56953200,
+     "range_bisect": 406200
+    },
+    "totals": {
+     "range_hash": 1617400,
+     "range_scan_list": 64827600,
+     "range_scan": 58328800,
+     "range_bisect": 1661700
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 13,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_hash": 359800,
+     "range_bisect": 407400,
+     "range_scan_list": 51106300,
+     "range_scan": 55875000
+    },
+    "totals": {
+     "range_hash": 1699200,
+     "range_bisect": 1675500,
+     "range_scan_list": 52487500,
+     "range_scan": 57214600
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 14,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan": 55926700,
+     "range_hash": 367900,
+     "range_scan_list": 53972500,
+     "range_bisect": 398300
+    },
+    "totals": {
+     "range_scan": 57325100,
+     "range_hash": 1681100,
+     "range_scan_list": 55404600,
+     "range_bisect": 1669700
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 15,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_hash": 499200,
+     "range_scan": 57579600,
+     "range_scan_list": 57190500,
+     "range_bisect": 406200
+    },
+    "totals": {
+     "range_hash": 2139300,
+     "range_scan": 58979100,
+     "range_scan_list": 58572300,
+     "range_bisect": 1751700
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 16,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_hash": 480100,
+     "range_bisect": 406600,
+     "range_scan_list": 53785200,
+     "range_scan": 55066800
+    },
+    "totals": {
+     "range_hash": 1854800,
+     "range_bisect": 1699700,
+     "range_scan_list": 55151600,
+     "range_scan": 56419000
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 17,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan": 56946800,
+     "range_scan_list": 53402800,
+     "range_hash": 361000,
+     "range_bisect": 411200
+    },
+    "totals": {
+     "range_scan": 58304700,
+     "range_scan_list": 54764300,
+     "range_hash": 1676400,
+     "range_bisect": 1773600
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 18,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan": 63562500,
+     "range_bisect": 404400,
+     "range_scan_list": 53362200,
+     "range_hash": 363100
+    },
+    "totals": {
+     "range_scan": 65198300,
+     "range_bisect": 1659200,
+     "range_scan_list": 54746500,
+     "range_hash": 1806700
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 19,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan": 63492600,
+     "range_hash": 359900,
+     "range_scan_list": 55901900,
+     "range_bisect": 502300
+    },
+    "totals": {
+     "range_scan": 65296500,
+     "range_hash": 1728900,
+     "range_scan_list": 57392600,
+     "range_bisect": 2284900
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 20,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_bisect": 476100,
+     "range_scan": 55766000,
+     "range_scan_list": 55462900,
+     "range_hash": 349600
+    },
+    "totals": {
+     "range_bisect": 1981300,
+     "range_scan": 57152700,
+     "range_scan_list": 56906400,
+     "range_hash": 1622800
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 21,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan": 54779000,
+     "range_bisect": 409100,
+     "range_scan_list": 51749000,
+     "range_hash": 357900
+    },
+    "totals": {
+     "range_scan": 56130300,
+     "range_bisect": 1686500,
+     "range_scan_list": 53122500,
+     "range_hash": 1626500
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 22,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_hash": 365100,
+     "range_scan": 55069500,
+     "range_bisect": 392300,
+     "range_scan_list": 52131700
+    },
+    "totals": {
+     "range_hash": 1794000,
+     "range_scan": 56610700,
+     "range_bisect": 1624200,
+     "range_scan_list": 53663700
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 23,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan": 55262400,
+     "range_bisect": 397700,
+     "range_hash": 476900,
+     "range_scan_list": 57692800
+    },
+    "totals": {
+     "range_scan": 56630600,
+     "range_bisect": 1630600,
+     "range_hash": 1775700,
+     "range_scan_list": 59044100
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 24,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 57974100,
+     "range_scan": 52718900,
+     "range_hash": 346300,
+     "range_bisect": 394600
+    },
+    "totals": {
+     "range_scan_list": 59795300,
+     "range_scan": 54078700,
+     "range_hash": 1606400,
+     "range_bisect": 1666200
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 25,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_bisect": 453200,
+     "range_scan_list": 50688100,
+     "range_scan": 54948100,
+     "range_hash": 352100
+    },
+    "totals": {
+     "range_bisect": 1759600,
+     "range_scan_list": 52108500,
+     "range_scan": 56293800,
+     "range_hash": 1653600
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 26,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan": 54087100,
+     "range_scan_list": 50911100,
+     "range_hash": 349700,
+     "range_bisect": 407200
+    },
+    "totals": {
+     "range_scan": 55412800,
+     "range_scan_list": 52283000,
+     "range_hash": 1679400,
+     "range_bisect": 1788200
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 27,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 51654100,
+     "range_bisect": 409600,
+     "range_hash": 369400,
+     "range_scan": 59152000
+    },
+    "totals": {
+     "range_scan_list": 53009400,
+     "range_bisect": 1686800,
+     "range_hash": 1636300,
+     "range_scan": 60519900
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 28,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 51120800,
+     "range_scan": 53221100,
+     "range_bisect": 472700,
+     "range_hash": 383700
+    },
+    "totals": {
+     "range_scan_list": 52622200,
+     "range_scan": 54547600,
+     "range_bisect": 1777600,
+     "range_hash": 2571500
+    }
+   },
+   {
+    "phase": "P2",
+    "index": 29,
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_hash": 594000,
+     "range_scan": 55203600,
+     "range_bisect": 406300,
+     "range_scan_list": 54266400
+    },
+    "totals": {
+     "range_hash": 2030400,
+     "range_scan": 56664300,
+     "range_bisect": 1631900,
+     "range_scan_list": 55636200
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 0,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 468900,
+     "range_hash": 58180100,
+     "range_scan_list": 49922100,
+     "range_scan": 54263700
+    },
+    "totals": {
+     "range_bisect": 2042700,
+     "range_hash": 59806600,
+     "range_scan_list": 51543500,
+     "range_scan": 55664100
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 1,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 51602100,
+     "range_bisect": 409700,
+     "range_scan": 57098100,
+     "range_scan_list": 54053900
+    },
+    "totals": {
+     "range_hash": 52960000,
+     "range_bisect": 1691000,
+     "range_scan": 58522200,
+     "range_scan_list": 55452900
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 2,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 397600,
+     "range_hash": 47248000,
+     "range_scan_list": 51524300,
+     "range_scan": 57889100
+    },
+    "totals": {
+     "range_bisect": 1626400,
+     "range_hash": 48576600,
+     "range_scan_list": 52918300,
+     "range_scan": 59253300
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 3,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 54176200,
+     "range_bisect": 410300,
+     "range_scan": 55483600,
+     "range_hash": 50208500
+    },
+    "totals": {
+     "range_scan_list": 55819300,
+     "range_bisect": 1657700,
+     "range_scan": 56813100,
+     "range_hash": 51666300
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 4,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 56244300,
+     "range_bisect": 419100,
+     "range_scan_list": 58958500,
+     "range_hash": 52404700
+    },
+    "totals": {
+     "range_scan": 57717400,
+     "range_bisect": 1682600,
+     "range_scan_list": 60415100,
+     "range_hash": 54261300
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 5,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 53784500,
+     "range_scan": 56331900,
+     "range_bisect": 421800,
+     "range_hash": 46908900
+    },
+    "totals": {
+     "range_scan_list": 55195700,
+     "range_scan": 57761000,
+     "range_bisect": 1734300,
+     "range_hash": 48573500
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 6,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 414700,
+     "range_hash": 47840000,
+     "range_scan": 56556400,
+     "range_scan_list": 52089600
+    },
+    "totals": {
+     "range_bisect": 1765700,
+     "range_hash": 49169900,
+     "range_scan": 57917200,
+     "range_scan_list": 53500500
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 7,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 48297200,
+     "range_bisect": 406000,
+     "range_scan_list": 55616100,
+     "range_scan": 56771600
+    },
+    "totals": {
+     "range_hash": 49747700,
+     "range_bisect": 1716100,
+     "range_scan_list": 56975700,
+     "range_scan": 58107600
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 8,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 46675800,
+     "range_scan": 55639800,
+     "range_scan_list": 51983100,
+     "range_bisect": 403900
+    },
+    "totals": {
+     "range_hash": 48246200,
+     "range_scan": 57100300,
+     "range_scan_list": 53339800,
+     "range_bisect": 1645800
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 9,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 59480000,
+     "range_scan_list": 60739600,
+     "range_scan": 58194600,
+     "range_bisect": 410700
+    },
+    "totals": {
+     "range_hash": 60899200,
+     "range_scan_list": 62659200,
+     "range_scan": 59733500,
+     "range_bisect": 1740500
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 10,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 51067900,
+     "range_bisect": 399700,
+     "range_scan_list": 52271900,
+     "range_scan": 55013900
+    },
+    "totals": {
+     "range_hash": 52486800,
+     "range_bisect": 1689400,
+     "range_scan_list": 53814000,
+     "range_scan": 56527600
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 11,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 52131500,
+     "range_scan": 56717800,
+     "range_scan_list": 52428400,
+     "range_bisect": 414800
+    },
+    "totals": {
+     "range_hash": 53555100,
+     "range_scan": 58219500,
+     "range_scan_list": 53849700,
+     "range_bisect": 1705100
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 12,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 54857300,
+     "range_bisect": 405100,
+     "range_scan_list": 51820400,
+     "range_hash": 47880400
+    },
+    "totals": {
+     "range_scan": 56228100,
+     "range_bisect": 1665500,
+     "range_scan_list": 53131200,
+     "range_hash": 49279000
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 13,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 54177700,
+     "range_bisect": 469700,
+     "range_scan": 57774700,
+     "range_hash": 67184400
+    },
+    "totals": {
+     "range_scan_list": 55675700,
+     "range_bisect": 1791200,
+     "range_scan": 59189600,
+     "range_hash": 69083400
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 14,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 55797200,
+     "range_scan_list": 53647200,
+     "range_bisect": 419400,
+     "range_hash": 48733800
+    },
+    "totals": {
+     "range_scan": 57276800,
+     "range_scan_list": 55032700,
+     "range_bisect": 1714200,
+     "range_hash": 50398000
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 15,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 53885000,
+     "range_bisect": 406700,
+     "range_scan": 58095100,
+     "range_scan_list": 52300400
+    },
+    "totals": {
+     "range_hash": 55350300,
+     "range_bisect": 1759700,
+     "range_scan": 59431700,
+     "range_scan_list": 53698000
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 16,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 54693200,
+     "range_scan": 60056600,
+     "range_hash": 47099200,
+     "range_bisect": 414400
+    },
+    "totals": {
+     "range_scan_list": 56163400,
+     "range_scan": 61701100,
+     "range_hash": 48471800,
+     "range_bisect": 1746800
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 17,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 411700,
+     "range_scan_list": 54213300,
+     "range_scan": 57626400,
+     "range_hash": 48828300
+    },
+    "totals": {
+     "range_bisect": 1749600,
+     "range_scan_list": 55623800,
+     "range_scan": 59008400,
+     "range_hash": 50259200
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 18,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 64882700,
+     "range_bisect": 422500,
+     "range_hash": 46285300,
+     "range_scan_list": 52737000
+    },
+    "totals": {
+     "range_scan": 66378700,
+     "range_bisect": 2009800,
+     "range_hash": 47799800,
+     "range_scan_list": 54233000
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 19,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 523300,
+     "range_scan": 64675400,
+     "range_scan_list": 60773300,
+     "range_hash": 63950100
+    },
+    "totals": {
+     "range_bisect": 2348300,
+     "range_scan": 66063300,
+     "range_scan_list": 62251400,
+     "range_hash": 65642100
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 20,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 70185500,
+     "range_bisect": 425400,
+     "range_scan_list": 61050100,
+     "range_hash": 61000500
+    },
+    "totals": {
+     "range_scan": 71896600,
+     "range_bisect": 1803200,
+     "range_scan_list": 62532100,
+     "range_hash": 62667000
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 21,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 445400,
+     "range_scan": 63540300,
+     "range_scan_list": 60197400,
+     "range_hash": 61951100
+    },
+    "totals": {
+     "range_bisect": 1917900,
+     "range_scan": 65088100,
+     "range_scan_list": 61655900,
+     "range_hash": 63776900
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 22,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 70611800,
+     "range_scan_list": 60980700,
+     "range_hash": 62414200,
+     "range_bisect": 435100
+    },
+    "totals": {
+     "range_scan": 72203400,
+     "range_scan_list": 62381800,
+     "range_hash": 63915300,
+     "range_bisect": 2055800
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 23,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 65244300,
+     "range_bisect": 412300,
+     "range_scan_list": 58029200,
+     "range_hash": 59247400
+    },
+    "totals": {
+     "range_scan": 66761100,
+     "range_bisect": 1798000,
+     "range_scan_list": 59546300,
+     "range_hash": 60691700
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 24,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 63418800,
+     "range_bisect": 419800,
+     "range_scan_list": 58022200,
+     "range_scan": 68609000
+    },
+    "totals": {
+     "range_hash": 64790400,
+     "range_bisect": 1706600,
+     "range_scan_list": 59384600,
+     "range_scan": 70168200
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 25,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 449100,
+     "range_scan": 66016700,
+     "range_scan_list": 57824500,
+     "range_hash": 63371200
+    },
+    "totals": {
+     "range_bisect": 2468200,
+     "range_scan": 68541600,
+     "range_scan_list": 59709800,
+     "range_hash": 64884300
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 26,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 66430100,
+     "range_bisect": 410200,
+     "range_scan": 62909900,
+     "range_hash": 60370600
+    },
+    "totals": {
+     "range_scan_list": 68557000,
+     "range_bisect": 1713100,
+     "range_scan": 64366900,
+     "range_hash": 62015000
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 27,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 411800,
+     "range_scan_list": 61760400,
+     "range_scan": 61484400,
+     "range_hash": 54048200
+    },
+    "totals": {
+     "range_bisect": 1687000,
+     "range_scan_list": 63294600,
+     "range_scan": 63170900,
+     "range_hash": 55731600
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 28,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 416200,
+     "range_scan_list": 61130300,
+     "range_hash": 54167300,
+     "range_scan": 62937900
+    },
+    "totals": {
+     "range_bisect": 1900800,
+     "range_scan_list": 62535400,
+     "range_hash": 56250700,
+     "range_scan": 64816100
+    }
+   },
+   {
+    "phase": "P3",
+    "index": 29,
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 53263100,
+     "range_bisect": 412400,
+     "range_scan_list": 55219200,
+     "range_scan": 63428300
+    },
+    "totals": {
+     "range_hash": 54950900,
+     "range_bisect": 1710100,
+     "range_scan_list": 56837200,
+     "range_scan": 65195700
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 0,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 378100,
+     "range_scan": 257600,
+     "range_hash": 4329700,
+     "range_scan_list": 185100
+    },
+    "totals": {
+     "range_bisect": 1652800,
+     "range_scan": 1711100,
+     "range_hash": 5770200,
+     "range_scan_list": 1375900
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 1,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 182600,
+     "range_bisect": 395700,
+     "range_hash": 1900900,
+     "range_scan_list": 170100
+    },
+    "totals": {
+     "range_scan": 1110300,
+     "range_bisect": 1862600,
+     "range_hash": 2868900,
+     "range_scan_list": 1125000
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 2,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 181000,
+     "range_hash": 1740900,
+     "range_bisect": 320200,
+     "range_scan_list": 177100
+    },
+    "totals": {
+     "range_scan": 1187300,
+     "range_hash": 2633900,
+     "range_bisect": 1260900,
+     "range_scan_list": 1126000
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 3,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 195300,
+     "range_hash": 2980400,
+     "range_scan_list": 217300,
+     "range_bisect": 354600
+    },
+    "totals": {
+     "range_scan": 1528700,
+     "range_hash": 3908800,
+     "range_scan_list": 1570800,
+     "range_bisect": 1270800
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 4,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 176300,
+     "range_bisect": 401500,
+     "range_hash": 3887600,
+     "range_scan": 245800
+    },
+    "totals": {
+     "range_scan_list": 1272300,
+     "range_bisect": 1692400,
+     "range_hash": 5323700,
+     "range_scan": 1641400
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 5,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 235700,
+     "range_hash": 2324600,
+     "range_scan_list": 175000,
+     "range_bisect": 336200
+    },
+    "totals": {
+     "range_scan": 1481500,
+     "range_hash": 3268900,
+     "range_scan_list": 1151900,
+     "range_bisect": 1572400
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 6,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 189500,
+     "range_scan": 196600,
+     "range_hash": 2333000,
+     "range_bisect": 319100
+    },
+    "totals": {
+     "range_scan_list": 1464000,
+     "range_scan": 1146000,
+     "range_hash": 3323800,
+     "range_bisect": 1334600
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 7,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 218100,
+     "range_bisect": 310500,
+     "range_scan_list": 227300,
+     "range_hash": 4521400
+    },
+    "totals": {
+     "range_scan": 1178700,
+     "range_bisect": 1309200,
+     "range_scan_list": 1462400,
+     "range_hash": 5945900
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 8,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 2194500,
+     "range_bisect": 383400,
+     "range_scan": 176600,
+     "range_scan_list": 172800
+    },
+    "totals": {
+     "range_hash": 3440000,
+     "range_bisect": 1753700,
+     "range_scan": 1261700,
+     "range_scan_list": 1330900
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 9,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 237400,
+     "range_scan_list": 172900,
+     "range_hash": 3049800,
+     "range_bisect": 403300
+    },
+    "totals": {
+     "range_scan": 1731600,
+     "range_scan_list": 1206200,
+     "range_hash": 4655200,
+     "range_bisect": 1862200
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 10,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 174400,
+     "range_hash": 3140700,
+     "range_bisect": 317400,
+     "range_scan": 229300
+    },
+    "totals": {
+     "range_scan_list": 1320400,
+     "range_hash": 4325700,
+     "range_bisect": 1397600,
+     "range_scan": 1314400
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 11,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 1689100,
+     "range_bisect": 323000,
+     "range_scan_list": 164500,
+     "range_scan": 169400
+    },
+    "totals": {
+     "range_hash": 2745500,
+     "range_bisect": 1426900,
+     "range_scan_list": 1183500,
+     "range_scan": 1384100
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 12,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 235200,
+     "range_bisect": 312100,
+     "range_scan_list": 179400,
+     "range_hash": 3369700
+    },
+    "totals": {
+     "range_scan": 1293200,
+     "range_bisect": 1508300,
+     "range_scan_list": 1307700,
+     "range_hash": 4970900
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 13,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 242200,
+     "range_scan": 233300,
+     "range_bisect": 336200,
+     "range_hash": 3813900
+    },
+    "totals": {
+     "range_scan_list": 1759000,
+     "range_scan": 1404600,
+     "range_bisect": 1510600,
+     "range_hash": 4919200
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 14,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 4214500,
+     "range_scan": 230700,
+     "range_scan_list": 188800,
+     "range_bisect": 339700
+    },
+    "totals": {
+     "range_hash": 5399000,
+     "range_scan": 1399400,
+     "range_scan_list": 1192300,
+     "range_bisect": 1354200
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 15,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 2376000,
+     "range_scan_list": 173900,
+     "range_scan": 188300,
+     "range_bisect": 351400
+    },
+    "totals": {
+     "range_hash": 3374700,
+     "range_scan_list": 1119400,
+     "range_scan": 1485300,
+     "range_bisect": 1461900
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 16,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 181200,
+     "range_scan_list": 313400,
+     "range_hash": 3723900,
+     "range_bisect": 413100
+    },
+    "totals": {
+     "range_scan": 1422700,
+     "range_scan_list": 1775500,
+     "range_hash": 5024600,
+     "range_bisect": 2112900
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 17,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 221400,
+     "range_hash": 3498300,
+     "range_scan": 222100,
+     "range_bisect": 333500
+    },
+    "totals": {
+     "range_scan_list": 1859500,
+     "range_hash": 4982300,
+     "range_scan": 1509300,
+     "range_bisect": 1442600
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 18,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 170300,
+     "range_scan_list": 176900,
+     "range_bisect": 320800,
+     "range_hash": 2099600
+    },
+    "totals": {
+     "range_scan": 1089900,
+     "range_scan_list": 1551300,
+     "range_bisect": 1224700,
+     "range_hash": 3425600
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 19,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 225200,
+     "range_scan": 188500,
+     "range_hash": 2534400,
+     "range_bisect": 307800
+    },
+    "totals": {
+     "range_scan_list": 1439900,
+     "range_scan": 1064200,
+     "range_hash": 3491900,
+     "range_bisect": 1316800
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 20,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 185800,
+     "range_scan": 184700,
+     "range_bisect": 379500,
+     "range_hash": 3929200
+    },
+    "totals": {
+     "range_scan_list": 1175900,
+     "range_scan": 1067700,
+     "range_bisect": 1595300,
+     "range_hash": 5221300
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 21,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 231800,
+     "range_hash": 3608400,
+     "range_bisect": 1211300,
+     "range_scan": 275300
+    },
+    "totals": {
+     "range_scan_list": 1692100,
+     "range_hash": 4691800,
+     "range_bisect": 2716700,
+     "range_scan": 1756200
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 22,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 174200,
+     "range_hash": 2306500,
+     "range_scan": 180300,
+     "range_bisect": 333300
+    },
+    "totals": {
+     "range_scan_list": 1484500,
+     "range_hash": 3254700,
+     "range_scan": 1178200,
+     "range_bisect": 1541700
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 23,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 4013800,
+     "range_bisect": 342600,
+     "range_scan_list": 193700,
+     "range_scan": 212300
+    },
+    "totals": {
+     "range_hash": 5149500,
+     "range_bisect": 1685200,
+     "range_scan_list": 1819300,
+     "range_scan": 1587600
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 24,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 3057400,
+     "range_bisect": 386400,
+     "range_scan_list": 161900,
+     "range_scan": 207400
+    },
+    "totals": {
+     "range_hash": 4007000,
+     "range_bisect": 1614300,
+     "range_scan_list": 1108800,
+     "range_scan": 1290600
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 25,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 176600,
+     "range_bisect": 402400,
+     "range_hash": 2384200,
+     "range_scan": 183200
+    },
+    "totals": {
+     "range_scan_list": 1344500,
+     "range_bisect": 1958000,
+     "range_hash": 3646300,
+     "range_scan": 1468700
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 26,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 2359200,
+     "range_scan": 242000,
+     "range_bisect": 322600,
+     "range_scan_list": 174800
+    },
+    "totals": {
+     "range_hash": 3382600,
+     "range_scan": 1423600,
+     "range_bisect": 1453300,
+     "range_scan_list": 1101800
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 27,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 195300,
+     "range_bisect": 362100,
+     "range_hash": 4987200,
+     "range_scan_list": 185100
+    },
+    "totals": {
+     "range_scan": 1130200,
+     "range_bisect": 1541900,
+     "range_hash": 6181200,
+     "range_scan_list": 1173000
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 28,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 3889000,
+     "range_bisect": 319900,
+     "range_scan": 202200,
+     "range_scan_list": 172100
+    },
+    "totals": {
+     "range_hash": 5104400,
+     "range_bisect": 1300000,
+     "range_scan": 1195900,
+     "range_scan_list": 1088500
+    }
+   },
+   {
+    "phase": "P4",
+    "index": 29,
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 172600,
+     "range_bisect": 379400,
+     "range_scan": 198500,
+     "range_hash": 3430600
+    },
+    "totals": {
+     "range_scan_list": 1023200,
+     "range_bisect": 1554200,
+     "range_scan": 1121100,
+     "range_hash": 4546500
+    }
+   }
+  ],
+  "calibration": [
+   {
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 179000,
+     "range_scan_list": 176100,
+     "range_hash": 1809400,
+     "range_bisect": 322900
+    }
+   },
+   {
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 321200,
+     "range_hash": 1414500,
+     "range_scan_list": 155400,
+     "range_scan": 162700
+    }
+   },
+   {
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 154000,
+     "range_bisect": 310800,
+     "range_hash": 1506600,
+     "range_scan": 161700
+    }
+   },
+   {
+    "context": "single-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 2105600,
+     "range_scan": 172100,
+     "range_scan_list": 170100,
+     "range_bisect": 305200
+    }
+   },
+   {
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 52055100,
+     "range_scan": 57254700,
+     "range_bisect": 408800,
+     "range_hash": 358200
+    }
+   },
+   {
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_hash": 368300,
+     "range_bisect": 413800,
+     "range_scan": 55811500,
+     "range_scan_list": 51803800
+    }
+   },
+   {
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_bisect": 403100,
+     "range_scan": 56560600,
+     "range_scan_list": 53783800,
+     "range_hash": 375500
+    }
+   },
+   {
+    "context": "many-narrow",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 51913600,
+     "range_bisect": 408900,
+     "range_scan": 55880800,
+     "range_hash": 351600
+    }
+   },
+   {
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan": 56824400,
+     "range_hash": 47896300,
+     "range_bisect": 415600,
+     "range_scan_list": 53759900
+    }
+   },
+   {
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_hash": 49181700,
+     "range_bisect": 409200,
+     "range_scan": 55077100,
+     "range_scan_list": 53734200
+    }
+   },
+   {
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_scan_list": 52961900,
+     "range_bisect": 413600,
+     "range_hash": 47655000,
+     "range_scan": 60776700
+    }
+   },
+   {
+    "context": "many-wide",
+    "agree": true,
+    "costs": {
+     "range_bisect": 421900,
+     "range_hash": 48314700,
+     "range_scan": 57185600,
+     "range_scan_list": 58155500
+    }
+   }
+  ]
+ }
+}

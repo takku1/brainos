@@ -1,0 +1,61 @@
+{
+ "subprocess": {
+  "sum": {
+   "first_call_startup_ms": 107.424,
+   "median_startup_us": 106623.1,
+   "median_serialize_us": 20.5,
+   "median_transport_us": 0.0,
+   "median_compute_us": 0.6,
+   "median_total_us": 106661.9
+  },
+  "range_bisect": {
+   "first_call_startup_ms": 116.362,
+   "median_startup_us": 108183.2,
+   "median_serialize_us": 448.5,
+   "median_transport_us": 0.0,
+   "median_compute_us": 429.1,
+   "median_total_us": 109074.2
+  }
+ },
+ "persistent": {
+  "sum": {
+   "first_call_startup_ms": 97.239,
+   "median_startup_us": 0.0,
+   "median_serialize_us": 6.0,
+   "median_transport_us": 43.2,
+   "median_compute_us": 0.2,
+   "median_total_us": 51.4
+  },
+  "range_bisect": {
+   "first_call_startup_ms": 0.0,
+   "median_startup_us": 0.0,
+   "median_serialize_us": 301.6,
+   "median_transport_us": 785.4,
+   "median_compute_us": 392.1,
+   "median_total_us": 1516.0
+  }
+ },
+ "inprocess": {
+  "sum": {
+   "first_call_startup_ms": 0.0,
+   "median_startup_us": 0.0,
+   "median_serialize_us": 3.6,
+   "median_transport_us": 10.4,
+   "median_compute_us": 0.1,
+   "median_total_us": 14.6
+  },
+  "range_bisect": {
+   "first_call_startup_ms": 0.0,
+   "median_startup_us": 0.0,
+   "median_serialize_us": 415.5,
+   "median_transport_us": 891.5,
+   "median_compute_us": 496.8,
+   "median_total_us": 1790.5
+  }
+ },
+ "proposed_target": {
+  "claim": "persistent median total for sum < 20% of subprocess",
+  "ratio": 0.0005,
+  "met": true
+ }
+}

@@ -28,10 +28,54 @@ class Transactor:
                     previous = self.store.get("provider", state["bindings"][role])
                     if any(previous[k] != spec[k] for k in ("capability", "input", "output")):
                         raise Refused("replacement violates the role capability or schemas")
-            self.store.put("candidate", key, dict(id=key, bindings=bindings,
+            self.store.put("candidate", key, dict(id=key, kind="binding", bindings=bindings,
                 revision=state["revision"], epoch=state["epoch"],
                 evidence_revision=state["evidence_revision"], state="PREPARED"))
             self.store.event("prepared", candidate=key)
+        return key
+
+    def stage_membership(self, capability, provider):
+        """A population admission: validated like a binding, never bound in the manifest."""
+        key = uid()
+        with self.store.transaction():
+            contract = self.store.get("capability", capability)
+            spec = self.registry.resolve(provider)
+            if any(spec[k] != contract[k] for k in ("input", "output", "input_unit", "output_unit")):
+                raise Refused("provider schemas/units do not match the capability contract")
+            state = self.control.read()
+            self.store.put("candidate", key, dict(id=key, kind="membership", bindings={capability: provider},
+                revision=state["revision"], epoch=state["epoch"],
+                evidence_revision=state["evidence_revision"], state="PREPARED"))
+            self.store.event("prepared", candidate=key, membership=capability)
+        return key
+
+    def _pinned(self, record, state, kind):
+        if record.get("kind", "binding") != kind:
+            raise Refused(f"candidate is not a {kind} candidate")
+        if record["state"] != "VALIDATED":
+            raise Refused("candidate has no current validation")
+        if any(record[k] != state[k] for k in ("revision", "epoch", "evidence_revision")):
+            raise Refused("stale candidate or validation")
+        for key in record["bindings"].values():
+            self.registry.resolve(key)
+
+    def commit_membership(self, candidate):
+        with self.store.transaction():
+            record = self.store.get("candidate", candidate)
+            state = self.control.read()
+            self._pinned(record, state, "membership")
+            (capability, provider), = record["bindings"].items()
+            key = f"{capability}|{provider}"
+            previous = next((m for m in self.store.find("member") if m["id"] == key), None)
+            if previous is not None and previous["state"] == "ACTIVE":
+                raise Refused("provider is already an active member")
+            history = previous["history"] if previous else []
+            history.append(dict(event="admitted", candidate=candidate, revision=state["revision"]))
+            self.store.put("member", key, dict(id=key, capability=capability, provider=provider,
+                state="ACTIVE", candidate=candidate, cases_digest=record["cases_digest"], history=history))
+            record["state"] = "COMMITTED"
+            self.store.put("candidate", candidate, record)
+            self.store.event("member-admitted", capability=capability, provider=provider, candidate=candidate)
         return key
 
     def validate(self, candidate, cases, *, budget=None, principal=None):
@@ -95,12 +139,7 @@ class Transactor:
         with self.store.transaction():
             record = self.store.get("candidate", candidate)
             state = self.control.read()
-            if record["state"] != "VALIDATED":
-                raise Refused("candidate has no current validation")
-            if any(record[k] != state[k] for k in ("revision", "epoch", "evidence_revision")):
-                raise Refused("stale candidate or validation")
-            for key in record["bindings"].values():
-                self.registry.resolve(key)
+            self._pinned(record, state, "binding")
             state["bindings"].update(record["bindings"])
             state.update(revision=state["revision"] + 1, epoch=state["epoch"] + 1, phase="COMMITTED")
             record["state"] = "COMMITTED"

@@ -10,14 +10,26 @@ class ComputationalFabric:
         self.transactor = transactor
         self.tasks = tasks
 
-    def stage(self, definition, capability):
+    def active_providers(self):
+        """Providers that may parent a composition: manifest-bound or active members."""
         with self.store.mutex:
-            active = set(self.control.read()["bindings"].values())
-            if any(node["provider"] not in active for node in definition.get("nodes", [])):
+            bound = set(self.control.read()["bindings"].values())
+            members = {m["provider"] for m in self.store.find("member") if m["state"] == "ACTIVE"}
+        return bound | members
+
+    def register(self, definition, capability):
+        with self.store.mutex:
+            active = self.active_providers()
+            nodes = definition.get("source_nodes", definition.get("nodes", []))
+            if any(node["provider"] not in active for node in nodes):
                 raise Refused("composition parents must be independently active/validated")
-            provider = self.registry.register_graph(definition, capability)
-            candidate = self.transactor.stage({capability: provider})
-            return dict(provider=provider, candidate=candidate, role=capability)
+            return self.registry.register_graph(definition, capability)
+
+    def stage(self, definition, capability, role=None):
+        provider = self.register(definition, capability)
+        role = role or capability
+        candidate = self.transactor.stage({role: provider})
+        return dict(provider=provider, candidate=candidate, role=role)
 
     def results(self, task, principal):
         self.tasks.task(task, principal)
@@ -29,18 +41,16 @@ class ComputationalFabric:
             return rows
 
     def impact(self, provider, kind="support"):
-        records = {row["id"]: row for row in self.store.find("provider")}
-        if provider not in records or kind not in ("support", "resources", "failure_domains"):
-            raise Refused("unknown provider or impact class")
-        affected = {provider}
-        if kind != "support":
-            footprint = set(records[provider]["footprint"][kind])
-            affected.update(key for key, row in records.items() if footprint.intersection(row["footprint"][kind]))
-        while True:
-            enlarged = affected | {key for key, row in records.items() if row["kind"] == "graph"
-                                   and affected.intersection(row["dependencies"])}
-            if enlarged == affected:
-                break
-            affected = enlarged
-        return dict(kind=kind, affected=sorted(affected),
-                    action="block-dependent-use" if kind == "support" else "reevaluate-affected-guarantees")
+        """Preview: conservative closure over the current population (no enforcement)."""
+        affected, action = self.registry.preview_impact([provider], kind)
+        return dict(kind=kind, affected=affected, action=action)
+
+    def apply_impact(self, changed, kind, reason):
+        """Record and enforce: `block` is refused at every resolution boundary."""
+        return self.registry.record_impact(changed, kind, reason)
+
+    def evidence_current(self, provider, evidence_revision):
+        """False if a `reevaluate` impact on `provider` postdates the evidence."""
+        with self.store.mutex:
+            return not any(i["action"] == "reevaluate" and provider in i["affected"]
+                           and i["evidence_revision"] > evidence_revision for i in self.store.find("impact"))

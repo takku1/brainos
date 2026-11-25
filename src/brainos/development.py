@@ -1,12 +1,21 @@
 """Bounded typed composition search, separate from Core authority and execution.
 
-Development examples guide search. Independent admission examples are consumed
-only by the acquisition orchestration, after the generator nominates a graph.
+Development examples guide search; the capability contract's own admission
+cases are used only for validation after the generator nominates a graph.
+With `cumulative=True` the catalogue includes previously acquired composites,
+which are lowered into primitive execution (graphs.py), so earlier acquisitions
+can serve as building blocks for later ones.
+
+This module never issues funding: budgets come from an operator.
 """
 from collections import deque
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
+import time
+
 from .contracts import Refused, digest, uid
 from . import providers
+
+MAX_DEADLINE_SECONDS = 300
 
 
 @dataclass(frozen=True)
@@ -18,19 +27,53 @@ class CapabilityDemand:
     context: str = "default"
     max_depth: int = 2
     max_candidates: int = 32
+    deadline_seconds: float = 30.0
 
 
 class CompositionSearch:
     def __init__(self, runtime):
         self.runtime = runtime
 
-    def _record(self, demand, path, status, **details):
+    # --- provenance -------------------------------------------------------
+    def _open_run(self, demand, principal, mode, cumulative, catalogue, admission_cases, budget, validation_budget):
+        rt = self.runtime
+        state = rt.manifest()
         key = uid()
-        record = dict(id=key, demand=demand.name, context=demand.context,
-                      path=list(path), status=status, **details)
-        with self.runtime.store.transaction():
-            self.runtime.store.put("construction", key, record)
-            self.runtime.store.event("construction-trial", trial=key, demand=demand.name, status=status)
+        definition = dict(asdict(demand), development_examples=[list(e) for e in demand.development_examples])
+        record = dict(id=key, demand=demand.name, demand_definition=definition, demand_digest=digest(definition),
+            principal=principal, mode=mode, cumulative=cumulative, context=demand.context,
+            pinned=dict(revision=state["revision"], epoch=state["epoch"], evidence_revision=state["evidence_revision"]),
+            catalogue=[s["id"] for s in catalogue],
+            evaluation=dict(development_examples_digest=digest(definition["development_examples"]),
+                            admission_cases_digest=digest(admission_cases) if admission_cases is not None else None),
+            budgets=dict(search=budget, validation=validation_budget),
+            started_wall=time.time(), status="RUNNING", consequences=[])
+        with rt.store.transaction():
+            rt.store.put("construction-run", key, record)
+            rt.store.event("construction-run-started", run=key, demand=demand.name)
+        return record
+
+    def _close_run(self, run, status, **totals):
+        rt = self.runtime
+        with rt.store.transaction():
+            run.update(status=status, **totals)
+            rt.store.put("construction-run", run["id"], run)
+            rt.store.event("construction-run-finished", run=run["id"], status=status)
+
+    def _record(self, run, path, status, **details):
+        rt = self.runtime
+        key = uid()
+        lowered = set()
+        for ref in path:
+            spec = rt.registry.store.get("provider", ref)
+            lowered.update(spec.get("transitive_dependencies", [ref]))
+        record = dict(id=key, run=run["id"] if run else None, demand=run["demand"] if run else None,
+                      context=run["context"] if run else None, path=list(path),
+                      dependencies=dict(direct=list(path), transitive=sorted(lowered)),
+                      pinned=run["pinned"] if run else None, status=status, **details)
+        with rt.store.transaction():
+            rt.store.put("construction", key, record)
+            rt.store.event("construction-trial", trial=key, demand=record["demand"], status=status)
         return key
 
     @staticmethod
@@ -39,64 +82,145 @@ class CompositionSearch:
             nodes=[dict(id=f"n{i}", provider=provider, input="$input" if i == 0 else f"n{i-1}")
                    for i, provider in enumerate(path)], output_node=f"n{len(path)-1}")
 
-    def discover(self, demand, principal, budget, *, mode="typed", exclude_paths=()):
+    def catalogue(self, *, cumulative, exclude_capability=None):
+        rt = self.runtime
+        specs = {}
+        for key in rt.fabric.active_providers():
+            try:
+                spec = rt.registry.resolve(key)
+            except Refused:
+                continue  # blocked by an impact: not available as a building block
+            if spec["kind"] == "graph" and (not cumulative or spec["capability"] == exclude_capability):
+                continue
+            specs[spec["id"]] = spec
+        return sorted(specs.values(), key=lambda s: (s["kind"], s["implementation"], s["id"]))
+
+    # --- search -----------------------------------------------------------
+    def discover(self, demand, principal, budget, *, mode="typed", exclude_paths=(), cumulative=False,
+                 _run=None, _deadline=None):
+        own = _run is None
+        run_box = {}
+        try:
+            yield from self._discover(demand, principal, budget, mode, exclude_paths, cumulative,
+                                      _run, _deadline, run_box)
+        finally:
+            if own and "run" in run_box:
+                self._close_run(run_box["run"], "SEARCH_ONLY")
+
+    def _discover(self, demand, principal, budget, mode, exclude_paths, cumulative, _run, _deadline, run_box):
         if (not isinstance(demand, CapabilityDemand) or not demand.name
-                or not 1 <= demand.max_depth <= 4 or not 1 <= demand.max_candidates <= 128
+                or not 1 <= demand.max_depth <= 4 or not 1 <= demand.max_candidates <= 256
+                or not 0 < demand.deadline_seconds <= MAX_DEADLINE_SECONDS
                 or mode not in ("typed", "memoized") or not demand.development_examples):
             raise Refused("invalid bounded capability demand or search policy")
         runtime = self.runtime
-        active = set(runtime.manifest()["bindings"].values())
-        catalogue = [runtime.registry.resolve(key) for key in active]
-        catalogue = sorted((s for s in catalogue if s["kind"] == "primitive"),
-                           key=lambda s: (s["implementation"], s["id"]))
+        deadline = _deadline or time.monotonic() + demand.deadline_seconds
+        catalogue = self.catalogue(cumulative=cumulative, exclude_capability=_run and _run.get("capability"))
+        run = _run or self._open_run(demand, principal, mode, cumulative, catalogue, None, budget, None)
+        run_box["run"] = run
         queue = deque([((), demand.input)])
         cache = {}
-        expanded = 0
+        expanded = attempts = 0
+        started = time.monotonic()
+
+        def out_of_time():
+            return time.monotonic() >= deadline
+
         while queue and expanded < demand.max_candidates:
+            if out_of_time():
+                self._record(run, (), "NON_ATTAINMENT", reason="construction deadline exceeded", expanded=expanded)
+                run["search"] = dict(expanded=expanded, attempts=attempts, seconds=time.monotonic() - started)
+                return
             path, schema = queue.popleft()
             try:
                 runtime.resources.charge(budget, principal, {"attempts": 1}, "typed-search-expansion")
+                attempts += 1
             except Refused as exc:
-                self._record(demand, path, "NON_ATTAINMENT", reason=str(exc), expanded=expanded)
+                self._record(run, path, "NON_ATTAINMENT", reason=str(exc), expanded=expanded)
+                run["search"] = dict(expanded=expanded, attempts=attempts, seconds=time.monotonic() - started)
                 return
             expanded += 1
-            if path and schema == demand.output and path not in exclude_paths:
+            trivial = len(path) == 1 and runtime.registry.store.get("provider", path[0])["kind"] == "graph"
+            if path and schema == demand.output and path not in exclude_paths and not trivial:
+                trial_attempts, trial_started = 0, time.monotonic()
                 try:
                     for value, expected in demand.development_examples:
                         providers.check(demand.input, value)
                         result = value
                         for ref in path:
+                            if out_of_time():
+                                raise Refused("construction deadline exceeded")
                             spec = runtime.registry.resolve(ref)
                             key = digest([spec["id"], result, demand.context])
                             if mode == "memoized" and key in cache:
                                 result = cache[key]
                             else:
                                 runtime.resources.charge(budget, principal, spec["cost"], "development-example")
-                                result = runtime.runner.compute(spec, result, 5)
+                                trial_attempts += spec["cost"]["attempts"]
+                                result = runtime.runner.compute(spec, result, max(0.05, min(5, deadline - time.monotonic())))
                                 cache[key] = result
                         if result != expected:
                             raise Refused("development example mismatch")
-                    self._record(demand, path, "NOMINATED", expanded=expanded, mode=mode)
+                    attempts += trial_attempts
+                    self._record(run, path, "NOMINATED", expanded=expanded, mode=mode,
+                                 costs=dict(attempts=trial_attempts, seconds=time.monotonic() - trial_started))
+                    run["search"] = dict(expanded=expanded, attempts=attempts, seconds=time.monotonic() - started)
                     yield path
                 except Refused as exc:
-                    self._record(demand, path, "REJECTED_DEVELOPMENT", reason=str(exc), expanded=expanded)
+                    attempts += trial_attempts
+                    status = "NON_ATTAINMENT" if "deadline" in str(exc) else "REJECTED_DEVELOPMENT"
+                    self._record(run, path, status, reason=str(exc), expanded=expanded,
+                                 costs=dict(attempts=trial_attempts, seconds=time.monotonic() - trial_started))
+                    if status == "NON_ATTAINMENT":
+                        run["search"] = dict(expanded=expanded, attempts=attempts, seconds=time.monotonic() - started)
+                        return
             if len(path) < demand.max_depth:
                 for spec in catalogue:
                     if spec["input"] == schema:
                         queue.append(((*path, spec["id"]), spec["output"]))
-        self._record(demand, (), "SEARCH_STOPPED", expanded=expanded,
+        run["search"] = dict(expanded=expanded, attempts=attempts, seconds=time.monotonic() - started)
+        self._record(run, (), "SEARCH_STOPPED", expanded=expanded,
                      reason="frontier exhausted" if not queue else "candidate bound")
 
     def acquire(self, demand, principal, budget, admission_cases, *, validation_budget,
-                mode="typed", exclude_paths=()):
-        for path in self.discover(demand, principal, budget, mode=mode, exclude_paths=exclude_paths):
+                mode="typed", exclude_paths=(), cumulative=False, role=None):
+        """Discover, validate as a member of the demanded capability, and optionally bind a role.
+
+        The role defaults to the demand name and is bound only if it is free;
+        further providers of the same capability join the population instead.
+        """
+        rt = self.runtime
+        capability = rt.population.define(demand.name, demand.input, demand.output, admission_cases)
+        deadline = time.monotonic() + demand.deadline_seconds
+        catalogue = self.catalogue(cumulative=cumulative, exclude_capability=capability)
+        run = self._open_run(demand, principal, mode, cumulative, catalogue, admission_cases, budget, validation_budget)
+        run["capability"] = capability
+        role = role or demand.name
+        val_before = rt.resources.budget(validation_budget, principal)["spent"]["attempts"]
+        for path in self.discover(demand, principal, budget, mode=mode, exclude_paths=exclude_paths,
+                                  cumulative=cumulative, _run=run, _deadline=deadline):
+            if time.monotonic() >= deadline:
+                self._record(run, path, "NON_ATTAINMENT", reason="construction deadline exceeded before admission")
+                break
             try:
-                proposal = self.runtime.fabric.stage(self.definition(demand, path), demand.name)
-                self.runtime.transactor.validate(proposal["candidate"], {demand.name: admission_cases},
-                                                 budget=validation_budget, principal=principal)
-                self.runtime.transactor.commit(proposal["candidate"])
-                trial = self._record(demand, path, "ACQUIRED", provider=proposal["provider"], mode=mode)
-                return dict(status="ACQUIRED", path=list(path), trial=trial, **proposal)
+                provider = rt.fabric.register(self.definition(demand, path), capability)
+                member = rt.population.admit(capability, provider, budget=validation_budget, principal=principal)
+                bound = None
+                if role not in rt.manifest()["bindings"]:
+                    candidate = rt.transactor.stage({role: provider})
+                    rt.transactor.validate(candidate, {role: admission_cases},
+                                           budget=validation_budget, principal=principal)
+                    rt.transactor.commit(candidate)
+                    bound = role
+                spent = rt.resources.budget(validation_budget, principal)["spent"]["attempts"] - val_before
+                trial = self._record(run, path, "ACQUIRED", provider=provider, mode=mode, member=member,
+                                     bound_role=bound, evaluation=dict(validation_attempts=spent))
+                run["consequences"].append(dict(membership=member, provider=provider, bound_role=bound))
+                self._close_run(run, "ACQUIRED", validation_attempts=spent)
+                return dict(status="ACQUIRED", path=list(path), trial=trial, run=run["id"], provider=provider,
+                            capability=capability, member=member, role=bound)
             except Refused as exc:
-                self._record(demand, path, "REJECTED_ADMISSION", reason=str(exc), mode=mode)
-        return dict(status="NON_ATTAINMENT", demand=demand.name)
+                self._record(run, path, "REJECTED_ADMISSION", reason=str(exc), mode=mode)
+        spent = rt.resources.budget(validation_budget, principal)["spent"]["attempts"] - val_before
+        self._close_run(run, "NON_ATTAINMENT", validation_attempts=spent)
+        return dict(status="NON_ATTAINMENT", demand=demand.name, capability=capability, run=run["id"])

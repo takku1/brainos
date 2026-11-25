@@ -343,3 +343,111 @@ Screen: verification T1 (build); reliability T1 (schema); operations T1 (schema)
 | A-7 | maintainability | Graph connections are exactly typed; forward/cyclic/duplicate refs and unsupported adapters are refused; impact propagates to dependents | Loose schema matching; nested graph loops | graphs.specification, registry.exclude, fabric.impact (graphs.py, registry.py, fabric.py) | tests/test_corrective.py TypedFabric | tested |
 | A-8 | verification | A demanded capability is discovered, independently validated and published without altering parents; failures are retained; non-attainment is reported | Development examples reused for admission; parents rebound | Separate admission cases and validation budget; construction records (development.py) | tests/test_corrective.py DevelopmentalCompilation | tested |
 | A-9 | operations | Existing behavior, crash recovery and demo still hold; storage schema v2 fails closed on unknown versions | Regression from contract changes | Existing suites (tests/) | tests/test_core.py tests/test_crash_recovery.py | tested |
+
+## 21.11 Cumulative development, execution profiles and bounded ecology
+
+Scope: findings B07-B13 from the second implementation review, a persistent
+execution profile, cumulative construction and a bounded competitive ecology.
+All seven findings were reproduced on 08d29f3 before changes
+(docs/results/2026-11-25T-ecology/baseline-findings.json). The profile remains
+trusted-catalogue, single-authority, deterministic and standard-library only;
+no learned model, generated code or distributed infrastructure is added.
+
+| Finding | Classification on 08d29f3 | Disposition |
+|---|---|---|
+| B07 composites excluded from construction | Documented first-profile limit | Explicit bounded lowering; active composites join the search catalogue |
+| B08 capability conflated with role name | Defect | Capability contracts, provider populations and role bindings are separate records |
+| B09 impact misses indirect resource overlap; advisory only | Defect | Runtime closure ports the Doc 32 section 32.9 reference semantics exactly; impact records are enforced |
+| B10 fixed validation budget exhausts permanently | Documented first-profile limit | Operator-issued periodic funding policies with ceilings; kernel validation is funded by one |
+| B11 no overall construction deadline | Defect | Demand-level wall-clock deadline checked at every expansion, example and admission |
+| B12 non-contributing graph nodes admitted and charged | Defect | Graphs must be backward-reachable from the output node |
+| B13 construction records lack experimental context | Documented first-profile limit | Records pin manifest/evidence revisions, demand definition, catalogue, evaluation identities, costs and dependencies |
+
+Identity layers (Doc 26 section 26.3). A **capability contract**
+`capability:<name>@<digest>` fixes name, input/output schemas and units. A
+**provider** is an artifact (primitive or lowered composite). **Membership**
+asserts that a provider implements a contract and is admitted only through
+transactor validation on the contract's admission cases; it is a population
+record, not a manifest binding. A **role** binds one provider in the manifest;
+replacement within a role still requires contract compatibility. Several
+validated members of one contract stay independently available, and
+capability-routed tasks name both the contract and the selected member.
+
+Because every node is unary and must reach the output (B12), an admitted graph
+is a linear chain; branching DAGs need multi-input nodes, which remain open.
+
+Lowering (Doc 29 section 29.6). A graph node may reference an active composite;
+the specification inlines its primitive nodes under a prefixed namespace,
+keeps the authored `source_nodes`, and records direct plus transitive
+dependency identities. The lowered graph stays within 16 primitive nodes;
+nested references resolve through the registry, so a blocked or excluded
+nested composite blocks every composite built on it.
+
+Impact enforcement (Doc 29 section 29.2). `closure.py` computes the
+conservative fixed point over a pinned provider population: directional
+dependency edges plus symmetric footprint intersections of the impact class.
+Unknown footprints expand conservatively. Impact records carry cause, class,
+affected set, evidence revision and action. `block` (support, contract,
+unknown) is enforced in registry resolution, which every staging,
+validation, commit, task-admission, run and membership path calls.
+`reevaluate` (resource contention, failure domain) leaves correct outputs
+usable but invalidates performance evidence recorded before the impact, so
+selection cannot rely on it until it is re-measured.
+
+Funding (Doc 20 section 20.2). Only principals in the runtime's operator set
+may attach a funding policy (period, grant, ceiling) to a budget. Accrual is
+computed from the injected clock at reservation time, at most once per
+elapsed period and never above the ceiling; each accrual is journaled with its
+period index. There is no other path that increases capacity. The kernel
+validation budget is created with a default policy instead of a fixed grant.
+
+Execution profiles. `subprocess` (fresh process per primitive; isolation and
+crash tests), `persistent` (one long-lived trusted worker process with a
+line-delimited protocol; killed and restarted on timeout or protocol error)
+and `inprocess` (trusted direct call; deadline checked after completion, so it
+cannot preempt). All three share one adapter that enforces schema checks,
+protocol size limits and artifact-digest verification, and returns timing
+(start-up, serialization, dispatch, computation) that execution records on the
+invocation. Authority, accounting and recovery paths are unchanged by profile.
+
+Ecology (Doc 25; preregistered in docs/results/2026-11-25T-ecology). A
+population of range-count providers with different preparation and query
+costs serves workloads whose contexts are assigned by a trusted featurizer.
+Contextual selection explores within a funded budget. Retirement is an
+organizational change that needs dominance evidence in every observed context
+(or zero contribution over the evidence window), never a lower aggregate
+score alone. Retired members are archived and can be re-admitted only through
+fresh validation. Static, offline algorithm-selection, portfolio and oracle
+controls replay the same measured cost table.
+
+Measured outcome (docs/results/2026-11-25T-ecology/RESULTS.md). Cumulative
+construction passed its preregistered hypotheses. The ecology did not pass all
+of its own. v1 retired the many-narrow specialist after observing only one
+context. v2 added regeneration on new demand and breadth-first pruned
+exploration: it recovered coexistence but still retired a specialist (later
+restored) and missed the adaptation threshold. Retirement after a single
+observed context is the identified remaining defect; a probation window is
+proposed, not implemented. Offline algorithm selection had far lower
+execution cost when given its calibration, and comparable total cost once
+calibration is charged.
+
+## Assurance 21.11
+
+Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 (slo); operations T1 (schema); performance T1 (slo); maintainability T1 (new_boundary); others T0
+
+| ID | Discipline | Claim | Could fail by | Control (owner) | Check | Evidence |
+|---|---|---|---|---|---|---|
+| A-10 | maintainability | A previously acquired composite is used to construct a later composite, with lowered primitive execution and transitive dependency provenance (B07) | Nested references executed unbounded or without provenance | Bounded lowering in graphs.py; composite catalogue in development.py | tests/test_cumulative.py CumulativeConstruction | tested |
+| A-11 | verification | Several validated providers of one capability contract coexist without separate role names; membership requires validation (B08) | Capability identity taken from role name; unvalidated members | population.py, transactor membership candidates | tests/test_cumulative.py CapabilityPopulation | tested |
+| A-12 | reliability | Runtime closure equals the reference closure, including indirect footprint overlap (B09) | Single-step overlap expansion | closure.py fixed point | tests/test_cumulative.py ClosureConformance | tested |
+| A-13 | reliability | Block impacts are refused at every execution boundary; reevaluate impacts invalidate prior performance evidence (B09) | Advisory impact without enforcement | Impact records checked in registry.resolve and ecology evidence filter | tests/test_cumulative.py ImpactEnforcement | tested |
+| A-14 | reliability | Funding accrues once per elapsed period up to a ceiling, only under operator policy; non-operators cannot mint funding (B10) | Fixed exhaustion; self-funding; double accrual | funding policies in resources.py | tests/test_cumulative.py FundingLifecycle | tested |
+| A-15 | performance | Construction stops at its overall deadline and records non-attainment (B11) | Unbounded total search time | Demand deadline in development.py | tests/test_cumulative.py ConstructionDeadline | tested |
+| A-16 | verification | Graph nodes that do not reach the output are refused (B12) | Dead nodes executed and charged | Reachability check in graphs.py | tests/test_cumulative.py GraphReachability | tested |
+| A-17 | maintainability | Construction records pin organizational state, demand, evaluation identities, costs and dependencies (B13) | Incomplete history for later learning | development.py records | tests/test_cumulative.py ConstructionProvenance | tested |
+| A-18 | verification | All three execution profiles enforce the same schema, size and artifact checks and give identical outputs | Faster profile skipping checks | Shared adapter in runner.py | tests/test_runners.py RunnerProfiles | tested |
+| A-19 | observability | Worker timeout or death fails closed, restarts the worker and is visible in the invocation record and journal | Silent hang or stale worker reuse | Persistent runner restart path; execution timing/error records | tests/test_runners.py RunnerFailureVisibility | tested |
+| A-20 | performance | Start-up, serialization, dispatch and computation costs are measured per profile (proposed target: persistent dispatch below fresh-subprocess dispatch) | Claim without measurement | tools/bench_runners.py | py tools/bench_runners.py | tested |
+| A-21 | verification | Complementary specialists are retained; retirement needs dominance or zero-contribution evidence; archived members return only via validation | Retirement by aggregate score | ecology.py retention rule | tests/test_ecology.py | tested |
+| A-22 | verification | The ecology experiment refuses to run if its preregistration changed | Post-hoc criteria | Preregistration digest check in tools/run_ecology.py | tests/test_ecology.py PreregistrationIntegrity | tested |
+| A-23 | operations | Existing behavior, crash recovery, B01-B06 regressions and demo still hold | Regression from contract changes | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py | tested |

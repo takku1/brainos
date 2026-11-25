@@ -351,7 +351,7 @@ class TypedFabric(FabricCase):
         self.assertIn(acquired["provider"], impact["affected"])
         self.assertNotIn(count, impact["affected"])
         self.r.registry.exclude(parse, "counterexample in parser")
-        with self.assertRaisesRegex(Refused, "excluded"):
+        with self.assertRaisesRegex(Refused, "blocked by support impact"):
             self.r.registry.resolve(acquired["provider"])
 
 

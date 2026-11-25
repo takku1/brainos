@@ -1,0 +1,315 @@
+{
+ "x2_hypotheses": {
+  "X2b-H1": {
+   "passed": true
+  },
+  "X2b-H2": {
+   "passed": false
+  },
+  "X2b-H3": {
+   "passed": true
+  },
+  "X2b-H4": {
+   "passed": false
+  },
+  "X2b-H5": {
+   "descriptive": true
+  }
+ },
+ "x2_summary": {
+  "ecology": {
+   "P1": {
+    "cost_ms": 9.16,
+    "regret_ms": 3.95,
+    "near_optimal_rate": 0.667,
+    "adaptation_latency": 10,
+    "explorations": 11
+   },
+   "P2": {
+    "cost_ms": 249.54,
+    "regret_ms": 238.3,
+    "near_optimal_rate": 0.633,
+    "adaptation_latency": 24,
+    "explorations": 11
+   },
+   "P3": {
+    "cost_ms": 282.4,
+    "regret_ms": 269.71,
+    "near_optimal_rate": 0.833,
+    "adaptation_latency": 4,
+    "explorations": 8
+   },
+   "P4": {
+    "cost_ms": 5.75,
+    "regret_ms": 0.22,
+    "near_optimal_rate": 0.9,
+    "adaptation_latency": 4,
+    "explorations": 0
+   },
+   "total_cost_ms": 546.85,
+   "regeneration_ms": 22.39,
+   "total_including_regeneration_ms": 569.24
+  },
+  "aggregate-retire": {
+   "P1": {
+    "cost_ms": 9.16,
+    "regret_ms": 3.95,
+    "near_optimal_rate": 0.667,
+    "adaptation_latency": 10,
+    "explorations": 11
+   },
+   "P2": {
+    "cost_ms": 249.37,
+    "regret_ms": 238.13,
+    "near_optimal_rate": 0.7,
+    "adaptation_latency": 24,
+    "explorations": 11
+   },
+   "P3": {
+    "cost_ms": 286.77,
+    "regret_ms": 274.09,
+    "near_optimal_rate": 0.833,
+    "adaptation_latency": 4,
+    "explorations": 8
+   },
+   "P4": {
+    "cost_ms": 11.4,
+    "regret_ms": 5.86,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "total_cost_ms": 556.7
+  },
+  "static": {
+   "P1": {
+    "cost_ms": 9.59,
+    "regret_ms": 4.38,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "P2": {
+    "cost_ms": 12.89,
+    "regret_ms": 1.65,
+    "near_optimal_rate": 0.433,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "P3": {
+    "cost_ms": 12.69,
+    "regret_ms": 0.0,
+    "near_optimal_rate": 1.0,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P4": {
+    "cost_ms": 11.4,
+    "regret_ms": 5.86,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "total_cost_ms": 46.56,
+   "calibration_cost_ms": 1090.76,
+   "choice": "range_bisect"
+  },
+  "offline-AS": {
+   "P1": {
+    "cost_ms": 5.32,
+    "regret_ms": 0.11,
+    "near_optimal_rate": 0.9,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P2": {
+    "cost_ms": 11.73,
+    "regret_ms": 0.5,
+    "near_optimal_rate": 0.867,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P3": {
+    "cost_ms": 12.69,
+    "regret_ms": 0.0,
+    "near_optimal_rate": 1.0,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P4": {
+    "cost_ms": 5.75,
+    "regret_ms": 0.22,
+    "near_optimal_rate": 0.9,
+    "adaptation_latency": 4,
+    "explorations": 0
+   },
+   "total_cost_ms": 35.49,
+   "calibration_cost_ms": 1090.76,
+   "choice": {
+    "single-wide": "range_scan_list",
+    "many-narrow": "range_hash",
+    "many-wide": "range_bisect"
+   }
+  },
+  "portfolio": {
+   "P1": {
+    "cost_ms": 93.26,
+    "regret_ms": 88.05,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "P2": {
+    "cost_ms": 3348.46,
+    "regret_ms": 3337.23,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "P3": {
+    "cost_ms": 5129.32,
+    "regret_ms": 5116.64,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "P4": {
+    "cost_ms": 117.09,
+    "regret_ms": 111.56,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "total_cost_ms": 8688.14
+  },
+  "oracle": {
+   "P1": {
+    "cost_ms": 5.21,
+    "regret_ms": 0.0,
+    "near_optimal_rate": 1.0,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P2": {
+    "cost_ms": 11.24,
+    "regret_ms": 0.0,
+    "near_optimal_rate": 1.0,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P3": {
+    "cost_ms": 12.69,
+    "regret_ms": 0.0,
+    "near_optimal_rate": 1.0,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P4": {
+    "cost_ms": 5.54,
+    "regret_ms": 0.0,
+    "near_optimal_rate": 1.0,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "total_cost_ms": 34.67
+  }
+ },
+ "x2_contexts": {
+  "many-narrow": {
+   "majority_best": "range_hash",
+   "wins": {
+    "range_scan": 0,
+    "range_scan_list": 0,
+    "range_bisect": 7,
+    "range_hash": 23
+   },
+   "median_ms": {
+    "range_scan": 55.737,
+    "range_scan_list": 53.868,
+    "range_bisect": 0.411,
+    "range_hash": 0.364
+   },
+   "specialist": true
+  },
+  "many-wide": {
+   "majority_best": "range_bisect",
+   "wins": {
+    "range_scan": 0,
+    "range_scan_list": 0,
+    "range_bisect": 30,
+    "range_hash": 0
+   },
+   "median_ms": {
+    "range_scan": 57.992,
+    "range_scan_list": 54.453,
+    "range_bisect": 0.415,
+    "range_hash": 52.834
+   },
+   "specialist": true
+  },
+  "single-wide": {
+   "majority_best": "range_scan_list",
+   "wins": {
+    "range_scan": 12,
+    "range_scan_list": 48,
+    "range_bisect": 0,
+    "range_hash": 0
+   },
+   "median_ms": {
+    "range_scan": 0.192,
+    "range_scan_list": 0.176,
+    "range_bisect": 0.323,
+    "range_hash": 2.73
+   },
+   "specialist": false
+  }
+ },
+ "x2_active": [
+  "range_bisect",
+  "range_hash",
+  "range_scan",
+  "range_scan_list"
+ ],
+ "x2_regenerations": [
+  {
+   "phase": "P2",
+   "context": "many-narrow",
+   "member": "range_bisect",
+   "wall_ms": 11.49,
+   "validation_attempts": 3
+  },
+  {
+   "phase": "P3",
+   "context": "many-wide",
+   "member": "range_scan",
+   "wall_ms": 10.9,
+   "validation_attempts": 3
+  }
+ ],
+ "x2_retirements": [
+  {
+   "after": "P1",
+   "member": "range_bisect"
+  },
+  {
+   "after": "P2",
+   "member": "range_scan"
+  },
+  {
+   "after": "P3",
+   "policy": "aggregate-retire",
+   "kept": [
+    "range_bisect",
+    "range_hash"
+   ],
+   "dropped": [
+    "range_scan_list",
+    "range_scan"
+   ]
+  }
+ ],
+ "x2_correct": {
+  "all_members_agree": true
+ },
+ "retired_refused": false
+}

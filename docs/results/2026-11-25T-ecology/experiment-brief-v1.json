@@ -1,0 +1,453 @@
+{
+ "x1": {
+  "cumulative": [
+   {
+    "generation": "csv-sum",
+    "status": "ACQUIRED",
+    "path": [
+     "parse_csv@1",
+     "sum@1"
+    ],
+    "provider": "graph:46648da2f1f853affa8472669743d4d8cda03476a2e42e4aeade15de407c18be",
+    "raw_path": [
+     "parse_csv@1:762ac695095294d9ada27c2e0232c02c0e15e357dd14e5d86f123dd810356d77",
+     "sum@1:b1b7b6352555fcd464dd492007a751f96c7ad0eac0099d891de5307c936462a4"
+    ],
+    "search_attempts": 12,
+    "expanded": 5,
+    "validation_attempts": 12,
+    "seconds": 0.056
+   },
+   {
+    "generation": "csv-neg-sum",
+    "status": "ACQUIRED",
+    "path": [
+     "graph:46648da2f1f8",
+     "negate@1"
+    ],
+    "provider": "graph:143f3a9c2023ff0106b6701f7e492022b656ef4c7af43722df35fa50c8777b4d",
+    "raw_path": [
+     "graph:46648da2f1f853affa8472669743d4d8cda03476a2e42e4aeade15de407c18be",
+     "negate@1:95e867884c9d1af54717df8a5f8ddf4201885cc90908c5b944675dc8f4003c91"
+    ],
+    "search_attempts": 16,
+    "expanded": 6,
+    "validation_attempts": 18,
+    "seconds": 0.063
+   },
+   {
+    "generation": "csv-neg-double-sum",
+    "status": "ACQUIRED",
+    "path": [
+     "graph:143f3a9c2023",
+     "double@1"
+    ],
+    "provider": "graph:b14ed8a86a699c1cd72f8b928c7481a559ed8c2d6e16f3a0d1b9a45e6c0454bb",
+    "raw_path": [
+     "graph:143f3a9c2023ff0106b6701f7e492022b656ef4c7af43722df35fa50c8777b4d",
+     "double@1:20eb0fb3bf5149b3c23cebfbcf797b4c0c20bf5154097b7f92363b25e377e322"
+    ],
+    "search_attempts": 15,
+    "expanded": 6,
+    "validation_attempts": 24,
+    "seconds": 0.061
+   }
+  ],
+  "primitive_depth2": [
+   {
+    "generation": "csv-sum",
+    "status": "ACQUIRED",
+    "path": [
+     "parse_csv@1",
+     "sum@1"
+    ],
+    "provider": "graph:46648da2f1f853affa8472669743d4d8cda03476a2e42e4aeade15de407c18be",
+    "raw_path": [
+     "parse_csv@1:762ac695095294d9ada27c2e0232c02c0e15e357dd14e5d86f123dd810356d77",
+     "sum@1:b1b7b6352555fcd464dd492007a751f96c7ad0eac0099d891de5307c936462a4"
+    ],
+    "search_attempts": 12,
+    "expanded": 5,
+    "validation_attempts": 12,
+    "seconds": 0.063
+   },
+   {
+    "generation": "csv-neg-sum",
+    "status": "NON_ATTAINMENT",
+    "path": [],
+    "provider": null,
+    "raw_path": [],
+    "search_attempts": 19,
+    "expanded": 8,
+    "validation_attempts": 0,
+    "seconds": 0.05
+   },
+   {
+    "generation": "csv-neg-double-sum",
+    "status": "NON_ATTAINMENT",
+    "path": [],
+    "provider": null,
+    "raw_path": [],
+    "search_attempts": 19,
+    "expanded": 8,
+    "validation_attempts": 0,
+    "seconds": 0.052
+   }
+  ],
+  "primitive_depth4": [
+   {
+    "generation": "csv-neg-double-sum",
+    "status": "ACQUIRED",
+    "path": [
+     "parse_csv@1",
+     "sum@1",
+     "double@1",
+     "negate@1"
+    ],
+    "provider": "graph:a86dac5c99d949defa5f0d7f35c04d3fd34aa4046160468a24e641c88014393a",
+    "raw_path": [
+     "parse_csv@1:762ac695095294d9ada27c2e0232c02c0e15e357dd14e5d86f123dd810356d77",
+     "sum@1:b1b7b6352555fcd464dd492007a751f96c7ad0eac0099d891de5307c936462a4",
+     "double@1:20eb0fb3bf5149b3c23cebfbcf797b4c0c20bf5154097b7f92363b25e377e322",
+     "negate@1:95e867884c9d1af54717df8a5f8ddf4201885cc90908c5b944675dc8f4003c91"
+    ],
+    "search_attempts": 93,
+    "expanded": 24,
+    "validation_attempts": 24,
+    "seconds": 0.239
+   }
+  ],
+  "memoized_depth4": [
+   {
+    "generation": "csv-neg-double-sum",
+    "status": "ACQUIRED",
+    "path": [
+     "parse_csv@1",
+     "sum@1",
+     "double@1",
+     "negate@1"
+    ],
+    "provider": "graph:a86dac5c99d949defa5f0d7f35c04d3fd34aa4046160468a24e641c88014393a",
+    "raw_path": [
+     "parse_csv@1:762ac695095294d9ada27c2e0232c02c0e15e357dd14e5d86f123dd810356d77",
+     "sum@1:b1b7b6352555fcd464dd492007a751f96c7ad0eac0099d891de5307c936462a4",
+     "double@1:20eb0fb3bf5149b3c23cebfbcf797b4c0c20bf5154097b7f92363b25e377e322",
+     "negate@1:95e867884c9d1af54717df8a5f8ddf4201885cc90908c5b944675dc8f4003c91"
+    ],
+    "search_attempts": 45,
+    "expanded": 24,
+    "validation_attempts": 24,
+    "seconds": 0.162
+   }
+  ]
+ },
+ "x1_hypotheses": {
+  "X1-H1": {
+   "passed": true
+  },
+  "X1-H2": {
+   "passed": true
+  },
+  "X1-H3": {
+   "descriptive": true,
+   "cumulative_g3_marginal_search": 15,
+   "cumulative_total_search": 43,
+   "cumulative_total_validation": 54,
+   "primitive_depth4_g3_search": 93,
+   "memoized_depth4_g3_search": 45
+  }
+ },
+ "x2_hypotheses": {
+  "X2-H1": {
+   "passed": false
+  },
+  "X2-H2": {
+   "passed": true
+  },
+  "X2-H3": {
+   "passed": true
+  },
+  "X2-H4": {
+   "passed": false
+  },
+  "X2-H5": {
+   "descriptive": true
+  }
+ },
+ "x2_summary": {
+  "ecology": {
+   "P1": {
+    "cost_ms": 14.23,
+    "regret_ms": 8.68,
+    "near_optimal_rate": 0.4,
+    "adaptation_latency": null,
+    "explorations": 13
+   },
+   "P2": {
+    "cost_ms": 637.6,
+    "regret_ms": 625.17,
+    "near_optimal_rate": 0.333,
+    "adaptation_latency": null,
+    "explorations": 12
+   },
+   "P3": {
+    "cost_ms": 390.16,
+    "regret_ms": 374.75,
+    "near_optimal_rate": 0.833,
+    "adaptation_latency": 3,
+    "explorations": 8
+   },
+   "P4": {
+    "cost_ms": 6.47,
+    "regret_ms": 0.7,
+    "near_optimal_rate": 0.7,
+    "adaptation_latency": 16,
+    "explorations": 0
+   },
+   "total_cost_ms": 1048.46
+  },
+  "aggregate-retire": {
+   "P1": {
+    "cost_ms": 14.23,
+    "regret_ms": 8.68,
+    "near_optimal_rate": 0.4,
+    "adaptation_latency": null,
+    "explorations": 13
+   },
+   "P2": {
+    "cost_ms": 581.92,
+    "regret_ms": 569.49,
+    "near_optimal_rate": 0.433,
+    "adaptation_latency": 9,
+    "explorations": 15
+   },
+   "P3": {
+    "cost_ms": 745.63,
+    "regret_ms": 730.23,
+    "near_optimal_rate": 0.667,
+    "adaptation_latency": 12,
+    "explorations": 13
+   },
+   "P4": {
+    "cost_ms": 14.13,
+    "regret_ms": 8.36,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 1
+   },
+   "total_cost_ms": 1355.91
+  },
+  "static": {
+   "P1": {
+    "cost_ms": 9.85,
+    "regret_ms": 4.3,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "P2": {
+    "cost_ms": 14.45,
+    "regret_ms": 2.02,
+    "near_optimal_rate": 0.533,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "P3": {
+    "cost_ms": 15.41,
+    "regret_ms": 0.0,
+    "near_optimal_rate": 1.0,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P4": {
+    "cost_ms": 10.37,
+    "regret_ms": 4.6,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "total_cost_ms": 50.07,
+   "calibration_cost_ms": 1110.28,
+   "choice": "range_bisect"
+  },
+  "offline-AS": {
+   "P1": {
+    "cost_ms": 6.34,
+    "regret_ms": 0.79,
+    "near_optimal_rate": 0.633,
+    "adaptation_latency": 5,
+    "explorations": 0
+   },
+   "P2": {
+    "cost_ms": 13.88,
+    "regret_ms": 1.45,
+    "near_optimal_rate": 0.767,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P3": {
+    "cost_ms": 15.41,
+    "regret_ms": 0.0,
+    "near_optimal_rate": 1.0,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P4": {
+    "cost_ms": 6.47,
+    "regret_ms": 0.7,
+    "near_optimal_rate": 0.7,
+    "adaptation_latency": 16,
+    "explorations": 0
+   },
+   "total_cost_ms": 42.1,
+   "calibration_cost_ms": 1110.28,
+   "choice": {
+    "single-wide": "range_scan",
+    "many-narrow": "range_hash",
+    "many-wide": "range_bisect"
+   }
+  },
+  "portfolio": {
+   "P1": {
+    "cost_ms": 115.31,
+    "regret_ms": 109.76,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "P2": {
+    "cost_ms": 4226.93,
+    "regret_ms": 4214.49,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "P3": {
+    "cost_ms": 6723.25,
+    "regret_ms": 6707.84,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "P4": {
+    "cost_ms": 143.6,
+    "regret_ms": 137.83,
+    "near_optimal_rate": 0.0,
+    "adaptation_latency": null,
+    "explorations": 0
+   },
+   "total_cost_ms": 11209.09
+  },
+  "oracle": {
+   "P1": {
+    "cost_ms": 5.55,
+    "regret_ms": 0.0,
+    "near_optimal_rate": 1.0,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P2": {
+    "cost_ms": 12.43,
+    "regret_ms": 0.0,
+    "near_optimal_rate": 1.0,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P3": {
+    "cost_ms": 15.41,
+    "regret_ms": 0.0,
+    "near_optimal_rate": 1.0,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "P4": {
+    "cost_ms": 5.77,
+    "regret_ms": 0.0,
+    "near_optimal_rate": 1.0,
+    "adaptation_latency": 0,
+    "explorations": 0
+   },
+   "total_cost_ms": 39.16
+  }
+ },
+ "x2_contexts": {
+  "many-narrow": {
+   "majority_best": "range_hash",
+   "wins": {
+    "range_scan": 0,
+    "range_scan_list": 0,
+    "range_bisect": 8,
+    "range_hash": 22
+   },
+   "median_ms": {
+    "range_scan": 72.547,
+    "range_scan_list": 68.764,
+    "range_bisect": 0.439,
+    "range_hash": 0.407
+   },
+   "specialist": false
+  },
+  "many-wide": {
+   "majority_best": "range_bisect",
+   "wins": {
+    "range_scan": 0,
+    "range_scan_list": 0,
+    "range_bisect": 30,
+    "range_hash": 0
+   },
+   "median_ms": {
+    "range_scan": 73.529,
+    "range_scan_list": 69.918,
+    "range_bisect": 0.447,
+    "range_hash": 80.175
+   },
+   "specialist": true
+  },
+  "single-wide": {
+   "majority_best": "range_scan_list",
+   "wins": {
+    "range_scan": 21,
+    "range_scan_list": 39,
+    "range_bisect": 0,
+    "range_hash": 0
+   },
+   "median_ms": {
+    "range_scan": 0.199,
+    "range_scan_list": 0.189,
+    "range_bisect": 0.322,
+    "range_hash": 3.495
+   },
+   "specialist": false
+  }
+ },
+ "x2_active": [
+  "range_bisect",
+  "range_scan"
+ ],
+ "x2_retirements": [
+  {
+   "after": "P1",
+   "member": "range_hash"
+  },
+  {
+   "after": "P2",
+   "member": "range_scan_list"
+  },
+  {
+   "after": "P3",
+   "policy": "aggregate-retire",
+   "kept": [
+    "range_bisect",
+    "range_hash"
+   ],
+   "dropped": [
+    "range_scan_list",
+    "range_scan"
+   ]
+  }
+ ],
+ "x2_correct": {
+  "all_members_agree": true
+ },
+ "retired_refused": true
+}

@@ -1,0 +1,68 @@
+{
+ "B07": {
+  "reproduced": true,
+  "gen1": "ACQUIRED",
+  "gen2_depth2": "NON_ATTAINMENT",
+  "nested_graph_error": "nested graphs require an explicit lowering; first profile accepts primitive nodes"
+ },
+ "B08": {
+  "reproduced": true,
+  "capability_field": "csv-sum",
+  "note": "second provider of the same capability replaced the first binding; no population holds both",
+  "first_still_bound": false
+ },
+ "B10": {
+  "reproduced": true,
+  "validations_before_exhaustion": 122,
+  "error": "budget overdraft",
+  "capacity": {
+   "attempts": 128
+  }
+ },
+ "B11": {
+  "reproduced": true,
+  "elapsed_seconds": 8.47,
+  "fields": [
+   "name",
+   "input",
+   "output",
+   "development_examples",
+   "context",
+   "max_depth",
+   "max_candidates"
+  ]
+ },
+ "B12": {
+  "reproduced": true,
+  "node_count": 3,
+  "cost": {
+   "attempts": 3
+  },
+  "note": "n2 does not reach output_node n1 but is admitted and charged"
+ },
+ "B13": {
+  "reproduced": true,
+  "fields": [
+   "context",
+   "demand",
+   "expanded",
+   "id",
+   "mode",
+   "path",
+   "status"
+  ]
+ },
+ "B09": {
+  "reproduced": true,
+  "runtime": [
+   "A",
+   "B"
+  ],
+  "reference": [
+   "A",
+   "B",
+   "C"
+  ],
+  "enforcement": "impact() returns an advisory action; only registry.exclude blocks use"
+ }
+}

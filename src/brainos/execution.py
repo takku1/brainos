@@ -13,24 +13,37 @@ class TaskExecutor:
         self.resources = resources
         self.authority = authority
         self.failpoint = failpoint
+        self.population = None  # wired by the runtime after construction
 
     def create_task(self, principal, role, value, budget, amount=None, *, context="default", timeout=5):
+        return self._create(principal, value, budget, amount, context, timeout, role=role)
+
+    def create_member_task(self, principal, capability, provider, value, budget, amount=None, *,
+                           context="default", timeout=5):
+        """Capability-routed work: the caller names the contract and the selected member."""
+        return self._create(principal, value, budget, amount, context, timeout,
+                            capability=capability, member=provider)
+
+    def _create(self, principal, value, budget, amount, context, timeout, *, role=None, capability=None, member=None):
         timeout = positive_time(timeout)
         if timeout > 60 or not principal or not context:
             raise Refused("invalid identity/context or worker timeout above 60 seconds")
         key = uid()
         with self.store.transaction():
             state = self.control.read()
-            if role not in state["bindings"]:
-                raise Refused("role is not active")
-            spec = self.registry.resolve(state["bindings"][role])
+            if capability is not None:
+                spec = self.population.member(capability, member)
+            else:
+                if role not in state["bindings"]:
+                    raise Refused("role is not active")
+                spec = self.registry.resolve(state["bindings"][role])
             providers.check(spec["input"], value)
             required = spec["cost"]
             grant = required if amount is None else quantities(amount)
             if set(grant) != set(required) or any(grant[k] < v for k, v in required.items()):
                 raise Refused("execution grant is below trusted operation requirements")
             holding = self.resources.reserve_tx(budget, principal, grant, key)
-            self.store.put("task", key, dict(id=key, principal=principal, role=role,
+            self.store.put("task", key, dict(id=key, principal=principal, role=role, capability=capability,
                 provider=spec["id"], value=value, input_digest=digest(value), context=context,
                 timeout=timeout, holding=holding, state="CREATED"))
             self.store.event("task-created", task=key)
@@ -43,7 +56,9 @@ class TaskExecutor:
             if record["state"] not in ("CREATED", "READY"):
                 raise Refused("task cannot be authorized in its current state")
             state = self.control.read()
-            if state["bindings"].get(record["role"]) != record["provider"]:
+            if record.get("capability"):
+                self.population.member(record["capability"], record["provider"])
+            elif state["bindings"].get(record["role"]) != record["provider"]:
                 raise Refused("task provider binding changed")
             holding = self.store.get("holding", record["holding"])
             if holding["state"] == "HELD":
@@ -53,7 +68,7 @@ class TaskExecutor:
             record["state"] = "READY"
             self.store.put("task", task, record)
             scope = PermitScope("task", task, principal, digest(record), record["provider"],
-                                record["context"], record["role"])
+                                record["context"], record.get("capability") or record["role"])
             return self.authority.issue_tx(scope, evidence, ttl)
 
     def task(self, key, principal):
@@ -72,7 +87,8 @@ class TaskExecutor:
                 raise Refused("task is not ready or its authorized content changed")
             if self.store.get("holding", task["holding"])["state"] != "ALLOCATED":
                 raise Refused("allocation is not live")
-            spec = self.registry.resolve(task["provider"])
+            spec = (self.population.member(task["capability"], task["provider"]) if task.get("capability")
+                    else self.registry.resolve(task["provider"]))
             self.resources.spend_tx(task["holding"], {"attempts": 1})
             task.update(state="RUNNING", invocation=invocation, epoch=permit["epoch"], revision=permit["revision"])
             self.store.put("task", key, task)
@@ -101,24 +117,34 @@ class TaskExecutor:
                 self.store.put("result", result_id, result)
                 produced.append(result_id)
                 self.store.event("intermediate-result", result=result_id, task=key, node=record["node"])
+        timings = []
         try:
-            output = self.runner.compute(spec, task["value"], task["timeout"],
-                                         on_start=on_start, on_result=on_result, cancelled=cancelled)
+            output = self.runner.compute(spec, task["value"], task["timeout"], on_start=on_start,
+                                         on_result=on_result, cancelled=cancelled, on_timing=timings.append)
             if cancelled():
                 raise Cancelled("cancelled at the final pure boundary")
         except Exception as exc:
             self._finish(task, invocation, error=str(exc), elapsed=time.monotonic() - started,
-                         cancelled=isinstance(exc, Cancelled))
+                         cancelled=isinstance(exc, Cancelled), timings=timings)
             raise
-        self._finish(task, invocation, output=output, elapsed=time.monotonic() - started)
+        self._finish(task, invocation, output=output, elapsed=time.monotonic() - started, timings=timings)
         return output
 
-    def _finish(self, task, invocation, *, output=None, error=None, elapsed=0, cancelled=False):
+    def invocation(self, key, principal):
+        with self.store.mutex:
+            record = self.store.get("invocation", key)
+            require_owner(self.store.get("task", record["task"]), principal)
+            return record
+
+    def _finish(self, task, invocation, *, output=None, error=None, elapsed=0, cancelled=False, timings=()):
         with self.store.transaction():
             current = self.store.get("invocation", invocation)
             if current["state"] != "RUNNING":
                 raise Refused("invocation already terminated")
             current["state"] = "STOPPED" if cancelled else "FAILED" if error else "COMPLETED"
+            current.update(error=error, timings=list(timings), profile=getattr(self.runner, "profile", None),
+                           compute_ns=sum(t["compute_ns"] for t in timings),
+                           total_ns=sum(t["total_ns"] for t in timings))
             self.store.put("invocation", invocation, current)
             task.update(state="CANCELLED" if cancelled else "FAILED" if error else "SUCCEEDED", result=output,
                         error=error, elapsed_seconds=elapsed)
