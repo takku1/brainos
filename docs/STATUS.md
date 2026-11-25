@@ -82,11 +82,12 @@ specialist dormant in P1.
 | X3 | Correct rejection, state reduction and recovery held. The acceptance rule was unsound (4 incorrect acceptances) and the economics were undercounted. |
 | X4 | 5 seeds, all hypotheses pass. Developing NOV > fixed on every seed; adaptive > developing on every seed (descriptive, declared rates). Coverage 1.0, regret 0.0, retention 1.0 throughout. Verdicts: arith fragile, lookup redundant. Zero assimilation nominations after P1; P1 specialist dormancy on thin samples. |
 
-334 runtime tests pass, drift check reports zero errors, document checks
+337 runtime tests pass, drift check reports zero errors, document checks
 19/19, negatives 15/15, L1 harness 17/17 and dependency closure clean
 (verified 2026-11-25 with the W2 clearance corrections, confirmatory
-seeds 21-23, and the ADR policy/demo work; test counts are
-point-in-time, register counts are derived).
+seeds 21-23, the ADR policy/demo work and the live observatory
+unification; test counts are point-in-time, register counts are
+derived).
 
 ## Key decisions
 

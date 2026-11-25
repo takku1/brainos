@@ -733,7 +733,7 @@ def resume_runtime(rt):
                      STATE["policy_state"].step, phase=STATE["phase"]))
 
 
-def loop_forever(state_dir, tick_seconds, seed):
+def loop_forever(state_dir, tick_seconds, seed, max_ticks=0):
     rng = random.Random(seed)
     fresh = not (state_dir / "eco.sqlite3").exists()
     rt = Runtime(state_dir / "eco.sqlite3", profile="inprocess")
@@ -756,6 +756,8 @@ def loop_forever(state_dir, tick_seconds, seed):
         while not STATE.get("stop"):
             tick += 1
             STATE["tick"] = tick
+            if max_ticks and tick >= max_ticks:
+                STATE["stop"] = True
             if STATE["auto"]:
                 for name, start in reversed(AUTO_BOUNDS):
                     if tick >= start:
@@ -864,6 +866,8 @@ def main():
     parser.add_argument("--port", type=int, default=8137)
     parser.add_argument("--tick", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=7)
+    parser.add_argument("--ticks", type=int, default=0,
+                        help="stop after this many ticks (0 = run until stopped)")
     parser.add_argument("--state-dir", default=None)
     parser.add_argument("--reset", action="store_true",
                         help="destructive: wipe the durable store first")
@@ -881,7 +885,8 @@ def main():
         signal.signal(signal.SIGTERM, stop)
     except (ValueError, OSError):
         pass
-    threading.Thread(target=loop_forever, args=(state_dir, args.tick, args.seed),
+    threading.Thread(target=loop_forever, args=(state_dir, args.tick, args.seed,
+                                                      args.ticks),
                      daemon=True).start()
     server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     print("BrainOS ecology observatory: open http://127.0.0.1:%d/ in a browser" % args.port,

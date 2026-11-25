@@ -346,3 +346,34 @@ scheduled assessment drill (evidence only). Verified on a scratch
 port/state; the :8137 instance picks it up on its next operator
 restart. Policy-driven dormancy (verified redundant) and recruitment
 (wake after loss) are demonstrated end to end.
+
+## 33.12 Candidate W3 stability questions (from integration evidence)
+
+These are measurable with current journal and observation records; none
+assumes convergence or equilibrium. Each names the signal, not the answer.
+
+1. Population growth: does member count stabilize under the soft-max
+   nomination bound, or grow without bound across regimes?
+2. Churn payoff: transitions per 100 coordination steps versus NOV
+   delta over the same window — when is churn payoff-positive?
+3. Developmental spend discipline: does construction+validation+
+   assessment spend stay within its band under scarcity and disruption?
+4. Specialist retention: do single-member capabilities survive drift
+   phases, or does retention protection fail under distribution shift?
+5. Recovery time: ticks from verified provider loss to re-served
+   demand, by pressure type (novelty vs loss vs scarcity).
+6. Oscillation: acquire→dormant→wake cycle counts per capability;
+   do the 25/50-step cooldowns prevent thrash without freezing
+   legitimate re-development?
+7. Developmental quiescence: fraction of noop/defer ticks in stable
+   regimes; does inactivity dominate when viability holds?
+8. Assimilation backlog: nominated-but-unpublished candidates and
+   their age; does the B21 selection gate starve legitimate
+   consolidation?
+9. Burn-rate stability: does per-step expenditure converge, oscillate,
+   or ratchet after disturbances?
+10. Evidence freshness: age distribution of retention assessments at
+    decision time; how often do decisions rest on stale evidence?
+
+W3 owns the answers. ADR provides the instrumentation and the
+exploratory runs, nothing more.
