@@ -193,6 +193,16 @@ class MeterJournal(unittest.TestCase):
         self.assertEqual(report["V"]["retirements"], 2)
         self.assertEqual(report["V"]["assimilations"], 1)
 
+    def test_journal_survives_event_body_seq_fields(self):
+        # EcologyService records decisions with their own `seq` counter; the
+        # journal's ordering key must win without crashing (kernel root fix).
+        with self.r.store.transaction():
+            self.r.store.event("ecology-decision", ecology="e:1", seq=41)
+        journal = self.r.store.journal()
+        decisions = [e for e in journal if e["kind"] == "ecology-decision"]
+        self.assertEqual(len(decisions), 1)
+        self.assertEqual(journal[-1]["seq"], decisions[0]["seq"])
+
 
 class Verdict(CsvCase):
     def test_organizational_capability(self):

@@ -106,7 +106,12 @@ class Store:
 
     def journal(self):
         with self.mutex:
-            return [dict(seq=row[0], **json.loads(row[1])) for row in self.db.execute("SELECT seq,body FROM events ORDER BY seq")]
+            out = []
+            for row in self.db.execute("SELECT seq,body FROM events ORDER BY seq"):
+                entry = json.loads(row[1])
+                entry["seq"] = row[0]
+                out.append(entry)
+            return out
 
     def verify(self):
         previous = "0" * 64
