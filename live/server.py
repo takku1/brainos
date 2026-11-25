@@ -66,6 +66,18 @@ NOV_MODEL = "declared value 10 per served demand, 1 unit = 1e6 ns (X4 convention
 
 AUTO_BOUNDS = [("stable", 0), ("drift", 60), ("novel", 120), ("scarcity", 200),
                ("disruption", 260), ("recovery", 340)]
+CYCLE_TICKS = 460
+
+
+def phase_at(tick):
+    """Environmental regime for a tick. The schedule cycles so long runs
+    keep seeing recurring pressure; ticks below one full cycle are
+    unaffected (identical to the original linear schedule)."""
+    tick = tick % CYCLE_TICKS
+    for name, start in reversed(AUTO_BOUNDS):
+        if tick >= start:
+            return name
+    return AUTO_BOUNDS[0][0]
 BOUNDS = {"deadline": 15, "candidates": 64}
 SCARCE_BOUNDS = {"deadline": 6, "candidates": 24}
 
@@ -759,10 +771,7 @@ def loop_forever(state_dir, tick_seconds, seed, max_ticks=0):
             if max_ticks and tick >= max_ticks:
                 STATE["stop"] = True
             if STATE["auto"]:
-                for name, start in reversed(AUTO_BOUNDS):
-                    if tick >= start:
-                        phase = name
-                        break
+                phase = phase_at(tick)
                 if phase != STATE["phase"]:
                     with LOCK:
                         STATE["phase"] = phase
