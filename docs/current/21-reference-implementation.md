@@ -32,6 +32,7 @@ do not edit by hand. Status per requirement: implemented (I✓), partial (I∼).
 | development.py | R-18-01, R-24-COMPOSE, R-27-03 | R-02-07, R-09-09, R-09-BIRTH, R-11-01, R-18-02, R-20-04, R-23-02 |
 | ecology.py | R-25-05 | R-07-03, R-07-10, R-11-02, R-12-F15, R-12-F4, R-20-02 |
 | effects.py | R-32-09 | R-06-05 |
+| emergence.py | R-20-07, R-25-06, R-25-07 | — |
 | evidence.py | R-03-05, R-09-CHALLENGE, R-09-RESTORE, R-09-VERIFY, R-12-F1, R-32-04 | R-02-09, R-09-05, R-09-ASSERT, R-09-OBSERVE, R-12-F16 |
 | execution.py | R-03-02, R-32-03 | R-02-07, R-02-11, R-09-CANCEL, R-09-INFER, R-09-REVOKE, R-32-08 |
 | fabric.py | R-24-COMPOSE-02 | R-04-02, R-09-FUSE, R-29-03 |
@@ -48,7 +49,7 @@ do not edit by hand. Status per requirement: implemented (I✓), partial (I∼).
 | transactor.py | R-09-10, R-09-BIND, R-09-COMMIT, R-09-VALIDATE, R-24-03, R-24-ASSIMILATE-02 | R-02-10, R-09-03, R-09-09, R-09-REBIND, R-12-F10, R-12-F17, R-12-F9, R-21-02, R-24-ASSIMILATE, R-24-REBIND |
 | worker.py | R-21-09 | — |
 
-Register totals: documentary 15, implemented 41, partial 70, specified 89.
+Register totals: documentary 15, implemented 44, partial 70, specified 86.
 
 <!-- traceability:end -->
 

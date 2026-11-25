@@ -1093,6 +1093,16 @@
    "verified": "full",
    "gap": "operator identity asserted, not authenticated (trusted-operator profile)"
   },
+  "R-20-07": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/emergence.py::net_value"
+   ],
+   "tests": [
+    "tests/test_emergence.py::NetValue"
+   ],
+   "verified": "full"
+  },
   "R-23-02": {
    "status": "partial",
    "code": [
@@ -1126,6 +1136,29 @@
     "tests/test_retention.py::RecoverableEcology",
     "tests/test_ecology.py::FollowUpMechanisms",
     "tests/test_ecology.py::PopulationIntegration"
+   ],
+   "verified": "full"
+  },
+  "R-25-06": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/emergence.py::measure"
+   ],
+   "tests": [
+    "tests/test_emergence.py::Meter",
+    "tests/test_emergence.py::MeterCosts",
+    "tests/test_emergence.py::MeterJournal"
+   ],
+   "verified": "full"
+  },
+  "R-25-07": {
+   "status": "implemented",
+   "code": [
+    "src/brainos/emergence.py::organizational_verdict"
+   ],
+   "tests": [
+    "tests/test_emergence.py::Verdict",
+    "tests/test_emergence.py::VerdictRange"
    ],
    "verified": "full"
   },
