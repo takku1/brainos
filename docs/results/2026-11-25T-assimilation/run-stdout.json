@@ -1,0 +1,26 @@
+{
+ "hypotheses": {
+  "X3-H1": {
+   "passed": true
+  },
+  "X3-H2": {
+   "passed": false,
+   "incorrect_acceptances": 4
+  },
+  "X3-H3": {
+   "passed": false
+  },
+  "X3-H4": {
+   "passed": false
+  },
+  "X3-H5": {
+   "passed": false
+  },
+  "X3-H6": {
+   "passed": true
+  },
+  "X3-H7": {
+   "passed": true
+  }
+ }
+}

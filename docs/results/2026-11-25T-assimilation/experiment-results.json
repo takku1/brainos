@@ -1,0 +1,3926 @@
+{
+ "preregistration_sha256": "293679fad3d016dfaca62e199b76e210c2ed978fd34a692071d85c45c1352018",
+ "commit": "6c83409f7f5afd5670805c885221ff0e2134801f",
+ "config": {
+  "n": 5000,
+  "span": 100000,
+  "observe_epochs": 4,
+  "post_epochs": 30,
+  "requests": 4,
+  "horizon": 50.0,
+  "resolution_ns": 20000.0,
+  "maintenance_ns_per_byte_epoch": 1.0,
+  "upkeep_ns": 50000.0
+ },
+ "seeds": [
+  201,
+  202,
+  203,
+  204,
+  205
+ ],
+ "seconds": 194.1,
+ "results": {
+  "SA-exact-redundancy": {
+   "201": {
+    "scenario": "SA-exact-redundancy",
+    "seed": 201,
+    "nominated": 4,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "break-even 243.6 epochs exceeds horizon 50.0"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_dict"
+      },
+      "method": "duplicate-selection",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 22617,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 5510200,
+      "break_even_epochs": 243.63,
+      "state_bytes_before": 48153,
+      "state_bytes_after": 48153,
+      "evaluation_wall_ns": 237408700
+     },
+     {
+      "accepted": true,
+      "reasons": [],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash"
+      },
+      "method": "duplicate-selection",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 102933,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 5059400,
+      "break_even_epochs": 49.15,
+      "state_bytes_before": 48153,
+      "state_bytes_after": 48153,
+      "evaluation_wall_ns": 241620800
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 2.90x parents on held-out exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 3.56x parents on observed exceeds tolerance 1.5x",
+       "no per-epoch saving (-114.1 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 2.899,
+        "observed": 3.559,
+        "rare": "below-resolution (1.93)"
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -114062,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 6562300,
+      "break_even_epochs": null,
+      "state_bytes_before": 48153,
+      "state_bytes_after": 29432,
+      "evaluation_wall_ns": 242867500
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 283.34x parents on held-out exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 312.38x parents on observed exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 170.69x parents on rare exceeds tolerance 1.5x",
+       "no per-epoch saving (-15859.0 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 283.336,
+        "observed": 312.385,
+        "rare": 170.685
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -15859030,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 100968100,
+      "break_even_epochs": null,
+      "state_bytes_before": 48153,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 329908400
+     }
+    ],
+    "accepted": true,
+    "chosen": {
+     "accepted": true,
+     "reasons": [],
+     "implementations": {
+      "capability:exact-count@0fade2e0325208ab": "exact_hash"
+     },
+     "method": "duplicate-selection",
+     "latency_ratio": {
+      "capability:exact-count@0fade2e0325208ab": "same-artifact"
+     },
+     "mismatches": 0,
+     "mean_savings_ns": 102933,
+     "upkeep_saving_ns": 50000.0,
+     "construction_ns": 5059400,
+     "break_even_epochs": 49.15,
+     "state_bytes_before": 48153,
+     "state_bytes_after": 48153,
+     "evaluation_wall_ns": 241620800
+    },
+    "construction_compute_ns": 118100000,
+    "publication": {
+     "validation_compute_ns": 0,
+     "wall_ns": 2945500,
+     "assimilation": "assimilation:cdda88f456024749a71ff677e876cdd9",
+     "bindings": {
+      "exact": "exact_hash"
+     }
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 14.834,
+      "wrapper": 16.334,
+      "routing": 17.834,
+      "shared-state": 16.19,
+      "assimilation": 129.723
+     },
+     "state_bytes_per_epoch": {
+      "originals": 48221,
+      "wrapper": 48221,
+      "routing": 48221,
+      "shared-state": 48221,
+      "assimilation": 48221
+     },
+     "routing_choice": {
+      "exact": "exact_dict"
+     },
+     "originals_choice": {
+      "exact": "exact_dict"
+     }
+    },
+    "out_of_sample": {
+     "mismatches": 0,
+     "ratios": {
+      "exact": {
+       "ratio": 1.161,
+       "same_artifact": true,
+       "measurable": true,
+       "within": true
+      }
+     },
+     "incorrect": false,
+     "realized_saving_ns_per_epoch": 107030,
+     "realized_break_even_epochs": 1103.43
+    },
+    "live": {
+     "tasks": 12,
+     "mismatches": 0,
+     "e2e_median_ms": 13.86
+    }
+   },
+   "202": {
+    "scenario": "SA-exact-redundancy",
+    "seed": 202,
+    "nominated": 4,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "no per-epoch saving (-10.8 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_dict"
+      },
+      "method": "duplicate-selection",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -10750,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 6014500,
+      "break_even_epochs": null,
+      "state_bytes_before": 48223,
+      "state_bytes_after": 48223,
+      "evaluation_wall_ns": 300022600
+     },
+     {
+      "accepted": true,
+      "reasons": [],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash"
+      },
+      "method": "duplicate-selection",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 113983,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 5656900,
+      "break_even_epochs": 49.63,
+      "state_bytes_before": 48223,
+      "state_bytes_after": 48223,
+      "evaluation_wall_ns": 294530200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 3.71x parents on held-out exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 2.52x parents on observed exceeds tolerance 1.5x",
+       "no per-epoch saving (-150.4 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 3.713,
+        "observed": 2.516,
+        "rare": "below-resolution (3.18)"
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -150439,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 7051400,
+      "break_even_epochs": null,
+      "state_bytes_before": 48223,
+      "state_bytes_after": 29446,
+      "evaluation_wall_ns": 287385700
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 229.63x parents on held-out exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 233.18x parents on observed exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 153.03x parents on rare exceeds tolerance 1.5x",
+       "no per-epoch saving (-15381.1 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 229.627,
+        "observed": 233.178,
+        "rare": 153.033
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -15381110,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 98385100,
+      "break_even_epochs": null,
+      "state_bytes_before": 48223,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 378985900
+     }
+    ],
+    "accepted": true,
+    "chosen": {
+     "accepted": true,
+     "reasons": [],
+     "implementations": {
+      "capability:exact-count@0fade2e0325208ab": "exact_hash"
+     },
+     "method": "duplicate-selection",
+     "latency_ratio": {
+      "capability:exact-count@0fade2e0325208ab": "same-artifact"
+     },
+     "mismatches": 0,
+     "mean_savings_ns": 113983,
+     "upkeep_saving_ns": 50000.0,
+     "construction_ns": 5656900,
+     "break_even_epochs": 49.63,
+     "state_bytes_before": 48223,
+     "state_bytes_after": 48223,
+     "evaluation_wall_ns": 294530200
+    },
+    "construction_compute_ns": 117107900,
+    "publication": {
+     "validation_compute_ns": 0,
+     "wall_ns": 3489800,
+     "assimilation": "assimilation:5fce7d41f4ae419e98e1c2b2082946ae",
+     "bindings": {
+      "exact": "exact_hash"
+     }
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 15.544,
+      "wrapper": 17.044,
+      "routing": 18.544,
+      "shared-state": 16.916,
+      "assimilation": 129.428
+     },
+     "state_bytes_per_epoch": {
+      "originals": 48220,
+      "wrapper": 48220,
+      "routing": 48220,
+      "shared-state": 48220,
+      "assimilation": 48220
+     },
+     "routing_choice": {
+      "exact": "exact_dict"
+     },
+     "originals_choice": {
+      "exact": "exact_dict"
+     }
+    },
+    "out_of_sample": {
+     "mismatches": 0,
+     "ratios": {
+      "exact": {
+       "ratio": 1.12,
+       "same_artifact": true,
+       "measurable": true,
+       "within": true
+      }
+     },
+     "incorrect": false,
+     "realized_saving_ns_per_epoch": 107447,
+     "realized_break_even_epochs": 1089.92
+    },
+    "live": {
+     "tasks": 12,
+     "mismatches": 0,
+     "e2e_median_ms": 14.44
+    }
+   },
+   "203": {
+    "scenario": "SA-exact-redundancy",
+    "seed": 203,
+    "nominated": 4,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "break-even 245.3 epochs exceeds horizon 50.0"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_dict"
+      },
+      "method": "duplicate-selection",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 22817,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 5597900,
+      "break_even_epochs": 245.34,
+      "state_bytes_before": 48182,
+      "state_bytes_after": 48182,
+      "evaluation_wall_ns": 275754700
+     },
+     {
+      "accepted": true,
+      "reasons": [],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash"
+      },
+      "method": "duplicate-selection",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 126633,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 5330900,
+      "break_even_epochs": 42.1,
+      "state_bytes_before": 48182,
+      "state_bytes_after": 48182,
+      "evaluation_wall_ns": 287569300
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 3.42x parents on held-out exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 4.90x parents on observed exceeds tolerance 1.5x",
+       "no per-epoch saving (-185.4 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 3.424,
+        "observed": 4.902,
+        "rare": "below-resolution (2.07)"
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -185369,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 7174000,
+      "break_even_epochs": null,
+      "state_bytes_before": 48182,
+      "state_bytes_after": 29451,
+      "evaluation_wall_ns": 284232900
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 187.97x parents on held-out exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 181.74x parents on observed exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 98.32x parents on rare exceeds tolerance 1.5x",
+       "no per-epoch saving (-15501.0 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 187.97,
+        "observed": 181.737,
+        "rare": 98.319
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -15500968,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 99915300,
+      "break_even_epochs": null,
+      "state_bytes_before": 48182,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 390947200
+     }
+    ],
+    "accepted": true,
+    "chosen": {
+     "accepted": true,
+     "reasons": [],
+     "implementations": {
+      "capability:exact-count@0fade2e0325208ab": "exact_hash"
+     },
+     "method": "duplicate-selection",
+     "latency_ratio": {
+      "capability:exact-count@0fade2e0325208ab": "same-artifact"
+     },
+     "mismatches": 0,
+     "mean_savings_ns": 126633,
+     "upkeep_saving_ns": 50000.0,
+     "construction_ns": 5330900,
+     "break_even_epochs": 42.1,
+     "state_bytes_before": 48182,
+     "state_bytes_after": 48182,
+     "evaluation_wall_ns": 287569300
+    },
+    "construction_compute_ns": 118018100,
+    "publication": {
+     "validation_compute_ns": 0,
+     "wall_ns": 2960800,
+     "assimilation": "assimilation:d857fbcb55784bcca2ac3dd558ce6206",
+     "bindings": {
+      "exact": "exact_hash"
+     }
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 15.683,
+      "wrapper": 17.183,
+      "routing": 18.683,
+      "shared-state": 17.224,
+      "assimilation": 130.696
+     },
+     "state_bytes_per_epoch": {
+      "originals": 48255,
+      "wrapper": 48255,
+      "routing": 48255,
+      "shared-state": 48255,
+      "assimilation": 48255
+     },
+     "routing_choice": {
+      "exact": "exact_dict"
+     },
+     "originals_choice": {
+      "exact": "exact_dict"
+     }
+    },
+    "out_of_sample": {
+     "mismatches": 0,
+     "ratios": {
+      "exact": {
+       "ratio": 1.136,
+       "same_artifact": true,
+       "measurable": true,
+       "within": true
+      }
+     },
+     "incorrect": false,
+     "realized_saving_ns_per_epoch": 100180,
+     "realized_break_even_epochs": 1178.06
+    },
+    "live": {
+     "tasks": 12,
+     "mismatches": 0,
+     "e2e_median_ms": 16.15
+    }
+   },
+   "204": {
+    "scenario": "SA-exact-redundancy",
+    "seed": 204,
+    "nominated": 4,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "break-even 207.5 epochs exceeds horizon 50.0"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_dict"
+      },
+      "method": "duplicate-selection",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 27150,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 5634600,
+      "break_even_epochs": 207.54,
+      "state_bytes_before": 48179,
+      "state_bytes_after": 48179,
+      "evaluation_wall_ns": 291475600
+     },
+     {
+      "accepted": true,
+      "reasons": [],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash"
+      },
+      "method": "duplicate-selection",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 160117,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 5177800,
+      "break_even_epochs": 32.34,
+      "state_bytes_before": 48179,
+      "state_bytes_after": 48179,
+      "evaluation_wall_ns": 291320800
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 3.49x parents on held-out exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 3.24x parents on observed exceeds tolerance 1.5x",
+       "no per-epoch saving (-125.3 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 3.491,
+        "observed": 3.243,
+        "rare": "below-resolution (2.81)"
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -125301,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 6662800,
+      "break_even_epochs": null,
+      "state_bytes_before": 48179,
+      "state_bytes_after": 29446,
+      "evaluation_wall_ns": 273389000
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 270.68x parents on held-out exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 254.18x parents on observed exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 131.65x parents on rare exceeds tolerance 1.5x",
+       "no per-epoch saving (-16037.4 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 270.681,
+        "observed": 254.178,
+        "rare": 131.648
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -16037405,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 102837500,
+      "break_even_epochs": null,
+      "state_bytes_before": 48179,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 380375400
+     }
+    ],
+    "accepted": true,
+    "chosen": {
+     "accepted": true,
+     "reasons": [],
+     "implementations": {
+      "capability:exact-count@0fade2e0325208ab": "exact_hash"
+     },
+     "method": "duplicate-selection",
+     "latency_ratio": {
+      "capability:exact-count@0fade2e0325208ab": "same-artifact"
+     },
+     "mismatches": 0,
+     "mean_savings_ns": 160117,
+     "upkeep_saving_ns": 50000.0,
+     "construction_ns": 5177800,
+     "break_even_epochs": 32.34,
+     "state_bytes_before": 48179,
+     "state_bytes_after": 48179,
+     "evaluation_wall_ns": 291320800
+    },
+    "construction_compute_ns": 120312700,
+    "publication": {
+     "validation_compute_ns": 0,
+     "wall_ns": 2689100,
+     "assimilation": "assimilation:59aae183d0da4f17948191a74471d35f",
+     "bindings": {
+      "exact": "exact_hash"
+     }
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 15.451,
+      "wrapper": 16.951,
+      "routing": 18.451,
+      "shared-state": 16.553,
+      "assimilation": 132.208
+     },
+     "state_bytes_per_epoch": {
+      "originals": 48228,
+      "wrapper": 48228,
+      "routing": 48228,
+      "shared-state": 48228,
+      "assimilation": 48228
+     },
+     "routing_choice": {
+      "exact": "exact_dict"
+     },
+     "originals_choice": {
+      "exact": "exact_dict"
+     }
+    },
+    "out_of_sample": {
+     "mismatches": 0,
+     "ratios": {
+      "exact": {
+       "ratio": 1.14,
+       "same_artifact": true,
+       "measurable": true,
+       "within": true
+      }
+     },
+     "incorrect": false,
+     "realized_saving_ns_per_epoch": 118507,
+     "realized_break_even_epochs": 1015.24
+    },
+    "live": {
+     "tasks": 12,
+     "mismatches": 0,
+     "e2e_median_ms": 14.13
+    }
+   },
+   "205": {
+    "scenario": "SA-exact-redundancy",
+    "seed": 205,
+    "nominated": 4,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "break-even 136.6 epochs exceeds horizon 50.0"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_dict"
+      },
+      "method": "duplicate-selection",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 42683,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 5831800,
+      "break_even_epochs": 136.63,
+      "state_bytes_before": 48256,
+      "state_bytes_after": 48256,
+      "evaluation_wall_ns": 283802600
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "break-even 57.5 epochs exceeds horizon 50.0"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash"
+      },
+      "method": "duplicate-selection",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 92567,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 5318300,
+      "break_even_epochs": 57.45,
+      "state_bytes_before": 48256,
+      "state_bytes_after": 48256,
+      "evaluation_wall_ns": 287215000
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 2.81x parents on held-out exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 2.98x parents on observed exceeds tolerance 1.5x",
+       "no per-epoch saving (-95.8 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 2.811,
+        "observed": 2.975,
+        "rare": "below-resolution (2.82)"
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -95838,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 6736400,
+      "break_even_epochs": null,
+      "state_bytes_before": 48256,
+      "state_bytes_after": 29444,
+      "evaluation_wall_ns": 281012300
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 385.68x parents on held-out exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 313.15x parents on observed exceeds tolerance 1.5x",
+       "capability:exact-count@0fade2e0325208ab answer latency 141.33x parents on rare exceeds tolerance 1.5x",
+       "no per-epoch saving (-15435.9 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 385.676,
+        "observed": 313.153,
+        "rare": 141.333
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -15435944,
+      "upkeep_saving_ns": 50000.0,
+      "construction_ns": 98468100,
+      "break_even_epochs": null,
+      "state_bytes_before": 48256,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 373788300
+     }
+    ],
+    "accepted": false,
+    "chosen": null,
+    "construction_compute_ns": 116354600,
+    "publication": {
+     "validation_compute_ns": 0,
+     "wall_ns": 0
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 13.31,
+      "wrapper": 14.81,
+      "routing": 16.31,
+      "shared-state": 16.385,
+      "assimilation": 13.31
+     },
+     "state_bytes_per_epoch": {
+      "originals": 48223,
+      "wrapper": 48223,
+      "routing": 48223,
+      "shared-state": 48223,
+      "assimilation": 48223
+     },
+     "routing_choice": {
+      "exact": "exact_hash"
+     },
+     "originals_choice": {
+      "exact": "exact_hash"
+     }
+    }
+   }
+  },
+  "SB-partial-overlap": {
+   "201": {
+    "scenario": "SB-partial-overlap",
+    "seed": 201,
+    "nominated": 7,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:range-count@7ef7a85129ab3254 answer latency 61.80x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 78.03x parents on observed exceeds tolerance 1.25x",
+       "no per-epoch saving (-9804.7 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash",
+       "capability:range-count@7ef7a85129ab3254": "range_hash_index"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact",
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 61.805,
+        "observed": 78.026,
+        "rare": 0.886
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -9804720,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 68168700,
+      "break_even_epochs": null,
+      "state_bytes_before": 77581,
+      "state_bytes_after": 48151,
+      "evaluation_wall_ns": 437110900
+     },
+     {
+      "accepted": true,
+      "reasons": [],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+       "capability:range-count@7ef7a85129ab3254": "range_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": "below-resolution (3.15)",
+        "observed": "below-resolution (2.82)",
+        "rare": "below-resolution (2.03)"
+       },
+       "capability:range-count@7ef7a85129ab3254": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 300151,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 10752900,
+      "break_even_epochs": 35.83,
+      "state_bytes_before": 77581,
+      "state_bytes_after": 29430,
+      "evaluation_wall_ns": 458552500
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 138.02x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 158.94x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 48.91x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 11.40x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 12.24x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 14.87x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-4540.6 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_bisect"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 138.024,
+        "observed": 158.945,
+        "rare": 48.915
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 11.399,
+        "observed": 12.238,
+        "rare": 14.871
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -4540636,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 61848100,
+      "break_even_epochs": null,
+      "state_bytes_before": 77581,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 521138600
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 149.41x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 174.90x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 51.16x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 144.87x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 123.51x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 9.31x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-14349.3 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_hash"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 149.409,
+        "observed": 174.901,
+        "rare": 51.156
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 144.87,
+        "observed": 123.51,
+        "rare": 9.311
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -14349319,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 119690500,
+      "break_even_epochs": null,
+      "state_bytes_before": 77581,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 582740000
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 230.77x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 180.76x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 70.45x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 379.80x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 316.40x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 410.29x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-31944.8 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 230.768,
+        "observed": 180.758,
+        "rare": 70.455
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 379.801,
+        "observed": 316.403,
+        "rare": 410.29
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -31944786,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 224848500,
+      "break_even_epochs": null,
+      "state_bytes_before": 77581,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 692280200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 368.41x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 259.86x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 70.10x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 234.62x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 438.35x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 308.77x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-42495.6 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_list"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 368.408,
+        "observed": 259.862,
+        "rare": 70.1
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 234.624,
+        "observed": 438.355,
+        "rare": 308.767
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -42495619,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 296898000,
+      "break_even_epochs": null,
+      "state_bytes_before": 77581,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 791935500
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 319.00x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 275.16x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 62.10x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 340.06x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 220.29x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 256.51x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-40127.5 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_staged"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 319.0,
+        "observed": 275.158,
+        "rare": 62.098
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 340.058,
+        "observed": 220.292,
+        "rare": 256.513
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -40127452,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 287814100,
+      "break_even_epochs": null,
+      "state_bytes_before": 77581,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 773886400
+     }
+    ],
+    "accepted": true,
+    "chosen": {
+     "accepted": true,
+     "reasons": [],
+     "implementations": {
+      "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+      "capability:range-count@7ef7a85129ab3254": "range_sorted"
+     },
+     "method": "structural-factoring",
+     "latency_ratio": {
+      "capability:exact-count@0fade2e0325208ab": {
+       "held-out": "below-resolution (3.15)",
+       "observed": "below-resolution (2.82)",
+       "rare": "below-resolution (2.03)"
+      },
+      "capability:range-count@7ef7a85129ab3254": "same-artifact"
+     },
+     "mismatches": 0,
+     "mean_savings_ns": 300151,
+     "upkeep_saving_ns": 0.0,
+     "construction_ns": 10752900,
+     "break_even_epochs": 35.83,
+     "state_bytes_before": 77581,
+     "state_bytes_after": 29430,
+     "evaluation_wall_ns": 458552500
+    },
+    "construction_compute_ns": 1070020800,
+    "publication": {
+     "validation_compute_ns": 10000,
+     "wall_ns": 28293100,
+     "assimilation": "assimilation:9e8d28b4490446f68d6a5ff6c952f9bc",
+     "bindings": {
+      "exact": "exact_sorted",
+      "exact-total": "graph:02b720510c48e5b6644b43e12263ef135e1ac5e027c66b44e503f6146b8188e8",
+      "range": "range_sorted"
+     }
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 29.527,
+      "wrapper": 31.027,
+      "routing": 39.226,
+      "shared-state": 30.55,
+      "assimilation": 1092.907
+     },
+     "state_bytes_per_epoch": {
+      "originals": 77669,
+      "wrapper": 77669,
+      "routing": 77669,
+      "shared-state": 31049,
+      "assimilation": 29441
+     },
+     "routing_choice": {
+      "exact": "exact_dict",
+      "range": "range_sorted"
+     },
+     "originals_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     }
+    },
+    "out_of_sample": {
+     "mismatches": 0,
+     "ratios": {
+      "exact": {
+       "ratio": 4.234,
+       "same_artifact": false,
+       "measurable": true,
+       "within": false
+      },
+      "range": {
+       "ratio": 1.0,
+       "same_artifact": true,
+       "measurable": true,
+       "within": true
+      }
+     },
+     "incorrect": true,
+     "realized_saving_ns_per_epoch": 221708,
+     "realized_break_even_epochs": 4826.31
+    },
+    "live": {
+     "tasks": 24,
+     "mismatches": 0,
+     "e2e_median_ms": 14.28
+    },
+    "recovery": {
+     "correct": true,
+     "old_permit_refused": true,
+     "parents_bound": true,
+     "parent_state": "ACTIVE",
+     "validation_attempts": 9,
+     "wall_ms": 27.46
+    }
+   },
+   "202": {
+    "scenario": "SB-partial-overlap",
+    "seed": 202,
+    "nominated": 7,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:range-count@7ef7a85129ab3254 answer latency 99.99x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 132.76x parents on observed exceeds tolerance 1.25x",
+       "no per-epoch saving (-9622.2 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash",
+       "capability:range-count@7ef7a85129ab3254": "range_hash_index"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact",
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 99.993,
+        "observed": 132.759,
+        "rare": 0.946
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -9622219,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 65446600,
+      "break_even_epochs": null,
+      "state_bytes_before": 77676,
+      "state_bytes_after": 48229,
+      "evaluation_wall_ns": 424170300
+     },
+     {
+      "accepted": true,
+      "reasons": [],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+       "capability:range-count@7ef7a85129ab3254": "range_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": "below-resolution (2.15)",
+        "observed": "below-resolution (2.19)",
+        "rare": "below-resolution (1.79)"
+       },
+       "capability:range-count@7ef7a85129ab3254": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 221046,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 10008000,
+      "break_even_epochs": 45.28,
+      "state_bytes_before": 77676,
+      "state_bytes_after": 29447,
+      "evaluation_wall_ns": 463101100
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 243.60x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 223.23x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 74.52x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 20.37x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 19.49x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 19.98x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-4674.3 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_bisect"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 243.596,
+        "observed": 223.231,
+        "rare": 74.516
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 20.366,
+        "observed": 19.491,
+        "rare": 19.976
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -4674324,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 60810900,
+      "break_even_epochs": null,
+      "state_bytes_before": 77676,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 519337800
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 257.19x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 211.61x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 92.52x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 188.81x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 144.78x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 10.43x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-14052.3 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_hash"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 257.191,
+        "observed": 211.606,
+        "rare": 92.52
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 188.81,
+        "observed": 144.782,
+        "rare": 10.434
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -14052257,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 117924300,
+      "break_even_epochs": null,
+      "state_bytes_before": 77676,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 572870200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 135.28x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 142.96x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 53.86x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 248.40x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 229.98x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 255.05x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-32136.5 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 135.283,
+        "observed": 142.957,
+        "rare": 53.864
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 248.398,
+        "observed": 229.979,
+        "rare": 255.047
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -32136490,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 226891800,
+      "break_even_epochs": null,
+      "state_bytes_before": 77676,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 688159200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 216.41x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 181.48x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 96.41x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 300.58x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 249.42x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 401.10x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-39794.0 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_list"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 216.407,
+        "observed": 181.478,
+        "rare": 96.41
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 300.577,
+        "observed": 249.421,
+        "rare": 401.103
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -39794007,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 279665200,
+      "break_even_epochs": null,
+      "state_bytes_before": 77676,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 755192900
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 304.96x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 171.87x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 46.79x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 471.22x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 297.08x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 602.99x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-41138.3 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_staged"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 304.955,
+        "observed": 171.87,
+        "rare": 46.789
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 471.22,
+        "observed": 297.083,
+        "rare": 602.991
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -41138274,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 288472800,
+      "break_even_epochs": null,
+      "state_bytes_before": 77676,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 782709800
+     }
+    ],
+    "accepted": true,
+    "chosen": {
+     "accepted": true,
+     "reasons": [],
+     "implementations": {
+      "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+      "capability:range-count@7ef7a85129ab3254": "range_sorted"
+     },
+     "method": "structural-factoring",
+     "latency_ratio": {
+      "capability:exact-count@0fade2e0325208ab": {
+       "held-out": "below-resolution (2.15)",
+       "observed": "below-resolution (2.19)",
+       "rare": "below-resolution (1.79)"
+      },
+      "capability:range-count@7ef7a85129ab3254": "same-artifact"
+     },
+     "mismatches": 0,
+     "mean_savings_ns": 221046,
+     "upkeep_saving_ns": 0.0,
+     "construction_ns": 10008000,
+     "break_even_epochs": 45.28,
+     "state_bytes_before": 77676,
+     "state_bytes_after": 29447,
+     "evaluation_wall_ns": 463101100
+    },
+    "construction_compute_ns": 1049219600,
+    "publication": {
+     "validation_compute_ns": 11400,
+     "wall_ns": 31292300,
+     "assimilation": "assimilation:8151401273244341926c60cdd9549606",
+     "bindings": {
+      "exact": "exact_sorted",
+      "exact-total": "graph:02b720510c48e5b6644b43e12263ef135e1ac5e027c66b44e503f6146b8188e8",
+      "range": "range_sorted"
+     }
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 28.375,
+      "wrapper": 29.875,
+      "routing": 35.875,
+      "shared-state": 30.246,
+      "assimilation": 1071.755
+     },
+     "state_bytes_per_epoch": {
+      "originals": 77642,
+      "wrapper": 77642,
+      "routing": 77642,
+      "shared-state": 31045,
+      "assimilation": 29445
+     },
+     "routing_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     },
+     "originals_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     }
+    },
+    "out_of_sample": {
+     "mismatches": 0,
+     "ratios": {
+      "exact": {
+       "ratio": 4.121,
+       "same_artifact": false,
+       "measurable": true,
+       "within": false
+      },
+      "range": {
+       "ratio": 1.0,
+       "same_artifact": true,
+       "measurable": true,
+       "within": true
+      }
+     },
+     "incorrect": true,
+     "realized_saving_ns_per_epoch": 195037,
+     "realized_break_even_epochs": 5379.64
+    },
+    "live": {
+     "tasks": 24,
+     "mismatches": 0,
+     "e2e_median_ms": 14.32
+    },
+    "recovery": {
+     "correct": true,
+     "old_permit_refused": true,
+     "parents_bound": true,
+     "parent_state": "ACTIVE",
+     "validation_attempts": 9,
+     "wall_ms": 27.69
+    }
+   },
+   "203": {
+    "scenario": "SB-partial-overlap",
+    "seed": 203,
+    "nominated": 7,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:range-count@7ef7a85129ab3254 answer latency 89.17x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 131.10x parents on observed exceeds tolerance 1.25x",
+       "no per-epoch saving (-10011.1 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash",
+       "capability:range-count@7ef7a85129ab3254": "range_hash_index"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact",
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 89.172,
+        "observed": 131.098,
+        "rare": 1.192
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -10011111,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 67909200,
+      "break_even_epochs": null,
+      "state_bytes_before": 77665,
+      "state_bytes_after": 48209,
+      "evaluation_wall_ns": 421293200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 3.01x parents on held-out exceeds tolerance 3.0x"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+       "capability:range-count@7ef7a85129ab3254": "range_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 3.007,
+        "observed": "below-resolution (2.15)",
+        "rare": "below-resolution (1.63)"
+       },
+       "capability:range-count@7ef7a85129ab3254": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 262442,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 10415700,
+      "break_even_epochs": 39.69,
+      "state_bytes_before": 77665,
+      "state_bytes_after": 29456,
+      "evaluation_wall_ns": 453547100
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 136.98x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 202.75x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 77.17x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 12.20x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 15.16x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 17.95x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-4683.7 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_bisect"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 136.982,
+        "observed": 202.754,
+        "rare": 77.167
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 12.2,
+        "observed": 15.156,
+        "rare": 17.946
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -4683668,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 61436000,
+      "break_even_epochs": null,
+      "state_bytes_before": 77665,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 519941600
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 209.83x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 180.88x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 69.18x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 178.98x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 171.07x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 10.03x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-14398.1 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_hash"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 209.835,
+        "observed": 180.875,
+        "rare": 69.182
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 178.976,
+        "observed": 171.067,
+        "rare": 10.033
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -14398102,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 120021700,
+      "break_even_epochs": null,
+      "state_bytes_before": 77665,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 573025300
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 243.91x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 170.99x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 89.62x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 312.64x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 264.00x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 415.83x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-31985.9 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 243.915,
+        "observed": 170.985,
+        "rare": 89.615
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 312.637,
+        "observed": 263.996,
+        "rare": 415.83
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -31985918,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 225175100,
+      "break_even_epochs": null,
+      "state_bytes_before": 77665,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 687013500
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 299.12x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 202.13x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 130.77x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 268.99x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 363.02x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 416.37x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-35333.6 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_list"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 299.12,
+        "observed": 202.134,
+        "rare": 130.767
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 268.994,
+        "observed": 363.017,
+        "rare": 416.368
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -35333635,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 255175500,
+      "break_even_epochs": null,
+      "state_bytes_before": 77665,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 746694200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 140.25x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 169.96x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 50.28x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 216.59x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 294.81x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 243.98x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-36048.4 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_staged"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 140.254,
+        "observed": 169.956,
+        "rare": 50.281
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 216.592,
+        "observed": 294.813,
+        "rare": 243.977
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -36048418,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 257169600,
+      "break_even_epochs": null,
+      "state_bytes_before": 77665,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 766044400
+     }
+    ],
+    "accepted": false,
+    "chosen": null,
+    "construction_compute_ns": 997302800,
+    "publication": {
+     "validation_compute_ns": 0,
+     "wall_ns": 0
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 29.956,
+      "wrapper": 31.456,
+      "routing": 39.302,
+      "shared-state": 31.03,
+      "assimilation": 29.956
+     },
+     "state_bytes_per_epoch": {
+      "originals": 77715,
+      "wrapper": 77715,
+      "routing": 77715,
+      "shared-state": 31064,
+      "assimilation": 77715
+     },
+     "routing_choice": {
+      "exact": "exact_dict",
+      "range": "range_sorted"
+     },
+     "originals_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     }
+    }
+   },
+   "204": {
+    "scenario": "SB-partial-overlap",
+    "seed": 204,
+    "nominated": 7,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:range-count@7ef7a85129ab3254 answer latency 162.00x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 152.08x parents on observed exceeds tolerance 1.25x",
+       "no per-epoch saving (-9437.8 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash",
+       "capability:range-count@7ef7a85129ab3254": "range_hash_index"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact",
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 162.0,
+        "observed": 152.082,
+        "rare": 1.181
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -9437770,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 64238300,
+      "break_even_epochs": null,
+      "state_bytes_before": 77637,
+      "state_bytes_after": 48190,
+      "evaluation_wall_ns": 416595000
+     },
+     {
+      "accepted": true,
+      "reasons": [],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+       "capability:range-count@7ef7a85129ab3254": "range_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": "below-resolution (1.77)",
+        "observed": "below-resolution (1.94)",
+        "rare": "below-resolution (1.74)"
+       },
+       "capability:range-count@7ef7a85129ab3254": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 252840,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 10158000,
+      "break_even_epochs": 40.18,
+      "state_bytes_before": 77637,
+      "state_bytes_after": 29447,
+      "evaluation_wall_ns": 456567400
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 143.94x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 157.37x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 57.52x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 13.93x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 13.22x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 16.11x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-4568.5 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_bisect"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 143.937,
+        "observed": 157.372,
+        "rare": 57.525
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 13.929,
+        "observed": 13.224,
+        "rare": 16.114
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -4568530,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 60959100,
+      "break_even_epochs": null,
+      "state_bytes_before": 77637,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 525890700
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 204.48x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 149.62x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 89.23x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 128.23x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 110.45x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 9.65x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-13967.5 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_hash"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 204.482,
+        "observed": 149.623,
+        "rare": 89.231
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 128.234,
+        "observed": 110.45,
+        "rare": 9.649
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -13967530,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 117020600,
+      "break_even_epochs": null,
+      "state_bytes_before": 77637,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 579398200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 225.16x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 157.88x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 93.64x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 388.58x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 284.56x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 347.06x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-31628.3 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 225.158,
+        "observed": 157.883,
+        "rare": 93.64
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 388.58,
+        "observed": 284.56,
+        "rare": 347.058
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -31628313,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 223846700,
+      "break_even_epochs": null,
+      "state_bytes_before": 77637,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 693088900
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 152.72x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 175.65x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 89.81x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 212.48x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 215.91x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 426.81x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-37019.8 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_list"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 152.716,
+        "observed": 175.648,
+        "rare": 89.812
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 212.484,
+        "observed": 215.909,
+        "rare": 426.814
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -37019763,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 264009100,
+      "break_even_epochs": null,
+      "state_bytes_before": 77637,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 766588700
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 139.08x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 144.44x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 124.95x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 179.80x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 333.97x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 569.52x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-37591.9 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_staged"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 139.083,
+        "observed": 144.437,
+        "rare": 124.946
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 179.8,
+        "observed": 333.973,
+        "rare": 569.517
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -37591863,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 268925200,
+      "break_even_epochs": null,
+      "state_bytes_before": 77637,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 774615000
+     }
+    ],
+    "accepted": true,
+    "chosen": {
+     "accepted": true,
+     "reasons": [],
+     "implementations": {
+      "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+      "capability:range-count@7ef7a85129ab3254": "range_sorted"
+     },
+     "method": "structural-factoring",
+     "latency_ratio": {
+      "capability:exact-count@0fade2e0325208ab": {
+       "held-out": "below-resolution (1.77)",
+       "observed": "below-resolution (1.94)",
+       "rare": "below-resolution (1.74)"
+      },
+      "capability:range-count@7ef7a85129ab3254": "same-artifact"
+     },
+     "mismatches": 0,
+     "mean_savings_ns": 252840,
+     "upkeep_saving_ns": 0.0,
+     "construction_ns": 10158000,
+     "break_even_epochs": 40.18,
+     "state_bytes_before": 77637,
+     "state_bytes_after": 29447,
+     "evaluation_wall_ns": 456567400
+    },
+    "construction_compute_ns": 1009157000,
+    "publication": {
+     "validation_compute_ns": 9300,
+     "wall_ns": 25548400,
+     "assimilation": "assimilation:f2063d9dd3344e6cb9d88b5255c3dc3e",
+     "bindings": {
+      "exact": "exact_sorted",
+      "exact-total": "graph:02b720510c48e5b6644b43e12263ef135e1ac5e027c66b44e503f6146b8188e8",
+      "range": "range_sorted"
+     }
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 29.003,
+      "wrapper": 30.503,
+      "routing": 38.385,
+      "shared-state": 31.49,
+      "assimilation": 1032.338
+     },
+     "state_bytes_per_epoch": {
+      "originals": 77666,
+      "wrapper": 77666,
+      "routing": 77666,
+      "shared-state": 34255,
+      "assimilation": 29435
+     },
+     "routing_choice": {
+      "exact": "exact_dict",
+      "range": "range_sorted"
+     },
+     "originals_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     }
+    },
+    "out_of_sample": {
+     "mismatches": 0,
+     "ratios": {
+      "exact": {
+       "ratio": 4.736,
+       "same_artifact": false,
+       "measurable": true,
+       "within": false
+      },
+      "range": {
+       "ratio": 1.0,
+       "same_artifact": true,
+       "measurable": true,
+       "within": true
+      }
+     },
+     "incorrect": true,
+     "realized_saving_ns_per_epoch": 194387,
+     "realized_break_even_epochs": 5191.53
+    },
+    "live": {
+     "tasks": 24,
+     "mismatches": 0,
+     "e2e_median_ms": 14.46
+    },
+    "recovery": {
+     "correct": true,
+     "old_permit_refused": true,
+     "parents_bound": true,
+     "parent_state": "ACTIVE",
+     "validation_attempts": 9,
+     "wall_ms": 29.03
+    }
+   },
+   "205": {
+    "scenario": "SB-partial-overlap",
+    "seed": 205,
+    "nominated": 7,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:range-count@7ef7a85129ab3254 answer latency 94.34x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 84.97x parents on observed exceeds tolerance 1.25x",
+       "no per-epoch saving (-9886.7 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash",
+       "capability:range-count@7ef7a85129ab3254": "range_hash_index"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact",
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 94.34,
+        "observed": 84.967,
+        "rare": 0.737
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -9886737,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 67692700,
+      "break_even_epochs": null,
+      "state_bytes_before": 77713,
+      "state_bytes_after": 48267,
+      "evaluation_wall_ns": 433670900
+     },
+     {
+      "accepted": true,
+      "reasons": [],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+       "capability:range-count@7ef7a85129ab3254": "range_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": "below-resolution (1.90)",
+        "observed": "below-resolution (1.98)",
+        "rare": "below-resolution (1.70)"
+       },
+       "capability:range-count@7ef7a85129ab3254": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": 249800,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 10194800,
+      "break_even_epochs": 40.81,
+      "state_bytes_before": 77713,
+      "state_bytes_after": 29446,
+      "evaluation_wall_ns": 454281200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 141.07x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 154.33x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 63.58x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 11.33x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 15.45x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 11.84x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-4656.3 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_bisect"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 141.074,
+        "observed": 154.327,
+        "rare": 63.583
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 11.325,
+        "observed": 15.448,
+        "rare": 11.838
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -4656320,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 61187100,
+      "break_even_epochs": null,
+      "state_bytes_before": 77713,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 510733300
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 164.15x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 160.01x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 75.00x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 91.79x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 178.99x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 8.03x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-14687.0 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_hash"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 164.149,
+        "observed": 160.007,
+        "rare": 75.0
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 91.79,
+        "observed": 178.99,
+        "rare": 8.032
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -14686987,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 122329600,
+      "break_even_epochs": null,
+      "state_bytes_before": 77713,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 583565900
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 145.71x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 125.05x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 61.37x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 233.46x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 197.59x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 275.02x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-31690.9 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 145.709,
+        "observed": 125.049,
+        "rare": 61.368
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 233.458,
+        "observed": 197.594,
+        "rare": 275.018
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -31690870,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 223640400,
+      "break_even_epochs": null,
+      "state_bytes_before": 77713,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 693676200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 163.13x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 197.52x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 56.10x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 294.16x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 345.99x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 227.94x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-38340.9 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_list"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 163.127,
+        "observed": 197.521,
+        "rare": 56.098
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 294.164,
+        "observed": 345.986,
+        "rare": 227.937
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -38340920,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 273081500,
+      "break_even_epochs": null,
+      "state_bytes_before": 77713,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 773043700
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 195.73x parents on held-out exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 173.78x parents on observed exceeds tolerance 3.0x",
+       "capability:exact-count@0fade2e0325208ab answer latency 50.78x parents on rare exceeds tolerance 3.0x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 236.86x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 277.41x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 203.69x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-38205.9 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_staged"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 195.73,
+        "observed": 173.776,
+        "rare": 50.78
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 236.863,
+        "observed": 277.408,
+        "rare": 203.688
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -38205870,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 275184500,
+      "break_even_epochs": null,
+      "state_bytes_before": 77713,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 796857100
+     }
+    ],
+    "accepted": true,
+    "chosen": {
+     "accepted": true,
+     "reasons": [],
+     "implementations": {
+      "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+      "capability:range-count@7ef7a85129ab3254": "range_sorted"
+     },
+     "method": "structural-factoring",
+     "latency_ratio": {
+      "capability:exact-count@0fade2e0325208ab": {
+       "held-out": "below-resolution (1.90)",
+       "observed": "below-resolution (1.98)",
+       "rare": "below-resolution (1.70)"
+      },
+      "capability:range-count@7ef7a85129ab3254": "same-artifact"
+     },
+     "mismatches": 0,
+     "mean_savings_ns": 249800,
+     "upkeep_saving_ns": 0.0,
+     "construction_ns": 10194800,
+     "break_even_epochs": 40.81,
+     "state_bytes_before": 77713,
+     "state_bytes_after": 29446,
+     "evaluation_wall_ns": 454281200
+    },
+    "construction_compute_ns": 1033310600,
+    "publication": {
+     "validation_compute_ns": 11000,
+     "wall_ns": 31011800,
+     "assimilation": "assimilation:aad165f8155c4dd8a071046dacf5340a",
+     "bindings": {
+      "exact": "exact_sorted",
+      "exact-total": "graph:02b720510c48e5b6644b43e12263ef135e1ac5e027c66b44e503f6146b8188e8",
+      "range": "range_sorted"
+     }
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 29.914,
+      "wrapper": 31.414,
+      "routing": 37.414,
+      "shared-state": 29.645,
+      "assimilation": 1055.32
+     },
+     "state_bytes_per_epoch": {
+      "originals": 77651,
+      "wrapper": 77651,
+      "routing": 77651,
+      "shared-state": 31052,
+      "assimilation": 29442
+     },
+     "routing_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     },
+     "originals_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     }
+    },
+    "out_of_sample": {
+     "mismatches": 0,
+     "ratios": {
+      "exact": {
+       "ratio": 3.302,
+       "same_artifact": false,
+       "measurable": true,
+       "within": false
+      },
+      "range": {
+       "ratio": 1.0,
+       "same_artifact": true,
+       "measurable": true,
+       "within": true
+      }
+     },
+     "incorrect": true,
+     "realized_saving_ns_per_epoch": 263863,
+     "realized_break_even_epochs": 3916.13
+    },
+    "live": {
+     "tasks": 24,
+     "mismatches": 0,
+     "e2e_median_ms": 14.01
+    },
+    "recovery": {
+     "correct": true,
+     "old_permit_refused": true,
+     "parents_bound": true,
+     "parent_state": "ACTIVE",
+     "validation_attempts": 9,
+     "wall_ms": 27.09
+    }
+   }
+  },
+  "SC-incompatible": {
+   "201": {
+    "scenario": "SC-incompatible",
+    "seed": 201,
+    "nominated": 7,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:range-count@7ef7a85129ab3254 answer latency 435.47x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 366.12x parents on observed exceeds tolerance 1.25x",
+       "no per-epoch saving (-29214.0 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash",
+       "capability:range-count@7ef7a85129ab3254": "range_hash_index"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact",
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 435.465,
+        "observed": 366.118,
+        "rare": 0.748
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -29214012,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 187155700,
+      "break_even_epochs": null,
+      "state_bytes_before": 77695,
+      "state_bytes_after": 48257,
+      "evaluation_wall_ns": 579646300
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 3.96x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 4.58x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 2.43x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-972.4 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+       "capability:range-count@7ef7a85129ab3254": "range_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 3.96,
+        "observed": 4.58,
+        "rare": 2.429
+       },
+       "capability:range-count@7ef7a85129ab3254": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -972360,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 33121100,
+      "break_even_epochs": null,
+      "state_bytes_before": 77695,
+      "state_bytes_after": 29438,
+      "evaluation_wall_ns": 589509300
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 380.49x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 435.09x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 309.83x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 10.41x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 15.12x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 16.54x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-161867.3 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_bisect"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 380.495,
+        "observed": 435.092,
+        "rare": 309.834
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 10.415,
+        "observed": 15.123,
+        "rare": 16.54
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -161867272,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2193912900,
+      "break_even_epochs": null,
+      "state_bytes_before": 77695,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2773450900
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 280.99x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 363.63x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 420.65x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 276.94x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 389.48x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 10.77x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-251396.0 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_hash"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 280.994,
+        "observed": 363.625,
+        "rare": 420.652
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 276.943,
+        "observed": 389.48,
+        "rare": 10.767
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -251396022,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2910756700,
+      "break_even_epochs": null,
+      "state_bytes_before": 77695,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 3522278900
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 510.74x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 412.06x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 151.74x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 142.33x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 246.96x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 215.30x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-240478.1 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 510.74,
+        "observed": 412.061,
+        "rare": 151.739
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 142.331,
+        "observed": 246.965,
+        "rare": 215.302
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -240478072,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2698861000,
+      "break_even_epochs": null,
+      "state_bytes_before": 77695,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 3317744400
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 398.43x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 414.14x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 242.70x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 163.22x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 195.21x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 297.76x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-236984.5 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_list"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 398.426,
+        "observed": 414.135,
+        "rare": 242.697
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 163.222,
+        "observed": 195.206,
+        "rare": 297.76
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -236984472,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2690720500,
+      "break_even_epochs": null,
+      "state_bytes_before": 77695,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 3299841600
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 524.93x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 423.38x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 393.55x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 268.53x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 406.40x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 453.66x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-236163.7 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_staged"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 524.929,
+        "observed": 423.381,
+        "rare": 393.553
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 268.528,
+        "observed": 406.404,
+        "rare": 453.664
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -236163689,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2681811300,
+      "break_even_epochs": null,
+      "state_bytes_before": 77695,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 3292388700
+     }
+    ],
+    "accepted": false,
+    "chosen": null,
+    "construction_compute_ns": 13396339200,
+    "publication": {
+     "validation_compute_ns": 0,
+     "wall_ns": 0
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 46.754,
+      "wrapper": 48.254,
+      "routing": 54.254,
+      "shared-state": 54.692,
+      "assimilation": 46.754
+     },
+     "state_bytes_per_epoch": {
+      "originals": 77645,
+      "wrapper": 77645,
+      "routing": 77645,
+      "shared-state": 77645,
+      "assimilation": 77645
+     },
+     "routing_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     },
+     "originals_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     }
+    }
+   },
+   "202": {
+    "scenario": "SC-incompatible",
+    "seed": 202,
+    "nominated": 7,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:range-count@7ef7a85129ab3254 answer latency 188.84x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 410.29x parents on observed exceeds tolerance 1.25x",
+       "no per-epoch saving (-29611.4 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash",
+       "capability:range-count@7ef7a85129ab3254": "range_hash_index"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact",
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 188.84,
+        "observed": 410.294,
+        "rare": 0.727
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -29611414,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 190218500,
+      "break_even_epochs": null,
+      "state_bytes_before": 77735,
+      "state_bytes_after": 48299,
+      "evaluation_wall_ns": 573125800
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 3.56x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 4.58x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 3.76x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-944.1 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+       "capability:range-count@7ef7a85129ab3254": "range_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 3.558,
+        "observed": 4.578,
+        "rare": 3.762
+       },
+       "capability:range-count@7ef7a85129ab3254": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -944101,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 33984300,
+      "break_even_epochs": null,
+      "state_bytes_before": 77735,
+      "state_bytes_after": 29436,
+      "evaluation_wall_ns": 586468800
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 438.99x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 456.91x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 243.98x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 13.65x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 14.05x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 17.85x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-160739.9 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_bisect"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 438.992,
+        "observed": 456.907,
+        "rare": 243.98
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 13.649,
+        "observed": 14.054,
+        "rare": 17.855
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -160739915,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2188179000,
+      "break_even_epochs": null,
+      "state_bytes_before": 77735,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2767015700
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 380.40x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 365.68x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 415.54x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 292.74x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 240.68x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 12.44x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-253696.9 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_hash"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 380.402,
+        "observed": 365.675,
+        "rare": 415.539
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 292.744,
+        "observed": 240.68,
+        "rare": 12.437
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -253696932,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2801497000,
+      "break_even_epochs": null,
+      "state_bytes_before": 77735,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 3424581200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 358.92x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 465.39x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 503.36x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 191.31x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 166.74x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 540.76x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-242073.9 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 358.922,
+        "observed": 465.39,
+        "rare": 503.355
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 191.308,
+        "observed": 166.738,
+        "rare": 540.755
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -242073948,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2686897500,
+      "break_even_epochs": null,
+      "state_bytes_before": 77735,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 3306421900
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 398.06x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 399.69x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 245.54x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 241.81x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 256.72x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 342.57x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-184757.5 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_list"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 398.062,
+        "observed": 399.688,
+        "rare": 245.543
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 241.809,
+        "observed": 256.725,
+        "rare": 342.571
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -184757498,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2082934400,
+      "break_even_epochs": null,
+      "state_bytes_before": 77735,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2585634000
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 390.87x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 331.18x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 203.68x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 227.59x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 209.53x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 280.86x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-187930.7 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_staged"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 390.873,
+        "observed": 331.177,
+        "rare": 203.678
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 227.585,
+        "observed": 209.529,
+        "rare": 280.859
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -187930748,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2105017100,
+      "break_even_epochs": null,
+      "state_bytes_before": 77735,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2618664400
+     }
+    ],
+    "accepted": false,
+    "chosen": null,
+    "construction_compute_ns": 12088727800,
+    "publication": {
+     "validation_compute_ns": 0,
+     "wall_ns": 0
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 41.751,
+      "wrapper": 43.251,
+      "routing": 51.402,
+      "shared-state": 49.499,
+      "assimilation": 41.751
+     },
+     "state_bytes_per_epoch": {
+      "originals": 77641,
+      "wrapper": 77641,
+      "routing": 77641,
+      "shared-state": 77641,
+      "assimilation": 77641
+     },
+     "routing_choice": {
+      "exact": "exact_dict",
+      "range": "range_sorted"
+     },
+     "originals_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     }
+    }
+   },
+   "203": {
+    "scenario": "SC-incompatible",
+    "seed": 203,
+    "nominated": 7,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:range-count@7ef7a85129ab3254 answer latency 449.13x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 498.41x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 1.35x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-28868.8 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash",
+       "capability:range-count@7ef7a85129ab3254": "range_hash_index"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact",
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 449.131,
+        "observed": 498.414,
+        "rare": 1.345
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -28868753,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 184602400,
+      "break_even_epochs": null,
+      "state_bytes_before": 77621,
+      "state_bytes_after": 48174,
+      "evaluation_wall_ns": 505585900
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 4.36x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 4.36x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 3.18x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-957.9 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+       "capability:range-count@7ef7a85129ab3254": "range_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 4.363,
+        "observed": 4.356,
+        "rare": 3.181
+       },
+       "capability:range-count@7ef7a85129ab3254": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -957893,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 32347300,
+      "break_even_epochs": null,
+      "state_bytes_before": 77621,
+      "state_bytes_after": 29447,
+      "evaluation_wall_ns": 487095700
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 446.42x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 462.02x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 282.62x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 14.64x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 16.94x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 18.99x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-156647.2 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_bisect"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 446.418,
+        "observed": 462.02,
+        "rare": 282.623
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 14.642,
+        "observed": 16.94,
+        "rare": 18.985
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -156647162,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 1887808700,
+      "break_even_epochs": null,
+      "state_bytes_before": 77621,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2367255300
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 481.61x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 451.77x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 306.39x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 491.50x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 466.18x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 12.14x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-184948.1 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_hash"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 481.609,
+        "observed": 451.766,
+        "rare": 306.387
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 491.5,
+        "observed": 466.18,
+        "rare": 12.136
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -184948079,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2076289200,
+      "break_even_epochs": null,
+      "state_bytes_before": 77621,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2570630000
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 290.23x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 367.11x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 218.86x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 168.29x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 227.02x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 298.19x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-184549.0 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 290.228,
+        "observed": 367.111,
+        "rare": 218.859
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 168.291,
+        "observed": 227.016,
+        "rare": 298.186
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -184548979,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2081287900,
+      "break_even_epochs": null,
+      "state_bytes_before": 77621,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2581015400
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 456.71x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 392.68x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 225.55x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 332.74x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 253.50x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 371.48x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-182066.9 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_list"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 456.713,
+        "observed": 392.678,
+        "rare": 225.545
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 332.742,
+        "observed": 253.499,
+        "rare": 371.485
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -182066862,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2049951400,
+      "break_even_epochs": null,
+      "state_bytes_before": 77621,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2531452400
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 454.65x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 417.87x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 236.49x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 336.22x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 341.69x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 398.43x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-184406.8 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_staged"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 454.654,
+        "observed": 417.875,
+        "rare": 236.489
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 336.216,
+        "observed": 341.695,
+        "rare": 398.429
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -184406795,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2067447900,
+      "break_even_epochs": null,
+      "state_bytes_before": 77621,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2542628300
+     }
+    ],
+    "accepted": false,
+    "chosen": null,
+    "construction_compute_ns": 10379734800,
+    "publication": {
+     "validation_compute_ns": 0,
+     "wall_ns": 0
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 41.614,
+      "wrapper": 43.114,
+      "routing": 49.114,
+      "shared-state": 49.198,
+      "assimilation": 41.614
+     },
+     "state_bytes_per_epoch": {
+      "originals": 77717,
+      "wrapper": 77717,
+      "routing": 77717,
+      "shared-state": 77717,
+      "assimilation": 77717
+     },
+     "routing_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     },
+     "originals_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     }
+    }
+   },
+   "204": {
+    "scenario": "SC-incompatible",
+    "seed": 204,
+    "nominated": 7,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:range-count@7ef7a85129ab3254 answer latency 409.19x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 422.03x parents on observed exceeds tolerance 1.25x",
+       "no per-epoch saving (-29427.1 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash",
+       "capability:range-count@7ef7a85129ab3254": "range_hash_index"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact",
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 409.19,
+        "observed": 422.029,
+        "rare": 0.741
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -29427071,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 188083500,
+      "break_even_epochs": null,
+      "state_bytes_before": 77674,
+      "state_bytes_after": 48228,
+      "evaluation_wall_ns": 509531900
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 4.59x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 4.36x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 1.89x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-918.9 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+       "capability:range-count@7ef7a85129ab3254": "range_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 4.587,
+        "observed": 4.358,
+        "rare": 1.894
+       },
+       "capability:range-count@7ef7a85129ab3254": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -918888,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 32602300,
+      "break_even_epochs": null,
+      "state_bytes_before": 77674,
+      "state_bytes_after": 29446,
+      "evaluation_wall_ns": 492904200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 364.67x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 458.36x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 345.74x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 12.26x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 17.58x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 19.44x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-155736.7 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_bisect"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 364.67,
+        "observed": 458.363,
+        "rare": 345.744
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 12.259,
+        "observed": 17.585,
+        "rare": 19.441
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -155736676,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 1897479700,
+      "break_even_epochs": null,
+      "state_bytes_before": 77674,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2369463300
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 461.54x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 468.76x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 205.67x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 333.22x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 367.33x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 8.54x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-188279.6 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_hash"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 461.539,
+        "observed": 468.761,
+        "rare": 205.669
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 333.219,
+        "observed": 367.33,
+        "rare": 8.536
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -188279559,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2094480300,
+      "break_even_epochs": null,
+      "state_bytes_before": 77674,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2594851200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 441.93x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 403.06x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 318.20x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 308.99x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 233.23x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 368.60x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-186580.8 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 441.934,
+        "observed": 403.059,
+        "rare": 318.203
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 308.994,
+        "observed": 233.229,
+        "rare": 368.599
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -186580776,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2115611400,
+      "break_even_epochs": null,
+      "state_bytes_before": 77674,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2631331900
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 355.33x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 359.90x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 188.39x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 199.47x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 187.66x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 194.93x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-188492.3 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_list"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 355.329,
+        "observed": 359.904,
+        "rare": 188.388
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 199.47,
+        "observed": 187.662,
+        "rare": 194.927
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -188492309,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2108458800,
+      "break_even_epochs": null,
+      "state_bytes_before": 77674,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2632383700
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 429.88x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 405.20x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 334.06x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 239.38x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 236.88x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 418.60x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-187797.8 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_staged"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 429.88,
+        "observed": 405.202,
+        "rare": 334.065
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 239.38,
+        "observed": 236.876,
+        "rare": 418.599
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -187797809,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2087697000,
+      "break_even_epochs": null,
+      "state_bytes_before": 77674,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2572146700
+     }
+    ],
+    "accepted": false,
+    "chosen": null,
+    "construction_compute_ns": 10524413000,
+    "publication": {
+     "validation_compute_ns": 0,
+     "wall_ns": 0
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 43.275,
+      "wrapper": 44.775,
+      "routing": 50.775,
+      "shared-state": 51.144,
+      "assimilation": 43.275
+     },
+     "state_bytes_per_epoch": {
+      "originals": 77682,
+      "wrapper": 77682,
+      "routing": 77682,
+      "shared-state": 77682,
+      "assimilation": 77682
+     },
+     "routing_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     },
+     "originals_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     }
+    }
+   },
+   "205": {
+    "scenario": "SC-incompatible",
+    "seed": 205,
+    "nominated": 7,
+    "evaluated": [
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:range-count@7ef7a85129ab3254 answer latency 268.03x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 382.98x parents on observed exceeds tolerance 1.25x",
+       "no per-epoch saving (-28727.5 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_hash",
+       "capability:range-count@7ef7a85129ab3254": "range_hash_index"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": "same-artifact",
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 268.027,
+        "observed": 382.983,
+        "rare": 0.971
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -28727507,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 184662500,
+      "break_even_epochs": null,
+      "state_bytes_before": 77662,
+      "state_bytes_after": 48219,
+      "evaluation_wall_ns": 525056100
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 3.93x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 4.05x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 3.50x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-930.3 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_sorted",
+       "capability:range-count@7ef7a85129ab3254": "range_sorted"
+      },
+      "method": "structural-factoring",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 3.927,
+        "observed": 4.049,
+        "rare": 3.503
+       },
+       "capability:range-count@7ef7a85129ab3254": "same-artifact"
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -930331,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 33269200,
+      "break_even_epochs": null,
+      "state_bytes_before": 77662,
+      "state_bytes_after": 29443,
+      "evaluation_wall_ns": 502417100
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 310.44x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 290.27x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 198.64x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 6.83x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 7.06x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 11.18x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-159013.1 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_bisect"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 310.441,
+        "observed": 290.273,
+        "rare": 198.636
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 6.835,
+        "observed": 7.065,
+        "rare": 11.18
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -159013138,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 1931427200,
+      "break_even_epochs": null,
+      "state_bytes_before": 77662,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2461947100
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 297.62x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 352.40x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 170.13x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 190.22x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 230.23x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 5.67x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-187989.8 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_hash"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 297.616,
+        "observed": 352.395,
+        "rare": 170.133
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 190.224,
+        "observed": 230.233,
+        "rare": 5.674
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -187989788,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2101449100,
+      "break_even_epochs": null,
+      "state_bytes_before": 77662,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2612129000
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 449.87x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 465.31x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 204.35x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 302.48x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 368.04x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 334.57x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-183380.3 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 449.871,
+        "observed": 465.314,
+        "rare": 204.345
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 302.483,
+        "observed": 368.036,
+        "rare": 334.567
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -183380305,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2053979000,
+      "break_even_epochs": null,
+      "state_bytes_before": 77662,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2540587800
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 433.19x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 375.00x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 252.85x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 261.55x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 237.27x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 408.18x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-184694.2 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_list"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 433.189,
+        "observed": 375.003,
+        "rare": 252.848
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 261.546,
+        "observed": 237.271,
+        "rare": 408.177
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -184694155,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2123946400,
+      "break_even_epochs": null,
+      "state_bytes_before": 77662,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 2625468200
+     },
+     {
+      "accepted": false,
+      "reasons": [
+       "capability:exact-count@0fade2e0325208ab answer latency 505.10x parents on held-out exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 395.41x parents on observed exceeds tolerance 1.25x",
+       "capability:exact-count@0fade2e0325208ab answer latency 215.81x parents on rare exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 273.78x parents on held-out exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 175.37x parents on observed exceeds tolerance 1.25x",
+       "capability:range-count@7ef7a85129ab3254 answer latency 270.05x parents on rare exceeds tolerance 1.25x",
+       "no per-epoch saving (-221140.3 us)"
+      ],
+      "implementations": {
+       "capability:exact-count@0fade2e0325208ab": "exact_scan",
+       "capability:range-count@7ef7a85129ab3254": "range_scan_staged"
+      },
+      "method": "structure-elimination",
+      "latency_ratio": {
+       "capability:exact-count@0fade2e0325208ab": {
+        "held-out": 505.101,
+        "observed": 395.414,
+        "rare": 215.811
+       },
+       "capability:range-count@7ef7a85129ab3254": {
+        "held-out": 273.784,
+        "observed": 175.368,
+        "rare": 270.052
+       }
+      },
+      "mismatches": 0,
+      "mean_savings_ns": -221140272,
+      "upkeep_saving_ns": 0.0,
+      "construction_ns": 2528144700,
+      "break_even_epochs": null,
+      "state_bytes_before": 77662,
+      "state_bytes_after": 0,
+      "evaluation_wall_ns": 3081087000
+     }
+    ],
+    "accepted": false,
+    "chosen": null,
+    "construction_compute_ns": 10956878100,
+    "publication": {
+     "validation_compute_ns": 0,
+     "wall_ns": 0
+    },
+    "post": {
+     "totals_ms": {
+      "originals": 44.866,
+      "wrapper": 46.366,
+      "routing": 54.07,
+      "shared-state": 52.748,
+      "assimilation": 44.866
+     },
+     "state_bytes_per_epoch": {
+      "originals": 77708,
+      "wrapper": 77708,
+      "routing": 77708,
+      "shared-state": 77708,
+      "assimilation": 77708
+     },
+     "routing_choice": {
+      "exact": "exact_dict",
+      "range": "range_sorted"
+     },
+     "originals_choice": {
+      "exact": "exact_hash",
+      "range": "range_sorted"
+     }
+    }
+   }
+  }
+ },
+ "hypotheses": {
+  "X3-H1": {
+   "passed": true
+  },
+  "X3-H2": {
+   "passed": false,
+   "incorrect_acceptances": 4
+  },
+  "X3-H3": {
+   "passed": false
+  },
+  "X3-H4": {
+   "passed": false
+  },
+  "X3-H5": {
+   "passed": false
+  },
+  "X3-H6": {
+   "passed": true
+  },
+  "X3-H7": {
+   "passed": true
+  }
+ }
+}

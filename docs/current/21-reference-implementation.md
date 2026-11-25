@@ -584,6 +584,14 @@ Operation (`assimilation.py`, developmental side):
 
 Parent retirement remains a separate, grounded-assessment decision (section 21.12).
 
+Measured outcome (docs/results/2026-11-25T-assimilation/RESULTS.md, X3 from 6c83409):
+correct rejection, a 62% state reduction, zero output-incorrect publications and
+correct recovery held. Acceptance was unsound: 4 incorrect acceptances on a
+point-estimate latency tolerance, and break-even undercounted 20-120x because the
+gate charged only the chosen candidate's own evaluation, with no early
+termination. Assimilation was not economically justified at full cost in this
+domain.
+
 Open items carried from X2c (not addressed here): demand-triggered recruitment
 of dormant specialists in previously observed contexts; incremental retention
 assessment; kernel overhead relative to lightweight provider computation;
@@ -596,13 +604,13 @@ Screen: verification T1 (build); reliability T1 (schema, slo); observability T1 
 
 | ID | Discipline | Claim | Could fail by | Control (owner) | Check | Evidence |
 |---|---|---|---|---|---|---|
-| A-41 | performance | Prepared structures are shared only between identical prepare stages and their time and size are measured, not assumed | Cross-provider sharing of incompatible state; unmeasured savings | Worker cache keyed by prepare identity and data identity; timing fields | tests/test_assimilation.py SharedRepresentation | unknown |
-| A-42 | verification | Nomination enumerates all admissible candidates from the catalogue and never presents wrappers as assimilations | Supplying the answer; wrapper counted as consolidation | assimilation.nominate | tests/test_assimilation.py Nomination | unknown |
-| A-43 | verification | A candidate passes only with exact output equality on union, held-out and rare sets, declared latency tolerance and positive full-cost break-even | Accepting a candidate that loses competence or money | assimilation.evaluate | tests/test_assimilation.py UnionGate | unknown |
-| A-44 | reliability | Publication is atomic and refuses stale evidence, concurrent publication, unvalidated candidates and hidden dependents | Partial publication; dependents left on dormant parents | transactor.commit_assimilation | tests/test_assimilation.py AtomicPublication | unknown |
-| A-45 | reliability | Interrupted assimilation leaves the pre-assimilation organization intact | Crash mid-commit | Single transaction; recovery marks candidates stale | tests/test_assimilation.py InterruptedAssimilation | unknown |
-| A-46 | reliability | After post-publication competence loss, recovery restores parent competence with fresh validation and refuses permits from the assimilation and from before it | Silently restoring obsolete authority | transactor.revert_assimilation | tests/test_assimilation.py Recovery | unknown |
-| A-47 | maintainability | Assimilation runs through the restricted development context; parents are never archived by assimilation itself | Developmental code gaining kernel authority; retirement without assessment | devcontext.py; commit_assimilation sets DORMANT only | tests/test_assimilation.py Boundaries | unknown |
-| A-48 | observability | Every nomination, evaluation, rejection reason, publication and recovery is a durable record | Unexplained acceptance or rejection | assimilation-trial records | tests/test_assimilation.py Boundaries | unknown |
-| A-49 | verification | X3 runs only from a committed, digest-matched preregistration and runner | Post-hoc criteria | verify_frozen in tools/run_assimilation.py | tests/test_assimilation.py FrozenPreregistration | unknown |
-| A-50 | operations | All existing suites still pass | Regression | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py tests/test_cumulative.py tests/test_runners.py tests/test_ecology.py tests/test_retention.py | unknown |
+| A-41 | performance | Prepared structures are shared only between identical prepare stages and their time and size are measured, not assumed | Cross-provider sharing of incompatible state; unmeasured savings | Worker cache keyed by prepare identity and data identity; timing fields | tests/test_assimilation.py SharedRepresentation | tested |
+| A-42 | verification | Nomination enumerates all admissible candidates from the catalogue and never presents wrappers as assimilations | Supplying the answer; wrapper counted as consolidation | assimilation.nominate | tests/test_assimilation.py Nomination | tested |
+| A-43 | verification | A candidate passes only with exact output equality on union, held-out and rare sets, declared latency tolerance and positive full-cost break-even | Accepting a candidate that loses competence or money | assimilation.evaluate | tests/test_assimilation.py UnionGate | tested |
+| A-44 | reliability | Publication is atomic and refuses stale evidence, concurrent publication, unvalidated candidates and hidden dependents | Partial publication; dependents left on dormant parents | transactor.commit_assimilation | tests/test_assimilation.py AtomicPublication | tested |
+| A-45 | reliability | Interrupted assimilation leaves the pre-assimilation organization intact | Crash mid-commit | Single transaction; recovery marks candidates stale | tests/test_assimilation.py InterruptedAssimilation | tested |
+| A-46 | reliability | After post-publication competence loss, recovery restores parent competence with fresh validation and refuses permits from the assimilation and from before it | Silently restoring obsolete authority | transactor.revert_assimilation | tests/test_assimilation.py Recovery | tested |
+| A-47 | maintainability | Assimilation runs through the restricted development context; parents are never archived by assimilation itself | Developmental code gaining kernel authority; retirement without assessment | devcontext.py; commit_assimilation sets DORMANT only | tests/test_assimilation.py Boundaries | tested |
+| A-48 | observability | Every nomination, evaluation, rejection reason, publication and recovery is a durable record | Unexplained acceptance or rejection | assimilation-trial records | tests/test_assimilation.py Boundaries | tested |
+| A-49 | verification | X3 runs only from a committed, digest-matched preregistration and runner | Post-hoc criteria | verify_frozen in tools/run_assimilation.py | tests/test_assimilation.py FrozenPreregistration | tested |
+| A-50 | operations | All existing suites still pass | Regression | Existing suites | tests/test_core.py tests/test_crash_recovery.py tests/test_corrective.py tests/test_cumulative.py tests/test_runners.py tests/test_ecology.py tests/test_retention.py | tested |
