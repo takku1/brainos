@@ -231,9 +231,12 @@ its weights.
   journaled, and selection observes the cost. No new runner authority is
   created; cancellation and deadlines behave as in Doc 32.
 - **Nondeterministic validation (R-02-15).** Exact output equality is the
-  wrong gate for a sampler. Admission runs each case n times and passes on
-  k-of-n agreement with the expected output (declared n, k per provider);
-  the full sample set digest is recorded as admission evidence.
+  wrong gate for a sampler, and a bare success rate is the wrong evidence.
+  Admission is empirical evidence, never guaranteed correctness: each case
+  runs n times and passes on k-of-n agreement with the expected output
+  (declared n, k per provider), and every reported rate carries its
+  approximate 95% Wilson score interval — 19 of 20 is an observed 95%
+  with an interval of roughly 76–99%, and is recorded as such.
   Membership rows flag nondeterministic providers, and every downstream
   equality check (assimilation union gate, downstream competence) uses
   the consistency form for flagged providers: agreement of the
@@ -241,6 +244,19 @@ its weights.
   equality. Assimilation nominates deterministic providers only;
   nondeterministic members are excluded from candidacy by rule, and the
   exclusion is recorded rather than scored as a failure.
+- **Admission records distinguish what was measured.** Per case: the
+  independent workload identities, the repeated stochastic draws, the
+  sampling configuration and seeds where the runtime supports them, and
+  the pinned model, tokenizer, prompt-template and runtime identities.
+  Per draw, exactly one outcome: correct, malformed, abstention, timeout
+  or failure. Abstention counts as correct only where the contract
+  declares abstain outputs; elsewhere it is incorrect. Competence is
+  estimated per context and per evaluation set — pooled success never
+  conceals weak performance in a required context (the B23 discipline
+  applied to providers). Evidence is invalidated by any change to the
+  pinned identities or sampling configuration: prior admission evidence
+  must be revalidated, checked the same way preregistration digests are
+  checked before a run, and stale evidence refuses admission.
 - **Semantic interoperability is measured (R-02-13).** Sharing a contract
   is the hypothesis, not the proof. The W2 demonstration (§7.18) records
   admission agreement, output agreement rates on a shared demand sample
@@ -256,3 +272,19 @@ its weights.
   bypass admission. Placement: adapter clients live outside
   `src/brainos` (see `implementations/`); `src/brainos` gains no
   model-framework imports or accelerator dependencies.
+- **Cost schedule and measurement split.** Registration declares the full
+  schedule: initialization (model load, one-time), inference
+  per request, transport, memory residency, accelerator usage, and the
+  kernel-observed organizational overhead. Kernel charges use the same
+  budget dimensions as any task; the schedule maps declared native units
+  onto them. Both timings are recorded per execution — adapter-reported
+  and kernel-observed — and the meter uses the kernel-observed side;
+  persistent disagreement is evidence, never silently corrected.
+- **Threat model: trusted local adapter.** Process separation alone is not
+  a hostile-code sandbox, and this design never represents it as one.
+  The adapter is trusted local code at the same privilege as the worker
+  processes: it may be buggy, nondeterministic and stateful, but it is
+  not adversarial infrastructure. Stronger isolation (sandboxing,
+  remote attestation, untrusted weights) is explicitly out of scope until
+  implemented and tested; until then, external checkpoints run only from
+  the pinned manifest on operator-controlled machines.

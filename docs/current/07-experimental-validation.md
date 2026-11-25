@@ -345,29 +345,56 @@ their full costs are visible.
 
 First contact between the deterministic core and a neural provider inside
 one organization. Provider family (per `src/models/manifest.json`):
-Qwen3-0.6B behind the §2.12 adapter, paired with a deterministic
-text-to-text primitive added to the trusted catalogue by the ordinary
-reviewed-catalogue path. Capability `text-normalize` (text to text),
-served by both members; the deterministic output is the contract's ground
-truth for agreement measurement, not a privilege.
+Qwen3-0.6B behind the §2.12 adapter. The demonstration separates three
+levels; each level is preregistered and judged on its own, and a level
+may fail without failing the others.
+
+- **Level 1: substrate interoperability.** A deterministic provider and
+  the neural provider implement the same narrowly defined text
+  transformation (whitespace normalization is acceptable). Same contract,
+  same capability `text-normalize` (text to text); the deterministic
+  output is the contract's ground truth for agreement measurement, not
+  a privilege. Establishes compatibility: interchangeable execution
+  through identical kernel paths.
+- **Level 2: asymmetric competence.** Both providers implement the same
+  functional contract but may hold different context-specific
+  strengths: natural-language computational requests lowered into a
+  typed intermediate representation
+  (`{"operation": ..., "values": [...]}` plus contract-declared
+  abstention outputs), validated deterministically for schema and
+  semantics, then executed by existing deterministic computational
+  providers. Ground truth is generated from the underlying operation
+  before the request is rendered, so neither provider judges its own
+  correctness; canonical and irregular formulations test whether the
+  neural provider earns a niche the deterministic parser misses. These
+  are hypotheses, not assumptions about Qwen's competence.
+- **Level 3: heterogeneous cooperation.** Neural and deterministic
+  providers contribute distinct abilities toward a shared objective:
+  interpretation (neural) → structural validation (deterministic) →
+  computation (deterministic). The level-2 IR and validators are the
+  composition substrate; the question is whether the organization
+  routes, checks and executes better than either substrate alone.
 
 Design constraints, fixed before any preregistration:
 
-- **Demand stream.** A fixed seed set of normalization demands (declared
-  N, declared seeds); the adapter and the primitive face the identical
-  stream. Nondeterminism is the adapter's property, never a stream excuse:
+- **Demand stream.** A fixed seed set of demands per level (declared N,
+  declared seeds); every provider faces the identical stream.
+  Nondeterminism is the adapter's property, never a stream excuse:
   the stream is frozen.
-- **Live organization.** Contextual selection over both members, meter
+- **Live organization.** Contextual selection over the members, meter
   windows per phase, net organizational value against the §20.9 ledger
   (all six components; adapter spend charged through the same holdings
   as any task). Text schema has no trusted featurizer, so retention
   assessment refuses by design and no lifecycle transitions are
   attempted; substitution is measured by the emergence verdict instead.
 - **Negative results are expected and valid.** If the adapter cannot meet
-  the contract, or costs more than it returns, that bounds where neural
+  a contract, or costs more than it returns, that bounds where neural
   providers pay — it does not fail the demonstration.
+- **No tuning against confirmatory results.** Once a level's
+  preregistration is frozen, Qwen, prompts, workloads and thresholds are
+  fixed; confirmatory outcomes are recorded, never optimized.
 
-Acceptance criteria (all must hold; a preregistration freezes the numbers):
+Acceptance criteria (all must hold at each attempted level; a preregistration freezes the numbers):
 
 - **A1 serving.** The adapter serves demands through member tasks with
   outputs in its recorded k-of-n agreement set on the declared sample.
