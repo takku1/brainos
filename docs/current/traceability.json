@@ -1305,6 +1305,18 @@
    ],
    "verified": "full"
   },
+  "R-25-08": {
+   "status": "partial",
+   "code": [
+    "src/brainos/development_policy.py::default_bands",
+    "src/brainos/development_policy.py::build_observation"
+   ],
+   "tests": [
+    "tests/test_development_policy.py::TestBands",
+    "tests/test_development_policy.py::TestObservation"
+   ],
+   "gap": "bands and observation unit-tested; live-loop wiring open"
+  },
   "R-07-12": {
    "status": "specified",
    "tests": [
@@ -1314,6 +1326,21 @@
     "tests/test_heterogeneous.py::FreezeManifest"
    ],
    "gap": "confirmatory execution blocked pending review; runner conformance only"
+  },
+  "R-07-13": {
+   "status": "partial",
+   "code": [
+    "src/brainos/development_policy.py::DevelopmentalPolicy",
+    "src/brainos/development_policy.py::NoopPolicy",
+    "src/brainos/development_policy.py::ViabilityPolicy",
+    "src/brainos/development_policy.py::decide",
+    "src/brainos/development_policy.py::record_decision"
+   ],
+   "tests": [
+    "tests/test_development_policy.py::TestPolicy",
+    "tests/test_development_policy.py::TestDecisionRecord"
+   ],
+   "gap": "policy interface unit-tested; live-loop wiring and persistent-environment demo open"
   }
  }
 }

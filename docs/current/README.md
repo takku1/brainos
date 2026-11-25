@@ -49,6 +49,7 @@ necessarily a neural network.
 | 30 | [Evaluation Grounding](30-evaluation-grounding.md) | Trust termination, distance-to-grounding | research |
 | 31 | [Requirement Register](31-architectural-audit.md) | Inventory, traceability, queued fixes, closure plan, gates | implemented |
 | 32 | [Core Semantics (Phase 1B)](32-core-semantics.md) | Task execution, scoped authority, lifecycles, replay, trusted enforcement, crash/effect recovery | partial |
+| 33 | [Autonomous Developmental Runtime](33-autonomous-developmental-runtime.md) | Persistent-organization integration design: mechanism inventory, replaceable coordination policy, homeostatic regulation, environment, live observatory, safety | specified |
 
 The Status column is checked, not asserted. It derives from the requirement rows
 each document owns:

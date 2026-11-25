@@ -4,22 +4,27 @@
 
 W1 is closed: the emergence meter, the organizational-capability test and
 the net-value ledger are implemented and were exercised in the X4
-continuous ecosystem. The next major workstream is W2 (real-ecosystem
-integration); its adapter design note is due before any implementation.
-Not full Core conformance; not independently reviewed.
+continuous ecosystem. W2 L2 implementation and conformance testing are
+done; the confirmatory experiment is corrected (Amendment-1), re-frozen
+and blocked pending review — no execution until approved. Track B
+(autonomous developmental runtime) is specified in Doc 33 with its first
+three register rows created; reconciliation with the live observatory
+effort and bounded ADR implementation are next. Not full Core
+conformance; not independently reviewed.
 
 ## Active focus
 
-W2: bring one external provider family (frozen checkpoints staged in
-`src/models/`) behind the existing contracts, with nondeterministic
-validation. The adapter design is specified (Doc 02 §2.12, Doc 07 §7.18,
-R-02-14, R-02-15, R-07-12); the external boundary, registration,
-execution, k-of-n validation and heterogeneous feasibility are
-implemented and tested (R-02-14, R-02-15) — no separate neural kernel
-and no special authority rules for language models. The Qwen probe ran
-disclosed and non-confirmatory (admission passed, irregular demand
-served where the deterministic parser refused); the L2 confirmatory
-prereg is frozen and under review — no execution until approved.
+Two tracks, experimentally isolated. Track A (scientific validation):
+B31-B37 corrected with mock-only/synthetic reproductions and 48
+regression tests; the frozen question, workload, seeds, provider
+configuration, prompt and admission thresholds are unchanged
+(Amendment-1 records the accounting and evaluation corrections only).
+Track B (living organization): Doc 33 specifies the autonomous
+developmental runtime as an integration milestone, not a new subsystem;
+R-25-08 (homeostatic bands), R-02-16 (read-only projector) and R-07-13
+(persistent environment) are created as specified rows. The Qwen probe
+ran disclosed and non-confirmatory (admission passed, irregular demand
+served where the deterministic parser refused).
 Carried forward:
 demand-triggered recruitment, incremental retention assessment, kernel
 overhead, non-vacuous assimilation validation, organizational fragility,
@@ -29,8 +34,8 @@ initialized adaptive controls.
 ## Architecture summary
 
 `docs/current` is one consolidated specification with each rule owned by
-one document. The Doc 31 register is the source of truth — register: 218
-requirements (implemented 46, partial 70, specified 87, documentary 15),
+one document. The Doc 31 register is the source of truth — register: 221
+requirements (implemented 46, partial 72, specified 88, documentary 15),
 derived from `docs/current/traceability.json`, never copied from older
 status text. `src/brainos` implements a standard-library Python runtime:
 durable SQLite authority, scoped permits and epochs, transactor
@@ -63,10 +68,11 @@ specialist dormant in P1.
 | X3 | Correct rejection, state reduction and recovery held. The acceptance rule was unsound (4 incorrect acceptances) and the economics were undercounted. |
 | X4 | 5 seeds, all hypotheses pass. Developing NOV > fixed on every seed; adaptive > developing on every seed (descriptive, declared rates). Coverage 1.0, regret 0.0, retention 1.0 throughout. Verdicts: arith fragile, lookup redundant. Zero assimilation nominations after P1; P1 specialist dormancy on thin samples. |
 
-243 runtime tests pass, drift check reports zero errors, document checks
-19/19 and negatives 15/15 (verified 2026-11-25 with the W2 boundary,
-registration, execution and admission work; test counts are
-point-in-time, register counts are derived).
+291 runtime tests pass, drift check reports zero errors, document checks
+19/19, negatives 15/15, L1 harness 17/17 and dependency closure clean
+(verified 2026-11-25 with the W2 runner corrections B31-B37, Amendment-1
+and re-freeze; test counts are point-in-time, register counts are
+derived).
 
 ## Key decisions
 
@@ -91,6 +97,18 @@ point-in-time, register counts are derived).
   preregistrations. Results are committed separately and never edited.
 - Developmental code receives a restricted context; the kernel verifies
   every lifecycle, publication and recovery request.
+- Track A exit (W2 L2 corrections): B31 arm attribution, B32
+  completeness with explicit nonattainment, B33 failed-work accounting
+  (kernel records validation spend on rejected candidates), B34 economic
+  boundary with coordinated calibration charge and held-out oracle, B35
+  strict IR, B36 comparative-evidence rule, B37 freeze manifest binding
+  source, model, prompt, sampling, admission, seeds and runtime versions.
+  Amendment-1 preserves the 695cfb7 freeze in history; confirmatory
+  execution remains blocked pending review.
+- ADR specified (Doc 33), not implemented: R-25-08, R-02-16, R-07-13
+  created as specified rows with ownership and acceptance criteria; the
+  live observatory effort is adopted as the ADR baseline, not a
+  competing runtime. W3 keeps formal stability results.
 
 ## Deprecated / legacy
 
@@ -103,5 +121,6 @@ point-in-time, register counts are derived).
 
 ## Last updated
 
-2026-11-25 (W2 D1-D5 feasibility: external execution, k-of-n admission,
-heterogeneous demo and Qwen probe; confirmatory prereg pending)
+2026-11-25 (Track A: B31-B37 corrected, Amendment-1, re-freeze eb44620,
+291 tests green, confirmatory execution blocked; Track B: Doc 33
+specified, R-25-08/R-02-16/R-07-13 created, live/ reconciliation next)
