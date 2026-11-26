@@ -36,7 +36,8 @@ from brainos.assimilation import AssimilationSearch
 from brainos.development import CapabilityDemand, CompositionSearch
 from brainos.devcontext import development_context
 from brainos.development_policy import (PolicyState, build_observation, ViabilityPolicy,
-                                        record_decision, full_snapshot)
+                                        default_bands, classify_quiescence,
+                                        construction_lineage, record_decision, full_snapshot)
 from brainos.ecology import EcologyPolicy
 
 HERE = Path(__file__).resolve().parent
@@ -156,6 +157,19 @@ def observatory_extension():
                           available=e.get("available"), spent=e.get("spent"),
                           burn_per_step=e.get("burn_per_step"))
                   for b, e in detail.get("runway", {}).items()}
+        try:
+            quiescence, quiescence_reasons = classify_quiescence(
+                detail, STATE.get("policy_state"), default_bands(),
+                recovering=bool(STATE.get("recovering")))
+        except Exception:
+            quiescence, quiescence_reasons = "unknown", ["classifier unavailable"]
+        lineage = {}
+        for a in STATE.get("acquisitions", [])[-20:]:
+            try:
+                lineage[a.get("provider", "")[:12]] = construction_lineage(
+                    STATE["ctx"], a.get("provider", ""))
+            except Exception:
+                pass
         churn = detail.get("churn", {})
         nov = STATE.get("nov", {})
         acquisitions = [dict(kind=a.get("kind"),
@@ -172,7 +186,9 @@ def observatory_extension():
                                        target=d.get("target"), disposition=disp))
     return _jsonable(dict(competence=competence, retention=retention, runway=runway,
                           churn=churn, nov=nov, acquisitions=acquisitions,
-                          unresolved=unresolved[-20:]))
+                          unresolved=unresolved[-20:],
+                          quiescence=dict(label=quiescence, reasons=quiescence_reasons),
+                          lineage=lineage))
 
 
 def emit(record):
@@ -401,7 +417,35 @@ def execute_decision(rt, tick, decision, observation):
                 return "abstained: suspend lacks verified assessment"
             rt.population.make_dormant(target, provider, assessment=aid)
             return "executed: dormant per verified assessment"
-        return "recorded"
+        if action == "retire":
+            evidence = decision.get("evidence", {})
+            provider, aid = evidence.get("retired"), evidence.get("assessment")
+            if not provider or not aid:
+                return "abstained: retire lacks verified redundant assessment"
+            rt.population.retire(target, provider, assessment=aid,
+                                 reason=str(decision.get("reason", ""))[:200])
+            return "executed: retired per verified assessment"
+        if action == "regenerate":
+            provider = (decision.get("evidence", {}) or {}).get("regenerated")
+            if not provider:
+                return "abstained: regenerate names no archived member"
+            rt.population.restore(target, provider, budget=STATE["dev"],
+                                  principal="dev")
+            return "executed: regenerated %s" % provider[:12]
+        if action == "assimilate":
+            parents = (decision.get("evidence", {}) or {}).get("parents", [])
+            servable = set(active_members(rt, target))
+            parents = [p for p in parents if p.get("provider") in servable]
+            if len(parents) < 2:
+                return ("abstained: fewer than two servable parents; blocked "
+                        "members cannot be nominated")
+            search = AssimilationSearch(rt)
+            candidates, controls = search.nominate(parents, max_candidates=8)
+            return ("surfaced: %d candidates, %d controls; awaiting selection "
+                    "record, not published" % (len(candidates), len(controls)))
+        if action in ("defer", "noop", "continue"):
+            return "recorded"
+        return "abstained: unsupported action %s" % action
     except Refused as exc:
         if "overdraft" in str(exc) or "budget" in str(exc).lower():
             with LOCK:

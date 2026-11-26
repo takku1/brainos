@@ -75,6 +75,9 @@
   </div>
   <h2>Unresolved deficiencies</h2>
   <div class="card"><ul id="unres"></ul></div>
+  <h2>Quiescence and lineage</h2>
+  <div class="card"><div id="quiesce" style="margin-bottom:8px">awaiting classification…</div>
+    <table id="lineage"><tr><th>acquired provider</th><th>depth</th><th>ancestors</th></tr></table></div>
   <h2>Environment pressure</h2>
   <div class="card"><div id="phasebar">
     <button data-ph="auto">auto cycle</button>
@@ -147,6 +150,20 @@ function renderSnapshot(r, tick) {
     uh += "<li>#" + un[i].tick + " " + un[i].action + " " + (un[i].target || "") +
       ": " + (un[i].disposition || "") + "</li>";
   document.getElementById("unres").innerHTML = uh || "<li>none</li>";
+  var q = r.quiescence || {};
+  document.getElementById("quiesce").textContent =
+    (q.label || "unknown") + (q.reasons ? " — " + q.reasons.join("; ") : "");
+  var lin = r.lineage || {}, lh = "";
+  for (var lp in lin) {
+    var chain = lin[lp] || [], depth = 0, anc = [];
+    for (var i = 0; i < chain.length; i++) {
+      if (chain[i][1] > depth) depth = chain[i][1];
+      if (i > 0) anc.push(String(chain[i][0]).slice(0, 10));
+    }
+    lh += "<tr><td>" + lp + "</td><td>" + depth + "</td><td>" + anc.join(", ") + "</td></tr>";
+  }
+  document.getElementById("lineage").innerHTML =
+    "<tr><th>acquired provider</th><th>depth</th><th>ancestors</th></tr>" + (lh || "<tr><td colspan='3'>none</td></tr>");
   var states = r.states || ["indeterminate"], html = "";
   for (var i = 0; i < states.length; i++) {
     var cls = BAD[states[i]] ? "state bad" : (WARN[states[i]] ? "state warn" :

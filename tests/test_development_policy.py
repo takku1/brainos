@@ -8,6 +8,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 from brainos import Refused, Runtime
 from brainos.devcontext import development_context
@@ -457,6 +458,114 @@ class TestHomeostasis(PolicyHarness):
         self.assertTrue(loaded.flag(("runway", "b")))
         self.assertEqual(loaded.actions, [(3, "investigate", "c")])
         self.assertEqual(loaded.snapshots, {("construct", "c"): ["m1"]})
+
+
+class TestQuiescence(unittest.TestCase):
+    """B43/F: a high noop rate never establishes health by itself."""
+
+    def obs(self, **over):
+        base = dict(capabilities={
+            "c": dict(name="c",
+                      members=dict(ACTIVE=1, DORMANT=0, ARCHIVED=0, BLOCKED=0,
+                                   status="observed", source="m", records=["m1"],
+                                   snapshot=["m1"]),
+                      competence=dict(status="observed", n=5, thin=False,
+                                      kernel_success_rate=1.0, correct_rate=1.0,
+                                      attested=5, per_context={}, evidence=["t"]),
+                      retention=dict(status="observed", count=1, providers={
+                          "p": dict(state="ACTIVE", verdict="retain",
+                                    freshness="fresh", age_steps=2, assessment="a")}),
+                      demanded=dict(status="observed", value=True, contexts=None))},
+            runway={"b": dict(status="observed", available=100, spent=10,
+                              burn_per_step=2, periods=50, source="s")},
+            churn=dict(status="estimated"), transitions=[], step=10,
+            recovery=dict(status="unknown", reason="unseen"))
+        base.update(over)
+        return base
+
+    def test_healthy_requires_everything_known(self):
+        label, reasons = policy.classify_quiescence(
+            self.obs(), policy.PolicyState(), policy.default_bands())
+        self.assertEqual(label, "healthy-quiescence")
+
+    def test_unknown_runway_blocks_health(self):
+        obs = self.obs()
+        obs["runway"] = {"b": dict(status="unknown", available=100, spent=5,
+                                   reason="no burn yet")}
+        label, reasons = policy.classify_quiescence(
+            obs, policy.PolicyState(), policy.default_bands())
+        self.assertEqual(label, "unknown")
+        self.assertTrue(any("runway" in r for r in reasons))
+
+    def test_blocked_members_are_blocked_adaptation(self):
+        obs = self.obs()
+        obs["capabilities"]["c"]["members"]["BLOCKED"] = 1
+        label, _ = policy.classify_quiescence(
+            obs, policy.PolicyState(), policy.default_bands())
+        self.assertEqual(label, "blocked-adaptation")
+
+    def test_unserved_without_attempt_is_pressure(self):
+        obs = self.obs()
+        obs["capabilities"]["c"]["members"] = dict(
+            ACTIVE=0, DORMANT=0, ARCHIVED=0, BLOCKED=0, status="observed",
+            source="m", records=[], snapshot=[])
+        label, _ = policy.classify_quiescence(
+            obs, policy.PolicyState(), policy.default_bands())
+        self.assertEqual(label, "unresolved-pressure")
+
+    def test_unserved_after_construct_is_exhausted(self):
+        obs = self.obs()
+        obs["capabilities"]["c"]["members"] = dict(
+            ACTIVE=0, DORMANT=0, ARCHIVED=0, BLOCKED=0, status="observed",
+            source="m", records=[], snapshot=[])
+        state = policy.PolicyState()
+        state.log_action("construct", "c", 5)
+        label, _ = policy.classify_quiescence(obs, state, policy.default_bands())
+        self.assertEqual(label, "exhausted-search")
+
+    def test_poor_competence_is_pressure(self):
+        obs = self.obs()
+        obs["capabilities"]["c"]["competence"] = dict(
+            status="observed", n=5, thin=False, kernel_success_rate=0.2,
+            correct_rate=0.2, attested=5, per_context={}, evidence=["t"])
+        label, _ = policy.classify_quiescence(
+            obs, policy.PolicyState(), policy.default_bands())
+        self.assertEqual(label, "unresolved-pressure")
+
+    def test_low_runway_is_deferral(self):
+        obs = self.obs()
+        obs["runway"] = {"b": dict(status="observed", available=10, spent=90,
+                                    burn_per_step=30, periods=0.33, source="s")}
+        label, _ = policy.classify_quiescence(
+            obs, policy.PolicyState(), policy.default_bands())
+        self.assertEqual(label, "resource-deferral")
+
+    def test_recovering_flag_wins(self):
+        label, _ = policy.classify_quiescence(
+            self.obs(), policy.PolicyState(), policy.default_bands(),
+            recovering=True)
+        self.assertEqual(label, "recovery")
+
+    def test_lineage_counts_composite_depth(self):
+        specs = {"g2": dict(kind="graph", transitive_dependencies=["g1", "prim"]),
+                 "g1": dict(kind="graph", transitive_dependencies=["prim"]),
+                 "prim": dict(kind="primitive", transitive_dependencies=[])}
+        ctx = SimpleNamespace(resolve=lambda pid: specs[pid])
+        chain = dict(policy.construction_lineage(ctx, "g2"))
+        self.assertEqual(chain["g2"], 1)
+        self.assertEqual(chain["g1"], 0)
+
+    def test_lineage_cuts_cycles(self):
+        specs = {"a": dict(kind="graph", transitive_dependencies=["b"]),
+                 "b": dict(kind="graph", transitive_dependencies=["a"])}
+        ctx = SimpleNamespace(resolve=lambda pid: specs[pid])
+        chain = policy.construction_lineage(ctx, "a")
+        self.assertEqual([p for p, _ in chain], ["a", "b"])
+
+    def test_lineage_unknown_provider_is_depth_zero(self):
+        ctx = SimpleNamespace(resolve=lambda pid: (_ for _ in ()).throw(
+            __import__("brainos").Refused("nope")))
+        self.assertEqual(policy.construction_lineage(ctx, "ghost"), [("ghost", 0)])
 
 
 if __name__ == "__main__":

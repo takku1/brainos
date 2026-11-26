@@ -9,7 +9,7 @@
   "src/brainos/contracts.py": "93d10fb45e0ed40d07a6f0f5cfe3c7f385e2a2fdd77b4e2586a898940f8b069b",
   "src/brainos/devcontext.py": "31f80171e7affdad83ef19ec18e54c7238bb8d4f8f87daa01594c9d874bb5d4f",
   "src/brainos/development.py": "329e20d0ae8ce3c99d8f211391dbcca650aae38906e191e8005de83f5150fbe2",
-  "src/brainos/development_policy.py": "3bcaff0dadfd0f77a72714323b4375f1be967a2de962d28dbe6ad549bceb15b4",
+  "src/brainos/development_policy.py": "241f14694eaebdb48dc640d28827790f1383454713365e5ee112056d8588a86c",
   "src/brainos/ecology.py": "c0e7777668a42837be6caae82c7a4dc905fdba6b8e1732724656f3ef0d63fab5",
   "src/brainos/effects.py": "a577df26f28222ed8e90348137ed4a5a40dfb8ca096e15985600bc2a8ac10018",
   "src/brainos/emergence.py": "935b74f6da93903cd968f25724912bf55868c9bb80be5ee1cd54d620809f1fb6",

@@ -82,12 +82,12 @@ specialist dormant in P1.
 | X3 | Correct rejection, state reduction and recovery held. The acceptance rule was unsound (4 incorrect acceptances) and the economics were undercounted. |
 | X4 | 5 seeds, all hypotheses pass. Developing NOV > fixed on every seed; adaptive > developing on every seed (descriptive, declared rates). Coverage 1.0, regret 0.0, retention 1.0 throughout. Verdicts: arith fragile, lookup redundant. Zero assimilation nominations after P1; P1 specialist dormancy on thin samples. |
 
-337 runtime tests pass, drift check reports zero errors, document checks
+360 runtime tests pass, drift check reports zero errors, document checks
 19/19, negatives 15/15, L1 harness 17/17 and dependency closure clean
 (verified 2026-11-25 with the W2 clearance corrections, confirmatory
-seeds 21-23, the ADR policy/demo work and the live observatory
-unification; test counts are point-in-time, register counts are
-derived).
+seeds 21-23, the ADR policy/demo work, the live observatory
+unification, and the W3 investigation design; test counts are
+point-in-time, register counts are derived).
 
 ## Key decisions
 
@@ -126,10 +126,14 @@ derived).
   competing runtime. W3 keeps formal stability results.
 - W2 L2 confirmatory (f950f91): executed in a pinned worktree after
   clearance; H1-H5 pass on all seeds, verdict redundant (9/100 budget),
-  coordinated > fixed on held-out demands every seed, neural cost
-  premium 30-40x. Fixed NOV +17.6/seed; neural/coordinated deeply
-  negative at declared rates. Original 695cfb7 freeze preserved in
-  history; results embed head 35d5182 and preregistration digest.
+  coordinated > fixed on held-out demands every seed, neural compute
+  premium ~2.6-2.8e5x per served demand (H5: qwen_mean_ns/det_mean_ns =
+  ~3.7e9/~1.4e4 ns, seeds 21-23). Correction 2026-11-25: an earlier
+  status line reported "30-40x" from no record; that figure is
+  withdrawn — nothing in the seed files supports it. Fixed NOV
+  +17.6/seed; neural/coordinated deeply negative at declared rates.
+  Original 695cfb7 freeze preserved in history; results embed head
+  35d5182 and preregistration digest.
 - ADR coordination core (B38-B43): hysteresis flags and cooldowns are
   stateful with member-snapshot comparison (blocked members count as a
   changed world); burn measured per step, never cumulative;
@@ -155,11 +159,12 @@ derived).
 2026-11-25 (Track A complete: clearance 35d5182, confirmatory f950f91
 with H1-H5 on all seeds; Track B: B38-B43 policy upgrades, ADR demo
 with disturbance-recovery arc, unified live observatory on the ADR
-policy with extended panels and init/resume/--reset, 337 tests green;
-10-min continuous run: 638 decisions over 630 ticks across a restart,
-~98% quiescence, redundant-verdict dormancy, intact journal; 1-hour run:
-3600 decisions, 99.7% noop, full lifecycle, journal intact, 36MB store;
-extended run (~10k ticks/~2h wall, terminated early by scope decision,
-not by failure): 10273 decisions with 7 investigates, 1 suspend and 4
-defers, development concentrated in the first regime cycle then
-sustained quiescence, 101MB store (~10KB/tick))
+policy with extended panels and init/resume/--reset, quiescence and
+lineage instrumentation, executor fail-closes, 360 tests green;
+10-min run (638 decisions, restart preserved), 1-hour run (3600
+decisions, 99.7% noop) and extended run (10273 decisions, 7
+investigates, development confined to the first regime cycle, then
+sustained quiescence; journal intact, ~10KB/tick); W3 program opened
+with Doc 34 (definitions, perturbation design, environment proposal,
+lifecycle gaps, journal-growth design, history inventory) and a DRAFT
+W3 preregistration — no confirmatory W3 execution authorized)

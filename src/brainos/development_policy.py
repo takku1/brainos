@@ -674,6 +674,100 @@ class ViabilityPolicy(DevelopmentalPolicy):
         return uncovered or ["none"]
 
 
+def classify_quiescence(observation, state, bands, recovering=False):
+    """Distinguish healthy quiescence from look-alikes (B43, F).
+
+    Labels: healthy-quiescence, unresolved-pressure, blocked-adaptation,
+    exhausted-search, resource-deferral, recovery, unknown. A high noop
+    rate alone never establishes health: every unknown or adverse
+    variable is named in the reasons.
+    """
+    caps = observation.get("capabilities", {})
+    demanded = [c for c, r in caps.items() if r.get("demanded", {}).get("value")]
+    step = observation.get("step")
+    cooldown = bands["competence"]["cooldown_steps"]
+    if recovering:
+        return ("recovery", ["explicit recovery flag set"])
+    blocked = [c for c in demanded
+               if observation["capabilities"][c]["members"].get("BLOCKED", 0) > 0]
+    if blocked:
+        return ("blocked-adaptation",
+                ["blocked members on %s" % caps[c].get("name", c) for c in blocked])
+    for cap in demanded:
+        members = caps[cap]["members"]
+        if members.get("ACTIVE", 0) <= 0 and members.get("DORMANT", 0) <= 0:
+            if (state is not None and step is not None
+                    and state.recent_action("construct", cap, step, cooldown)):
+                return ("exhausted-search",
+                        ["construction attempted for %s without result"
+                         % caps[cap].get("name", cap)])
+            return ("unresolved-pressure",
+                    ["no serving member for %s" % caps[cap].get("name", cap)])
+    for cap in demanded:
+        comp = caps[cap].get("competence", {})
+        if comp.get("status") != "observed" or comp.get("thin") \
+                or comp.get("correct_rate") is None:
+            return ("unresolved-pressure",
+                    ["competence unconfirmed for %s" % caps[cap].get("name", cap)])
+        if comp["correct_rate"] < bands["competence"]["floor"] \
+                or comp["kernel_success_rate"] < bands["competence"]["floor"]:
+            return ("unresolved-pressure",
+                    ["poor serving competence on %s" % caps[cap].get("name", cap)])
+    for budget, entry in observation.get("runway", {}).items():
+        if entry.get("status") == "observed" \
+                and entry.get("periods", float("inf")) < bands["budget_runway"]["enter"]:
+            return ("resource-deferral", ["runway below floor"])
+    unknowns = []
+    for cap in demanded:
+        ret = caps[cap].get("retention", {})
+        if ret.get("status") != "observed":
+            unknowns.append("retention unreadable on %s" % caps[cap].get("name", cap))
+            continue
+        for provider, entry in ret.get("providers", {}).items():
+            if entry.get("freshness") in ("unknown", "stale", "implied-youth"):
+                unknowns.append("retention %s on %s" % (
+                    entry.get("freshness"), caps[cap].get("name", cap)))
+                break
+    for budget, entry in observation.get("runway", {}).items():
+        if entry.get("status") != "observed":
+            unknowns.append("runway unassessed")
+            break
+    if unknowns:
+        return ("unknown", unknowns)
+    return ("healthy-quiescence", ["all assessed variables within bounds"])
+
+
+def construction_lineage(ctx, provider, _seen=None):
+    """Lineage of a constructed provider from kernel records: a chain of
+    (provider_id, depth) from the provider down through constructed
+    ancestors. Primitives terminate the chain. Cycles are cut, never
+    followed twice."""
+    _seen = _seen if _seen is not None else set()
+    if provider in _seen:
+        return []
+    _seen.add(provider)
+    try:
+        spec = ctx.resolve(provider)
+    except Refused:
+        return [(provider, 0)]
+    chain = [(provider, 0)]
+    deps = [d for d in spec.get("transitive_dependencies", []) if d != provider]
+    best = 0
+    for dep in deps:
+        try:
+            kind = ctx.resolve(dep).get("kind")
+        except Refused:
+            continue
+        if kind != "graph":
+            continue
+        sub = construction_lineage(ctx, dep, _seen)
+        if sub:
+            best = max(best, sub[0][1] + 1)
+            chain.extend(sub)
+    chain[0] = (provider, best)
+    return chain
+
+
 def record_decision(ctx, decision, key):
     """Journal one policy decision through the restricted context.
 
