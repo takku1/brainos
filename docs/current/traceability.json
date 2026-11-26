@@ -369,9 +369,11 @@
     "src/brainos/development.py::CompositionSearch.acquire"
    ],
    "tests": [
-    "tests/test_corrective.py::DevelopmentalCompilation"
+    "tests/test_corrective.py::DevelopmentalCompilation",
+    "tests/test_expressivity.py::TestSupportedChains",
+    "tests/test_expressivity.py::TestGapRecords"
    ],
-   "gap": "composition from a trusted catalogue only"
+   "gap": "composition from a trusted catalogue only; B46 audit: unary chains and cumulative reuse witnessed, join/mean recorded as unrepresentable without multi-input nodes and division"
   },
   "R-09-FUSE": {
    "status": "partial",
@@ -1335,16 +1337,25 @@
     "src/brainos/development_policy.py::NoopPolicy",
     "src/brainos/development_policy.py::ViabilityPolicy",
     "src/brainos/development_policy.py::decide",
-    "src/brainos/development_policy.py::record_decision"
+    "src/brainos/development_policy.py::record_decision",
+    "src/brainos/development_policy.py::classify_search_outcome",
+    "src/brainos/development_policy.py::classify_quiescence",
+    "src/brainos/development_policy.py::PolicyState.note_attempt",
+    "src/brainos/development_policy.py::PolicyState.note_proposal",
+    "src/brainos/development_policy.py::PolicyState.resolve_pending",
+    "src/brainos/development_policy.py::succession_maps"
    ],
    "tests": [
     "tests/test_development_policy.py::TestPolicy",
     "tests/test_development_policy.py::TestDecisionRecord",
     "tests/test_development_policy.py::TestHomeostasis",
     "tests/test_development_policy.py::TestQuiescence",
+    "tests/test_development_policy.py::TestSearchOutcomes",
+    "tests/test_development_policy.py::TestLifecycleTriggers",
+    "tests/test_development_policy.py::TestSuccession",
     "tests/test_observatory.py::TestExecutorDecisions"
    ],
-   "gap": "policy interface unit-tested; live-loop wiring and persistent-environment demo open"
+   "gap": "policy interface unit-tested incl. B44-B48 triggers and fail-closed executors; live-loop wiring and persistent-environment demo open"
   }
  }
 }

@@ -31,7 +31,9 @@ from brainos.assimilation import AssimilationSearch  # noqa: E402
 from brainos.development import CapabilityDemand, CompositionSearch  # noqa: E402
 from brainos.devcontext import development_context  # noqa: E402
 from brainos.development_policy import (PolicyState, build_observation,  # noqa: E402
-                                        ViabilityPolicy, record_decision)
+                                        ViabilityPolicy, record_decision,
+                                        classify_search_outcome,
+                                        succession_maps)
 from brainos.ecology import EcologyPolicy  # noqa: E402
 
 MOCK = str(ROOT / "implementations" / "mock_adapter.py")
@@ -270,6 +272,10 @@ class Demo:
                                    disposition=disposition))
         self.state.log_action(decision["action"], decision.get("target"),
                               self.tick)
+        if decision.get("action") == "construct":
+            category, _ = classify_search_outcome(reason=disposition)
+            self.state.note_attempt("construct", decision.get("target"),
+                                    self.tick, disposition, category)
         ev = decision.get("evidence", {})
         comp = ev.get("competence", {})
         if comp.get("evidence"):
@@ -292,6 +298,18 @@ class Demo:
             members = report.get("members", {})
             self.state.snapshots[(decision["action"], decision.get("target"))] = \
                 sorted(members.get("snapshot", members.get("records", [])))
+            current = succession_maps(observation)
+            for link in self.state.resolve_pending(self.tick, current):
+                self.journal("succession",
+                             "%s %s proposed@%d observed@%d: +%s -%s "
+                             "(temporal succession, not causation)"
+                             % (link["action"], self.kind_of(link["target"]),
+                                link["proposed_step"], link["observed_step"],
+                                link["added"], link["removed"]),
+                             succession=link)
+            self.state.note_proposal(decision["action"],
+                                     decision.get("target"), self.tick,
+                                     current.get(decision.get("target"), []))
 
     # -- execution through kernel gates --------------------------------
     def active_members(self, cap):
@@ -409,7 +427,36 @@ class Demo:
                 if provider is not None:
                     self.journal("acquired", "%s <- %s" % (kind, provider[:12]))
                 return disposition
-            return "recorded"
+            if action == "retire":
+                evidence = decision.get("evidence", {})
+                retired, aid = evidence.get("retired"), evidence.get("assessment")
+                if not retired or not aid:
+                    return "abstained: retire lacks verified redundant assessment"
+                rt.population.retire(target, retired, assessment=aid,
+                                     reason=str(decision.get("reason", ""))[:200])
+                return "executed: retired per verified assessment"
+            if action == "regenerate":
+                provider = (decision.get("evidence", {}) or {}).get("regenerated")
+                if not provider:
+                    return "abstained: regenerate names no archived member"
+                rt.population.restore(target, provider,
+                                      budget=self.dev, principal="dev")
+                return "executed: regenerated %s" % provider[:12]
+            if action == "assimilate":
+                from brainos.assimilation import AssimilationSearch
+                parents = (decision.get("evidence", {}) or {}).get("parents", [])
+                servable = set(self.active_members(cap))
+                parents = [p for p in parents if p.get("provider") in servable]
+                if len(parents) < 2:
+                    return ("abstained: fewer than two servable parents; blocked "
+                            "members cannot be nominated")
+                search = AssimilationSearch(rt)
+                candidates, controls = search.nominate(parents, max_candidates=8)
+                return ("surfaced: %d candidates, %d controls; awaiting selection "
+                        "record, not published" % (len(candidates), len(controls)))
+            if action in ("defer", "noop", "continue"):
+                return "recorded"
+            return "abstained: unsupported action %s" % action
         except Refused as exc:
             return "refused: %s" % str(exc)[:160]
         except Exception as exc:

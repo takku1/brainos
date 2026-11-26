@@ -486,7 +486,7 @@ class TestQuiescence(unittest.TestCase):
     def test_healthy_requires_everything_known(self):
         label, reasons = policy.classify_quiescence(
             self.obs(), policy.PolicyState(), policy.default_bands())
-        self.assertEqual(label, "healthy-quiescence")
+        self.assertEqual(label, "verified-healthy")
 
     def test_unknown_runway_blocks_health(self):
         obs = self.obs()
@@ -497,12 +497,14 @@ class TestQuiescence(unittest.TestCase):
         self.assertEqual(label, "unknown")
         self.assertTrue(any("runway" in r for r in reasons))
 
-    def test_blocked_members_are_blocked_adaptation(self):
+    def test_blocked_members_with_no_serve_are_blocked_inactivity(self):
         obs = self.obs()
-        obs["capabilities"]["c"]["members"]["BLOCKED"] = 1
+        obs["capabilities"]["c"]["members"] = dict(
+            ACTIVE=0, DORMANT=0, ARCHIVED=0, BLOCKED=1, status="observed",
+            source="m", records=[], snapshot=[])
         label, _ = policy.classify_quiescence(
             obs, policy.PolicyState(), policy.default_bands())
-        self.assertEqual(label, "blocked-adaptation")
+        self.assertEqual(label, "blocked-inactivity")
 
     def test_unserved_without_attempt_is_pressure(self):
         obs = self.obs()
@@ -513,15 +515,69 @@ class TestQuiescence(unittest.TestCase):
             obs, policy.PolicyState(), policy.default_bands())
         self.assertEqual(label, "unresolved-pressure")
 
-    def test_unserved_after_construct_is_exhausted(self):
+    def test_unserved_after_construct_without_coverage_is_pressure(self):
+        # B45: a failed attempt alone never proves exhaustion.
         obs = self.obs()
         obs["capabilities"]["c"]["members"] = dict(
             ACTIVE=0, DORMANT=0, ARCHIVED=0, BLOCKED=0, status="observed",
             source="m", records=[], snapshot=[])
         state = policy.PolicyState()
         state.log_action("construct", "c", 5)
+        state.note_attempt("construct", "c", 5, "abstained: NON_ATTAINMENT")
+        label, reasons = policy.classify_quiescence(obs, state, policy.default_bands())
+        self.assertEqual(label, "unresolved-pressure")
+
+    def test_unserved_with_proven_coverage_is_exhausted(self):
+        obs = self.obs()
+        obs["capabilities"]["c"]["members"] = dict(
+            ACTIVE=0, DORMANT=0, ARCHIVED=0, BLOCKED=0, status="observed",
+            source="m", records=[], snapshot=[])
+        state = policy.PolicyState()
+        state.note_attempt("construct", "c", 5, "abstained: NON_ATTAINMENT",
+                           category="exhausted")
         label, _ = policy.classify_quiescence(obs, state, policy.default_bands())
         self.assertEqual(label, "exhausted-search")
+
+    def test_repeated_limited_failures_are_blocked(self):
+        obs = self.obs()
+        obs["capabilities"]["c"]["members"] = dict(
+            ACTIVE=0, DORMANT=0, ARCHIVED=0, BLOCKED=0, status="observed",
+            source="m", records=[], snapshot=[])
+        state = policy.PolicyState()
+        state.note_attempt("construct", "c", 4, "refused: budget overdraft")
+        state.note_attempt("construct", "c", 6, "refused: budget overdraft")
+        label, reasons = policy.classify_quiescence(obs, state, policy.default_bands())
+        self.assertEqual(label, "blocked-inactivity")
+        self.assertTrue(any("budget-limited" in r for r in reasons))
+
+    def test_repeated_unknown_failures_are_stalled_pressure(self):
+        obs = self.obs()
+        obs["capabilities"]["c"]["members"] = dict(
+            ACTIVE=0, DORMANT=0, ARCHIVED=0, BLOCKED=0, status="observed",
+            source="m", records=[], snapshot=[])
+        state = policy.PolicyState()
+        state.note_attempt("construct", "c", 4, "abstained: NON_ATTAINMENT")
+        state.note_attempt("construct", "c", 6, "abstained: NON_ATTAINMENT")
+        label, reasons = policy.classify_quiescence(obs, state, policy.default_bands())
+        self.assertEqual(label, "unresolved-pressure")
+        self.assertTrue(any("repeated" in r for r in reasons))
+
+    def test_implied_youth_is_conditional_not_verified(self):
+        obs = self.obs()
+        obs["capabilities"]["c"]["retention"]["providers"] = {
+            "p": dict(state="ACTIVE", verdict=None,
+                      freshness="implied-youth", age_steps=None, assessment=None)}
+        label, _ = policy.classify_quiescence(
+            obs, policy.PolicyState(), policy.default_bands())
+        self.assertEqual(label, "conditional-quiescence")
+
+    def test_unspent_unassessed_runway_is_conditional(self):
+        obs = self.obs()
+        obs["runway"] = {"b": dict(status="unknown", available=100, spent=0,
+                                   reason="no samples yet")}
+        label, _ = policy.classify_quiescence(
+            obs, policy.PolicyState(), policy.default_bands())
+        self.assertEqual(label, "conditional-quiescence")
 
     def test_poor_competence_is_pressure(self):
         obs = self.obs()
@@ -566,6 +622,282 @@ class TestQuiescence(unittest.TestCase):
         ctx = SimpleNamespace(resolve=lambda pid: (_ for _ in ()).throw(
             __import__("brainos").Refused("nope")))
         self.assertEqual(policy.construction_lineage(ctx, "ghost"), [("ghost", 0)])
+
+
+class TestSearchOutcomes(unittest.TestCase):
+    """B45: failed search is not proven exhaustion."""
+
+    def test_succeeded_on_acquired(self):
+        cat, detail = policy.classify_search_outcome(
+            status="ACQUIRED", reason="ok")
+        self.assertEqual(cat, "succeeded")
+
+    def test_exhausted_requires_explicit_coverage(self):
+        cat, _ = policy.classify_search_outcome(
+            status="NON_ATTAINMENT", reason="no candidate found",
+            coverage={"examined": 12, "total": 10})
+        self.assertEqual(cat, "exhausted")
+
+    def test_no_coverage_claim_without_proof(self):
+        cat, _ = policy.classify_search_outcome(
+            status="NON_ATTAINMENT", reason="no candidate found")
+        self.assertEqual(cat, "unknown")
+
+    def test_budget_limited(self):
+        cat, _ = policy.classify_search_outcome(reason="refused: budget overdraft")
+        self.assertEqual(cat, "budget-limited")
+
+    def test_deadline_limited(self):
+        cat, _ = policy.classify_search_outcome(
+            reason="construction deadline exceeded")
+        self.assertEqual(cat, "deadline-limited")
+
+    def test_validation_limited(self):
+        cat, _ = policy.classify_search_outcome(
+            reason="evaluation-failed: mismatch on held-out")
+        self.assertEqual(cat, "validation-limited")
+
+    def test_stalled_on_repeated_unknown(self):
+        prior = ["unknown", "unknown"]
+        cat, detail = policy.classify_search_outcome(
+            reason="abstained", prior=prior, coverage={"examined": 3, "total": 10})
+        self.assertEqual(cat, "stalled")
+        self.assertIn("repeated", detail)
+
+
+def _obs_with(**kw):
+    base = dict(
+        capabilities={"c": dict(
+            name="c",
+            members=dict(ACTIVE=1, DORMANT=0, ARCHIVED=0, status="observed",
+                         source="m", records=["m1"], snapshot=["m1"]),
+            competence=dict(status="observed", n=5, thin=False,
+                            kernel_success_rate=1.0, correct_rate=1.0,
+                            attested=5, per_context={}, evidence=["t"]),
+            retention=dict(status="observed", count=1, providers={
+                "p": dict(state="ACTIVE", verdict="retain",
+                          freshness="fresh", age_steps=2, assessment="a")}),
+            demanded=dict(status="observed", value=True, contexts=None))},
+        runway={"b": dict(status="observed", available=100, spent=10,
+                          burn_per_step=2, periods=50, source="s")},
+        churn=dict(status="estimated"), transitions=[], step=10,
+        recovery=dict(status="unknown", reason="unseen"))
+    for k, v in kw.items():
+        if k == "providers":
+            base["capabilities"]["c"]["retention"]["providers"] = v
+        elif k == "members":
+            base["capabilities"]["c"]["members"].update(v)
+        elif k == "params":
+            base["capabilities"]["c"]["retention"]["params"] = v
+        else:
+            base["capabilities"]["c"][k] = v
+    return base
+
+
+class TestLifecycleTriggers(unittest.TestCase):
+    """B47/B48: wake/revalidate/replace/regenerate/assimilate triggers."""
+
+    def test_regenerate_archived_when_no_serving_member(self):
+        obs = _obs_with(members=dict(ACTIVE=0, DORMANT=0, ARCHIVED=1,
+                                     status="observed", source="m",
+                                     records=["m-arch"], snapshot=["m-arch"]),
+                        providers={"m-arch": dict(
+                            state="ARCHIVED", verdict=None, freshness="unknown",
+                            age_steps=None, assessment=None)})
+        pol = policy.ViabilityPolicy()
+        d = pol.propose(obs, None, policy.PolicyState())
+        self.assertEqual(d["action"], "regenerate")
+        self.assertEqual(d["evidence"]["regenerated"], "m-arch")
+
+    def test_no_regenerate_when_dormant_exists(self):
+        obs = _obs_with(members=dict(ACTIVE=0, DORMANT=1, ARCHIVED=1,
+                                     status="observed", source="m",
+                                     records=["m-d", "m-arch"],
+                                     snapshot=["m-d", "m-arch"]),
+                        providers={
+                            "m-d": dict(state="DORMANT", verdict=None,
+                                        freshness="unknown", age_steps=None,
+                                        assessment=None),
+                            "m-arch": dict(state="ARCHIVED", verdict=None,
+                                           freshness="unknown", age_steps=None,
+                                           assessment=None)})
+        pol = policy.ViabilityPolicy()
+        d = pol.propose(obs, None, policy.PolicyState())
+        self.assertEqual(d["action"], "recruit")
+
+    def test_stale_retention_triggers_revalidation(self):
+        obs = _obs_with(providers={
+            "p": dict(state="ACTIVE", verdict=None,
+                      freshness="stale", age_steps=99, assessment="a-old")})
+        pol = policy.ViabilityPolicy()
+        d = pol.propose(obs, None, policy.PolicyState())
+        self.assertEqual(d["action"], "investigate")
+        self.assertIn("revalidation", d["reason"])
+
+    def test_retire_after_dormancy_threshold(self):
+        obs = _obs_with(members=dict(ACTIVE=1, DORMANT=1, ARCHIVED=0,
+                                     status="observed", source="m",
+                                     records=["m1", "m2"], snapshot=["m1", "m2"]),
+                        providers={
+                            "m1": dict(state="ACTIVE", verdict="retain",
+                                       freshness="fresh", age_steps=1,
+                                       assessment="a1"),
+                            "m2": dict(state="DORMANT", verdict="redundant",
+                                       freshness="fresh", age_steps=3,
+                                       assessment="a2", dormant_periods=10)},
+                        params={"dormancy_first": True, "min_dormant_age": 5})
+        pol = policy.ViabilityPolicy()
+        d = pol.propose(obs, None, policy.PolicyState())
+        self.assertEqual(d["action"], "retire")
+        self.assertEqual(d["evidence"]["retired"], "m2")
+
+    def test_no_retire_without_dormancy_first(self):
+        obs = _obs_with(members=dict(ACTIVE=1, DORMANT=1, ARCHIVED=0,
+                                     status="observed", source="m",
+                                     records=["m1", "m2"], snapshot=["m1", "m2"]),
+                        providers={
+                            "m1": dict(state="ACTIVE", verdict="retain",
+                                       freshness="fresh", age_steps=1,
+                                       assessment="a1"),
+                            "m2": dict(state="DORMANT", verdict="redundant",
+                                       freshness="fresh", age_steps=3,
+                                       assessment="a2", dormant_periods=10)},
+                        params={"dormancy_first": False, "min_dormant_age": 0})
+        pol = policy.ViabilityPolicy()
+        d = pol.propose(obs, None, policy.PolicyState())
+        self.assertNotEqual(d["action"], "retire")
+
+    def test_assimilate_nominates_overlapping_pair(self):
+        # B48: both serving members adversely assessed -> suspend would
+        # destroy the overlap; nominate consolidation instead.
+        obs = _obs_with(
+            providers={
+                "m1": dict(state="ACTIVE", verdict="redundant",
+                           freshness="fresh", age_steps=1, assessment="a1"),
+                "m2": dict(state="ACTIVE", verdict="not-best",
+                           freshness="fresh", age_steps=1, assessment="a2")})
+        pol = policy.ViabilityPolicy()
+        d = pol.propose(obs, None, policy.PolicyState())
+        self.assertEqual(d["action"], "assimilate")
+        self.assertEqual(len(d["evidence"]["parents"]), 2)
+
+    def test_single_adverse_with_alternative_suspends(self):
+        # One redundant member beside a healthy one: suspend, not assimilate.
+        obs = _obs_with(
+            providers={
+                "m1": dict(state="ACTIVE", verdict="redundant",
+                           freshness="fresh", age_steps=1, assessment="a1"),
+                "m2": dict(state="ACTIVE", verdict="retain",
+                           freshness="fresh", age_steps=1, assessment="a2")})
+        pol = policy.ViabilityPolicy()
+        d = pol.propose(obs, None, policy.PolicyState())
+        self.assertEqual(d["action"], "suspend")
+
+    def test_assimilate_needs_two_servable(self):
+        obs = _obs_with(
+            providers={
+                "m1": dict(state="ACTIVE", verdict="redundant",
+                           freshness="fresh", age_steps=1, assessment="a1")})
+        pol = policy.ViabilityPolicy()
+        d = pol.propose(obs, None, policy.PolicyState())
+        self.assertNotEqual(d["action"], "assimilate")
+
+    def test_note_attempt_roundtrip(self):
+        import tempfile
+        from brainos import Runtime
+        from brainos.devcontext import development_context
+        with tempfile.TemporaryDirectory() as d:
+            from pathlib import Path
+            rt = Runtime(Path(d) / "t.db", profile="inprocess")
+            ctx = development_context(rt)
+            st = policy.PolicyState()
+            st.note_attempt("construct", "cap", 7, "abstained: timeout", "deadline-limited")
+            key = st.save(ctx)
+            self.assertEqual(key, policy.STATE_KEY)
+            loaded = policy.PolicyState.load(ctx)
+            self.assertEqual(len(loaded.attempts), 1)
+            self.assertEqual(loaded.attempts[0][3], "abstained: timeout")
+            rt.close()
+
+
+class TestSuccession(unittest.TestCase):
+    """Doc 34 section 34.6: durable decision-to-outcome linkage as
+    temporal succession, never a causal claim."""
+
+    def obs(self, **caps):
+        return dict(capabilities={
+            c: dict(members=dict(snapshot=list(m))) for c, m in caps.items()})
+
+    def test_resolve_records_delta_with_noncausal_label(self):
+        st = policy.PolicyState()
+        st.note_proposal("recruit", "c", 5, ["m-d"])
+        closed = st.resolve_pending(6, {"c": ["m-d", "m-n"]})
+        self.assertEqual(len(closed), 1)
+        link = closed[0]
+        self.assertEqual(link["added"], ["m-n"])
+        self.assertEqual(link["removed"], [])
+        self.assertEqual(link["relation"], "succession-not-causation")
+        self.assertEqual(link["proposed_step"], 5)
+        self.assertEqual(link["observed_step"], 6)
+
+    def test_absent_target_stays_pending(self):
+        st = policy.PolicyState()
+        st.note_proposal("recruit", "c", 5, ["m-d"])
+        self.assertEqual(st.resolve_pending(6, {"other": ["x"]}), [])
+        self.assertEqual(len(st.pending), 1)
+
+    def test_succession_survives_save_load(self):
+        import tempfile
+        from pathlib import Path
+        from brainos import Runtime
+        from brainos.devcontext import development_context
+        with tempfile.TemporaryDirectory() as d:
+            rt = Runtime(Path(d) / "t.db", profile="inprocess")
+            ctx = development_context(rt)
+            st = policy.PolicyState()
+            st.note_proposal("retire", "c", 5, ["m1", "m2"])
+            st.resolve_pending(6, {"c": ["m1"]})
+            st.note_proposal("recruit", "c2", 6, [])
+            st.save(ctx)
+            rt.close()
+            rt2 = Runtime(Path(d) / "t.db", profile="inprocess")
+            loaded = policy.PolicyState.load(development_context(rt2))
+            self.assertEqual(len(loaded.successions), 1)
+            self.assertEqual(loaded.successions[0][6], [])
+            self.assertEqual(loaded.successions[0][7], ["m2"])
+            self.assertEqual(len(loaded.pending), 1)
+            rt2.close()
+
+    def test_adr_record_opens_and_closes_links(self):
+        import sys
+        import tempfile
+        from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1]
+                               / "tools"))
+        import run_adr
+        with tempfile.TemporaryDirectory() as d:
+            demo = run_adr.Demo(Path(d), seed=1)
+            demo.open()
+            demo.caps = {}
+            dec = dict(action="recruit", target="cap1", reason="probe",
+                       evidence={})
+            demo.record(dec, "executed: woke m-d",
+                        self.obs(cap1=["m-d"]))
+            self.assertEqual(len(demo.state.pending), 1)
+            demo.tick = 1
+            demo.record(dict(action="noop", target="cap1", reason="q",
+                             evidence={}),
+                        "recorded",
+                        self.obs(cap1=["m-d", "m-n"]))
+            self.assertEqual(len(demo.state.pending), 1)
+            self.assertEqual(len(demo.state.successions), 1)
+            link = demo.state.successions[0]
+            self.assertEqual(link[6], ["m-n"])
+            rows = [r.get("body", r) for r in demo.rt.store.journal()]
+            self.assertTrue(any(isinstance(r, dict)
+                                and r.get("action") == "succession"
+                                for r in rows))
+            demo.rt.close()
 
 
 if __name__ == "__main__":

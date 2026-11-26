@@ -37,7 +37,9 @@ from brainos.development import CapabilityDemand, CompositionSearch
 from brainos.devcontext import development_context
 from brainos.development_policy import (PolicyState, build_observation, ViabilityPolicy,
                                         default_bands, classify_quiescence,
-                                        construction_lineage, record_decision, full_snapshot)
+                                        classify_search_outcome,
+                                        construction_lineage, record_decision, full_snapshot,
+                                        succession_maps)
 from brainos.ecology import EcologyPolicy
 
 HERE = Path(__file__).resolve().parent
@@ -574,6 +576,10 @@ def record_policy_decision(tick, decision, disposition, observation=None):
                   disposition=disposition, phase=STATE["phase"])
     emit(record)
     STATE["policy_state"].log_action(decision["action"], decision.get("target"), tick)
+    if decision.get("action") == "construct":
+        category, _ = classify_search_outcome(reason=disposition)
+        STATE["policy_state"].note_attempt("construct", decision.get("target"),
+                                           tick, disposition, category)
     ev = decision.get("evidence", {})
     comp = ev.get("competence", {})
     if comp.get("evidence"):
@@ -587,6 +593,18 @@ def record_policy_decision(tick, decision, disposition, observation=None):
         report = observation["capabilities"].get(decision.get("target"), {})
         STATE["policy_state"].snapshots[(decision["action"], decision.get("target"))] = \
             sorted(full_snapshot(report))
+        current = succession_maps(observation)
+        for link in STATE["policy_state"].resolve_pending(tick, current):
+            emit(dict(tick=tick, action="succession", target=link["target"],
+                      detail="%s proposed@%d observed@%d: +%s -%s "
+                             "(temporal succession, not causation)"
+                             % (link["action"], link["proposed_step"],
+                                link["observed_step"], link["added"],
+                                link["removed"]),
+                      disposition="recorded", phase=STATE["phase"]))
+        STATE["policy_state"].note_proposal(
+            decision["action"], decision.get("target"), tick,
+            current.get(decision.get("target"), []))
     if decision["action"] in ("investigate", "construct", "recruit", "suspend",
                               "assimilate", "regenerate"):
         with LOCK:

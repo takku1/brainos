@@ -82,12 +82,19 @@ specialist dormant in P1.
 | X3 | Correct rejection, state reduction and recovery held. The acceptance rule was unsound (4 incorrect acceptances) and the economics were undercounted. |
 | X4 | 5 seeds, all hypotheses pass. Developing NOV > fixed on every seed; adaptive > developing on every seed (descriptive, declared rates). Coverage 1.0, regret 0.0, retention 1.0 throughout. Verdicts: arith fragile, lookup redundant. Zero assimilation nominations after P1; P1 specialist dormancy on thin samples. |
 
-360 runtime tests pass, drift check reports zero errors, document checks
-19/19, negatives 15/15, L1 harness 17/17 and dependency closure clean
-(verified 2026-11-25 with the W2 clearance corrections, confirmatory
-seeds 21-23, the ADR policy/demo work, the live observatory
-unification, and the W3 investigation design; test counts are
-point-in-time, register counts are derived).
+412 runtime tests pass plus 1 designed refusal, drift check reports
+zero errors, document checks 19/19, negatives 15/15, L1 harness
+17/17 and dependency closure clean (verified 2026-11-26 with the
+W3 design-closure batch: B44-B48 triggers, B46 expressivity audit,
+succession linkage, Doc 34 corrections, revised W3 draft
+preregistration; test counts are point-in-time, register counts
+are derived). The single failure is
+`test_committed_freeze_manifest_matches_tree`: the committed W2
+FROZEN.json still pins the executed f950f91 boundary while the
+tree moved on with W3-closure sources. The refusal is the freeze
+working as designed — see the W3-closure bullet. No re-freeze:
+no W2 execution is authorized or planned, and re-freezing would
+falsely extend an executed boundary.
 
 ## Key decisions
 
@@ -118,12 +125,19 @@ point-in-time, register counts are derived).
   boundary with coordinated calibration charge and held-out oracle, B35
   strict IR, B36 comparative-evidence rule, B37 freeze manifest binding
   source, model, prompt, sampling, admission, seeds and runtime versions.
-  Amendment-1 preserves the 695cfb7 freeze in history; confirmatory
-  execution remains blocked pending review.
-- ADR specified (Doc 33), not implemented: R-25-08, R-02-16, R-07-13
+  Amendment-1 preserves the 695cfb7 freeze in history. SUPERSEDED
+  status note: "confirmatory execution remains blocked" described the
+  pre-clearance state; clearance was verified and confirmatory
+  execution completed at f950f91 — see the W2 L2 confirmatory bullet.
+- ADR specified (Doc 33): R-25-08, R-02-16, R-07-13
   created as specified rows with ownership and acceptance criteria; the
   live observatory effort is adopted as the ADR baseline, not a
-  competing runtime. W3 keeps formal stability results.
+  competing runtime. W3 keeps formal stability results. SUPERSEDED
+  status note: "not implemented" described the approval moment only
+  — the replaceable policy interface, B38-B43 homeostatic regulation
+  and the ADR demo disturbance-recovery arc are implemented since
+  (see ADR coordination core bullet); R-25-08 and R-07-13 remain
+  partial, R-02-16 specified.
 - W2 L2 confirmatory (f950f91): executed in a pinned worktree after
   clearance; H1-H5 pass on all seeds, verdict redundant (9/100 budget),
   coordinated > fixed on held-out demands every seed, neural compute
@@ -144,6 +158,30 @@ point-in-time, register counts are derived).
   defects (id-vs-name member matching; blocked members counted as
   serving). Dormancy/wake unexercised (drill verdict was retain);
   arith-neg recovery needs recurring demand after closure block.
+- W3 design closure (B44-B50, 2026-11-26, uncommitted at STATUS
+  write): verified/conditional/blocked quiescence trichotomy and
+  seven-way search-outcome taxonomy in the policy with
+  `note_attempt` persistence (`TestSearchOutcomes`,
+  `TestLifecycleTriggers`); implemented lifecycle triggers —
+  retire-after-dormancy (dormancy-first), regenerate-from-archive keyed
+  on lifecycle state, stale-retention revalidation, all-adverse
+  assimilate nomination with the B21 publication gate intact
+  (single-adverse still suspends; the nomination pass was previously
+  unreachable and is now ordered after suspend);
+  `TestSuccession` pins decision-to-outcome linkage as temporal
+  succession (`note_proposal`/`resolve_pending`, persisted,
+  journaled by both loops, labeled succession-not-causation);
+  B46 expressivity audit (`tests/test_expressivity.py`: unary chains
+  to depth 3 and cumulative reuse witnessed; joins and means
+  recorded as unrepresentable without multi-input nodes and
+  division); Doc 34 corrected (orthogonal vocabulary with
+  mean/max as targets, H1a/H1b split, conventional-reconstruction
+  control, independent evaluator, censoring rules) and the W3 draft
+  preregistration revised — still unfrozen, no confirmatory W3
+  execution authorized, no construction-engine or vocabulary change
+  shipped. `test_committed_freeze_manifest_matches_tree` now
+  refuses by design (see evidence line); the W2 FROZEN.json is
+  deliberately not re-frozen.
 
 ## Deprecated / legacy
 
@@ -156,15 +194,18 @@ point-in-time, register counts are derived).
 
 ## Last updated
 
-2026-11-25 (Track A complete: clearance 35d5182, confirmatory f950f91
-with H1-H5 on all seeds; Track B: B38-B43 policy upgrades, ADR demo
+2026-11-26 (W3 design closure: B44-B50 resolved in the policy with
+25 new trigger/succession/audit tests, Doc 34 corrected, W3 draft
+preregistration revised and still unfrozen; 412 tests pass plus 1
+designed freeze refusal, drift 0 errors, 19/19 + 15/15 + 17/17
+gates green. Track A complete: clearance 35d5182, confirmatory f950f91
+with H1-H5 on all seeds. Track B: B38-B43 policy upgrades, ADR demo
 with disturbance-recovery arc, unified live observatory on the ADR
 policy with extended panels and init/resume/--reset, quiescence and
-lineage instrumentation, executor fail-closes, 360 tests green;
+lineage instrumentation, executor fail-closes;
 10-min run (638 decisions, restart preserved), 1-hour run (3600
 decisions, 99.7% noop) and extended run (10273 decisions, 7
 investigates, development confined to the first regime cycle, then
-sustained quiescence; journal intact, ~10KB/tick); W3 program opened
-with Doc 34 (definitions, perturbation design, environment proposal,
-lifecycle gaps, journal-growth design, history inventory) and a DRAFT
-W3 preregistration — no confirmatory W3 execution authorized)
+sustained quiescence; journal intact, ~10KB/tick). No confirmatory
+W3 execution authorized; no construction-engine, vocabulary or
+primitive change shipped.)

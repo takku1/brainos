@@ -17,17 +17,23 @@ evidence or resources while deficiencies persist)?
 
 One persistent organization per seed on a separate durable store,
 driven by the unified observatory loop (Doc 33) under the reviewed
-W2/W3 configuration. Three arms with matched initial knowledge and
+W2/W3 configuration. Four arms with matched initial knowledge and
 matched resource boundaries:
 
 - Static: fixed members only; the developmental policy always defers.
 - Adaptive: EcologyPolicy selection among provisioned members, wake
   enabled, no construction.
+- Conventional reconstruction: scripted re-admission/replacement
+  through the same kernel gates with its own cost accounting; no
+  policy-driven search. Separates construction-enabled recovery
+  (developmental vs adaptive) from policy effectiveness
+  (developmental vs conventional).
 - Developmental: the full replaceable-policy loop.
 
 Environmental schedule (scripted, journaled; independent of the
 decisions it provokes): stable demand, drift, novelty, scarcity,
-provider loss, recovery, recurring on a 460-tick cycle. Phases may
+provider loss, active-but-incompetent provider episodes, recovery,
+recurring on a 460-tick cycle. Phases may
 repeat; organizational transformations are never scheduled by phase.
 
 ## Workload (TBD pending environment review)
@@ -50,10 +56,18 @@ with the quiescence classifier label at return.
 
 ## Hypotheses (exploratory)
 
-- W3-H1: the developmental organization restores service after
-  provider loss faster than the adaptive control, per matched loss.
-- W3-H2: quiescence after recovery is classified healthy, not
-  unknown, within 50 steps of restoration.
+- W3-H1a (functional expansion): the developmental arm restores
+  service after capability-destroying provider loss where the
+  static and adaptive arms cannot, per matched loss.
+- W3-H1b (policy effectiveness): the developmental arm restores
+  service faster and at no greater measured cost than the
+  conventional-reconstruction arm, per matched loss with explicit
+  cost boundaries and a declared comparative margin.
+- W3-H2: quiescence after recovery is classified verified-healthy
+  (not conditional, not unknown) within 50 steps of restoration.
+  An independent evaluator recomputes viability from kernel
+  records; the policy's own classifier label is necessary but not
+  sufficient evidence.
 - W3-H3: no capability with a fresh retain assessment is retired or
   left dormant while demanded.
 - W3-H4: cumulative developmental spend stays within the declared
@@ -61,11 +75,14 @@ with the quiescence classifier label at return.
 
 ## Acceptance and failure criteria
 
-All must hold on every seed for a confirmatory pass: H1–H4 as
-stated with the declared margins; no more than one unresolved
-deficiency older than 100 steps at run end; zero silent state
-changes (every transformation has a recorded decision and kernel
-disposition); journal verifies clean. Failure of any criterion is a
+All must hold on every seed for a confirmatory pass: H1a, H1b,
+H2–H4 as stated with the declared margins; no more than one
+unresolved deficiency older than 100 steps at run end; zero silent
+state changes (every transformation has a recorded decision and
+kernel disposition); journal verifies clean. Missing observations
+are censored, never imputed: a seed that aborts or loses its store
+is reported as nonattainment for the affected hypotheses, not
+dropped from the denominator. Failure of any criterion is a
 reported negative, not a rerun trigger: no tuning, no re-freeze
 without a new amendment.
 
@@ -76,6 +93,8 @@ convergence or stability theorem claimed. No organizational
 world-model learning (Priority 4) — the developmental policy is
 fixed for the run. No neural providers (Priority 5 is a separate
 decision). No 8-hour duration (Priority 6 proceeds only after this
-preregistration is reviewed, frozen and committed). Workload,
-seeds, prompt-equivalents, admission thresholds and budgets to be
-pinned here before freezing; nothing may be tuned after.
+preregistration is reviewed, frozen and committed). Still TBD
+before any freeze: approved vocabulary (Doc 34 §34.3), exact
+demand distributions and admission cases, seeds, conventional-arm
+procedure, independent-evaluator definition, comparative margins,
+thresholds and budgets. Nothing may be tuned after freezing.

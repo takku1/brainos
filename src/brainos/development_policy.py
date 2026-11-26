@@ -86,10 +86,13 @@ class PolicyState:
         self.transitions = []
         self.seen_assessments = {}
         self.actions = []
+        self.attempts = []
         self.flags = {}
         self.cited = {}
         self.probe = {}
         self.snapshots = {}
+        self.pending = []
+        self.successions = []
 
     def note_step(self, step):
         self.step = step
@@ -151,6 +154,54 @@ class PolicyState:
         self.actions.append((step, action, target))
         self.step = step
 
+    def note_attempt(self, action, target, step, disposition, category=None):
+        """Record one executed developmental attempt with its kernel
+        disposition and search-outcome category (B45). Attempts are the
+        evidence behind blocked-inactivity vs exhaustion: dispositions
+        alone never prove the search space is exhausted."""
+        self.attempts.append((step, action, target, disposition, category))
+        self.step = step
+
+    def recent_attempts(self, action, target, step, window):
+        """Attempt records for one action/target within the window,
+        oldest first."""
+        return [a for a in self.attempts
+                if a[1] == action and a[2] == target and a[0] > step - window]
+
+    # -- decision-to-outcome succession linkage (Doc 34 section 34.6) --
+    def note_proposal(self, action, target, step, pre_members):
+        """Open a succession link with the membership snapshot observed
+        when the decision was proposed. The link closes against a
+        LATER observation; succession is temporal order, never a
+        causal claim (tick proximity does not attribute causation)."""
+        self.pending.append((step, action, target, sorted(pre_members)))
+        self.step = step
+
+    def resolve_pending(self, step, members_by_target):
+        """Close open links whose target appears in a later
+        observation. Returns succession dicts carrying pre/post
+        snapshots and their delta, each labeled
+        succession-not-causation. Links for absent targets stay open."""
+        closed, still = [], []
+        for (ps, action, target, pre) in self.pending:
+            post = members_by_target.get(target)
+            if post is None:
+                still.append((ps, action, target, pre))
+                continue
+            post = sorted(post)
+            rec = (ps, step, action, target, pre, post,
+                   sorted(set(post) - set(pre)),
+                   sorted(set(pre) - set(post)))
+            self.successions.append(rec)
+            closed.append(dict(proposed_step=ps, observed_step=step,
+                               action=action, target=target,
+                               pre_members=pre, post_members=post,
+                               added=rec[6], removed=rec[7],
+                               relation="succession-not-causation"))
+        self.pending = still
+        self.step = step
+        return closed
+
     def recent_action(self, action, target, step, cooldown):
         return any(s > step - cooldown and a == action and t == target
                    for (s, a, t) in self.actions)
@@ -169,8 +220,13 @@ class PolicyState:
                      transitions=[list(t) for t in self.transitions[-200:]],
                      seen_assessments=self.seen_assessments,
                      actions=[list(a) for a in self.actions[-200:]],
+                     attempts=[list(a) for a in self.attempts[-200:]],
                      cited={k: list(v) for k, v in self.cited.items()},
                      probe={k: [v[0], list(v[1])] for k, v in self.probe.items()},
+                     pending=[list(p[:3]) + [list(p[3])]
+                              for p in self.pending[-200:]],
+                     successions=[list(s[:4]) + [list(x) for x in s[4:]]
+                                  for s in self.successions[-200:]],
                      snapshots={f"{a}|{t}": list(v)
                                 for (a, t), v in self.snapshots.items()},
                      flags={"%s|%s" % key: value
@@ -193,6 +249,8 @@ class PolicyState:
         for key in ("transitions", "actions"):
             if isinstance(saved.get(key), list):
                 setattr(state, key, [tuple(item) for item in saved[key]])
+        if isinstance(saved.get("attempts"), list):
+            state.attempts = [tuple(item) for item in saved["attempts"]][-200:]
         for key, value in (saved.get("flags") or {}).items():
             kind, _, budget = key.partition("|")
             state.flags[(kind, budget)] = bool(value)
@@ -203,6 +261,15 @@ class PolicyState:
         if isinstance(saved.get("probe"), dict):
             state.probe = {k: [v[0], list(v[1])] for k, v in saved["probe"].items()
                            if isinstance(v, (list, tuple)) and len(v) == 2}
+        if isinstance(saved.get("pending"), list):
+            state.pending = [tuple(item[:3]) + (list(item[3]),)
+                             for item in saved["pending"]
+                             if isinstance(item, (list, tuple)) and len(item) == 4]
+        if isinstance(saved.get("successions"), list):
+            state.successions = [tuple(item[:4]) + tuple(list(x) for x in item[4:])
+                                 for item in saved["successions"]
+                                 if isinstance(item, (list, tuple))
+                                 and len(item) == 8]
         state.step = saved.get("step")
         state.member_step = saved.get("member_step")
         return state
@@ -309,6 +376,8 @@ def _retention(ctx, capability, member_states, state, max_age_steps):
     except Refused:
         return dict(status="unknown", reason="capability row unreadable")
     min_age = params.get("min_age", 0)
+    retention_params = {"dormancy_first": bool(params.get("dormancy_first", False)),
+                        "min_dormant_age": params.get("min_dormant_age", 0)}
     by_provider = {}
     for aid, provider in ((a.get("id"), a.get("provider")) for a in assessments):
         by_provider.setdefault(provider, []).append(aid)
@@ -344,10 +413,19 @@ def _retention(ctx, capability, member_states, state, max_age_steps):
         if freshness == "unknown" and min_age > 0 and member_age is not None \
                 and member_age < min_age:
             freshness, verdict = "implied-youth", None
+        try:
+            dormant_periods = (period - next(
+                m.get("dormant_period", period) for m in ctx.find("member")
+                if m.get("id") == mid) if mstate == "DORMANT" else None)
+        except (Refused, StopIteration):
+            dormant_periods = None
         providers[provider] = dict(state=mstate, verdict=verdict,
                                    freshness=freshness, age_steps=age,
-                                   assessment=aid)
-    return dict(status="observed", count=len(assessments), providers=providers)
+                                   assessment=aid,
+                                   dormant_periods=dormant_periods)
+    return dict(status="observed", count=len(assessments), providers=providers,
+                params=retention_params,
+                max_age_steps=max_age_steps)
 
 
 def full_snapshot(report):
@@ -355,6 +433,16 @@ def full_snapshot(report):
     members: a blocked provider is a changed world (B38)."""
     members = report.get("members", {})
     return sorted(members.get("snapshot", members.get("records", [])))
+
+
+def succession_maps(observation):
+    """{capability: member snapshot} for succession linkage: which
+    members each capability held in one observation, so the next
+    observation can record what changed after a decision."""
+    maps = {}
+    for cap, report in (observation or {}).get("capabilities", {}).items():
+        maps[cap] = full_snapshot(report)
+    return maps
 
 
 def build_observation(ctx, capabilities, budgets=(), demands=(), recent=None,
@@ -525,6 +613,24 @@ class ViabilityPolicy(DevelopmentalPolicy):
                     return decide("recruit", target=capability,
                                   reason="demanded capability has dormant members",
                                   evidence={"member_rows": members.get("records", [])})
+                archived = sorted(
+                    p for p, r in report.get("retention", {}).get(
+                        "providers", {}).items()
+                    if r.get("state") == "ARCHIVED")
+                if archived:
+                    if self._cool(state, step, "regenerate", capability,
+                                  full_snapshot(report)):
+                        return self._defer_cool(capability, "regenerate")
+                    funded = [b for b, e in observation.get("runway", {}).items()
+                              if e.get("status") == "observed"
+                              and e.get("periods", 0) > self.bands["budget_runway"]["enter"]]
+                    if not funded:
+                        return decide("defer", target=capability,
+                                      reason="regeneration unjustified without a funded budget",
+                                      evidence={"policy": self.version})
+                    return decide("regenerate", target=capability,
+                                  reason="archived member available; kernel will re-validate",
+                                  evidence={"regenerated": sorted(archived)[0]})
                 if state is not None and step is not None and self._settled(
                         state, step, "investigate", capability, members):
                     return self._construct(report, capability, observation, state,
@@ -567,10 +673,85 @@ class ViabilityPolicy(DevelopmentalPolicy):
                                             "assessment": adverse[provider][
                                                 "assessment"],
                                             "suspended": provider})
+                if len(serving) >= 2:
+                    # B47/B48: every serving member is adversely assessed.
+                    # Suspending one would destroy the overlap that a
+                    # consolidation evaluation could exploit, and probing
+                    # would only re-confirm known verdicts; fall through to
+                    # the assimilation-nomination pass below.
+                    pass
+                else:
+                    return decide("investigate", target=capability,
+                                  reason="adverse retention evidence with no "
+                                         "alternative serving member",
+                                  evidence={"providers": sorted(adverse)})
+            providers = report.get("retention", {}).get("providers", {})
+            serving = [p for p, r in providers.items()
+                       if r.get("state") == "ACTIVE"]
+            if serving and all(
+                    providers[p].get("freshness") == "stale" for p in serving):
+                sig = ["stale-retention", sorted(
+                    report.get("members", {}).get("records", []))]
+                cooled = self._probe_cooled(state, step, capability, sig)
+                if cooled is not None:
+                    return cooled
                 return decide("investigate", target=capability,
-                              reason="adverse retention evidence with no "
-                                     "alternative serving member",
-                              evidence={"providers": sorted(adverse)})
+                              reason="retention evidence stale; revalidation required",
+                              evidence={"competence": comp, "probe_sig": sig,
+                                        "revalidate": sorted(serving)})
+            params = report.get("retention", {}).get("params", {})
+            if params.get("dormancy_first", False):
+                dormant = {p: r for p, r in providers.items()
+                           if r.get("state") == "DORMANT"
+                           and r.get("freshness") == "fresh"
+                           and r.get("verdict") == "redundant"}
+                if dormant:
+                    aged = [p for p in dormant
+                            if (dormant[p].get("dormant_periods") or 0)
+                            >= max(params.get("min_dormant_age", 0), 1)]
+                    others = [p for p in serving if p not in dormant]
+                    if aged and others:
+                        if self._cool(state, step, "retire", capability,
+                                      full_snapshot(report)):
+                            return self._defer_cool(capability, "retire")
+                        provider = sorted(aged)[0]
+                        return decide("retire", target=capability,
+                                      reason="dormant redundant member past threshold "
+                                             "with %s serving: retire %s" % (
+                                                 ", ".join(sorted(others)), provider),
+                                      evidence={"retired": provider,
+                                                "assessment": dormant[provider][
+                                                    "assessment"]})
+        for capability, report in caps.items():
+            serving = [p for p, r in report.get("retention", {}).get(
+                "providers", {}).items() if r.get("state") == "ACTIVE"]
+            if len(serving) < 2:
+                continue
+            candidates = [p for p, r in report.get("retention", {}).get(
+                "providers", {}).items()
+                if r.get("state") == "ACTIVE"
+                and r.get("freshness") == "fresh"
+                and r.get("verdict") in ("redundant", "not-best")]
+            if not candidates:
+                continue
+            funded = [b for b, e in observation.get("runway", {}).items()
+                      if e.get("status") == "observed"
+                      and e.get("periods", 0) > self.bands["budget_runway"]["enter"]]
+            if not funded:
+                continue
+            if self._cool(state, step, "assimilate", capability,
+                          sorted(report.get("members", {}).get("records", []))):
+                continue
+            parents = [{"capability": capability, "provider": p}
+                       for p in sorted(set(candidates) | set(serving))]
+            return decide("assimilate", target=capability,
+                          reason="overlapping verified capabilities; nominate "
+                                 "consolidation candidates (evaluation only, "
+                                 "never publish)",
+                          evidence={"parents": parents,
+                                    "assessment": report["retention"][
+                                        "providers"][sorted(candidates)[0]][
+                                        "assessment"]})
         runway = observation.get("runway", {})
         floor = self.bands["budget_runway"]["enter"]
         for budget, entry in runway.items():
@@ -674,67 +855,191 @@ class ViabilityPolicy(DevelopmentalPolicy):
         return uncovered or ["none"]
 
 
-def classify_quiescence(observation, state, bands, recovering=False):
-    """Distinguish healthy quiescence from look-alikes (B43, F).
+SEARCH_OUTCOMES = ("succeeded", "exhausted", "budget-limited", "deadline-limited",
+                     "validation-limited", "stalled", "unknown")
 
-    Labels: healthy-quiescence, unresolved-pressure, blocked-adaptation,
-    exhausted-search, resource-deferral, recovery, unknown. A high noop
-    rate alone never establishes health: every unknown or adverse
-    variable is named in the reasons.
+
+def classify_search_outcome(status=None, reason="", coverage=None, prior=()):
+    """Classify one construction/search attempt (B45).
+
+    status is the runner's status string ("ACQUIRED", "NON_ATTAINMENT",
+    ...); reason is free text (disposition or exception). coverage is
+    None or a mapping with total/examined counts of the declared search
+    space. prior is a sequence of previous outcome categories for the
+    same demand used only for the stalled rule.
+
+    Returns (category, detail). Only explicit coverage evidence yields
+    "exhausted": a failed status, a refusal, or a silent run never
+    proves the space is exhausted. Repeated identical failures yield
+    "stalled", which is distinct from exhaustion.
+    """
+    if status == "ACQUIRED":
+        return ("succeeded", "provider acquired")
+    total, examined = None, None
+    if isinstance(coverage, dict):
+        total = coverage.get("total")
+        examined = coverage.get("examined", 0)
+    if (total is not None and examined is not None
+            and total > 0 and examined >= total):
+        return ("exhausted",
+                "covered %s of %s declared candidates with no acquisition"
+                % (examined, total))
+    text = str(reason or "")
+    lowered = text.lower()
+    if "overdraft" in lowered or ("budget" in lowered and "exceed" in lowered):
+        return ("budget-limited", "attempt stopped: %s" % _short(text))
+    if "funds" in lowered or "grant" in lowered or "cannot afford" in lowered:
+        return ("budget-limited", "attempt stopped: %s" % _short(text))
+    if "deadline" in lowered or "timeout" in lowered or "timed out" in lowered:
+        return ("deadline-limited", "attempt stopped: %s" % _short(text))
+    if ("validation" in lowered or "rejected" in lowered or "invalid" in lowered
+            or "mismatch" in lowered):
+        return ("validation-limited", "attempt stopped: %s" % _short(text))
+    if status and status != "NON_ATTAINMENT":
+        return ("unknown", "unrecognized status %r: %s" % (status, _short(text)))
+    cats = [p for p in prior if p in SEARCH_OUTCOMES and p != "succeeded"]
+    if len(cats) >= 2 and len(set(cats[-2:])) == 1:
+        return ("stalled", "repeated %s without progress" % cats[-1])
+    return ("unknown", "no outcome, budget, deadline or validation evidence: %s"
+            % _short(text))
+
+
+def _short(text, limit=120):
+    text = " ".join(str(text).split())
+    return text[:limit] if len(text) > limit else text
+
+
+def classify_quiescence(observation, state, bands, recovering=False):
+    """Distinguish verified health from look-alikes (B43, B44, F).
+
+    Labels: verified-healthy (every required variable known and inside
+    its band); conditional-quiescence (assessed checks pass but some
+    required variable is unassessed or inferred); blocked-inactivity
+    (deficiency remains and no admissible action exists);
+    unresolved-pressure (deficiency remains, action admissible but not
+    yet taken or not yet effective); exhausted-search (declared space
+    provably covered without result — requires explicit coverage, never
+    inferred from failure count); resource-deferral (runway below
+    floor); recovery; unknown (read paths failed). A high noop rate
+    alone never establishes health: every unknown or adverse variable
+    is named in the reasons.
     """
     caps = observation.get("capabilities", {})
     demanded = [c for c, r in caps.items() if r.get("demanded", {}).get("value")]
     step = observation.get("step")
-    cooldown = bands["competence"]["cooldown_steps"]
+    cooldown = bands["development_spend"]["cooldown_steps"]
     if recovering:
         return ("recovery", ["explicit recovery flag set"])
-    blocked = [c for c in demanded
-               if observation["capabilities"][c]["members"].get("BLOCKED", 0) > 0]
-    if blocked:
-        return ("blocked-adaptation",
-                ["blocked members on %s" % caps[c].get("name", c) for c in blocked])
+
+    def _name(c):
+        return caps[c].get("name", c)
+
+    # No admissible action: blocked with nothing recruitable, or a
+    # funded search is impossible, or prior attempts already classified
+    # the outcome.
     for cap in demanded:
-        members = caps[cap]["members"]
+        members = caps[cap].get("members", {})
         if members.get("ACTIVE", 0) <= 0 and members.get("DORMANT", 0) <= 0:
-            if (state is not None and step is not None
-                    and state.recent_action("construct", cap, step, cooldown)):
+            if members.get("BLOCKED", 0) > 0:
+                return ("blocked-inactivity",
+                        ["blocked members and no recruit: %s, no admissible action"
+                         % _name(cap)])
+            if not _has_funded_budget(observation, bands):
+                return ("blocked-inactivity",
+                        ["no serving member and no funded budget for %s"
+                         % _name(cap)])
+            recent = ([a for a in state.attempts
+                       if a[1] == "construct" and a[2] == cap and a[0] > step - cooldown]
+                      if state is not None and step is not None else [])
+            cats = [a[4] if len(a) > 4 and a[4] in SEARCH_OUTCOMES
+                    else classify_search_outcome(reason=a[3])[0]
+                    for a in recent]
+            if any(c == "exhausted" for c in cats):
                 return ("exhausted-search",
-                        ["construction attempted for %s without result"
-                         % caps[cap].get("name", cap)])
+                        ["declared space covered without result for %s"
+                         % _name(cap)])
+            non_ok = [c for c in cats if c != "succeeded"]
+            if non_ok and all(c in ("budget-limited", "deadline-limited",
+                                    "validation-limited") for c in non_ok):
+                return ("blocked-inactivity",
+                        ["construction %s for %s; no admissible action"
+                         % (", ".join(sorted(set(non_ok))), _name(cap))])
+            if len(non_ok) >= 2 and len(set(non_ok)) == 1:
+                return ("unresolved-pressure",
+                        ["repeated %s attempts without progress for %s (stalled, "
+                         "not proven exhausted)" % (non_ok[0], _name(cap))])
             return ("unresolved-pressure",
-                    ["no serving member for %s" % caps[cap].get("name", cap)])
+                    ["no serving member for %s" % _name(cap)])
     for cap in demanded:
         comp = caps[cap].get("competence", {})
         if comp.get("status") != "observed" or comp.get("thin") \
                 or comp.get("correct_rate") is None:
             return ("unresolved-pressure",
-                    ["competence unconfirmed for %s" % caps[cap].get("name", cap)])
+                    ["competence unconfirmed for %s" % _name(cap)])
         if comp["correct_rate"] < bands["competence"]["floor"] \
                 or comp["kernel_success_rate"] < bands["competence"]["floor"]:
             return ("unresolved-pressure",
-                    ["poor serving competence on %s" % caps[cap].get("name", cap)])
+                    ["poor serving competence on %s" % _name(cap)])
+        adverse = [p for p, r in caps[cap].get("retention", {}).get(
+            "providers", {}).items()
+            if r.get("state") == "ACTIVE"
+            and r.get("freshness") == "fresh"
+            and r.get("verdict") in ("redundant", "not-best")]
+        if adverse:
+            return ("unresolved-pressure",
+                    ["adverse retention evidence on %s" % _name(cap)])
     for budget, entry in observation.get("runway", {}).items():
         if entry.get("status") == "observed" \
                 and entry.get("periods", float("inf")) < bands["budget_runway"]["enter"]:
             return ("resource-deferral", ["runway below floor"])
-    unknowns = []
+    unknown_hard = []
+    conditional = []
     for cap in demanded:
         ret = caps[cap].get("retention", {})
         if ret.get("status") != "observed":
-            unknowns.append("retention unreadable on %s" % caps[cap].get("name", cap))
+            unknown_hard.append("retention unreadable on %s" % _name(cap))
             continue
         for provider, entry in ret.get("providers", {}).items():
-            if entry.get("freshness") in ("unknown", "stale", "implied-youth"):
-                unknowns.append("retention %s on %s" % (
-                    entry.get("freshness"), caps[cap].get("name", cap)))
+            if entry.get("freshness") in ("stale", "unknown"):
+                conditional.append("retention %s for %s on %s" % (
+                    entry.get("freshness"), provider, _name(cap)))
+                break
+            if entry.get("freshness") == "implied-youth":
+                conditional.append("retention implied by youth on %s"
+                                   % _name(cap))
                 break
     for budget, entry in observation.get("runway", {}).items():
         if entry.get("status") != "observed":
-            unknowns.append("runway unassessed")
+            if (entry.get("spent", 0) or 0) > 0:
+                unknown_hard.append("runway unassessed with spend on record")
+            else:
+                conditional.append("runway unassessed, nothing spent yet")
             break
-    if unknowns:
-        return ("unknown", unknowns)
-    return ("healthy-quiescence", ["all assessed variables within bounds"])
+    if unknown_hard:
+        return ("unknown", unknown_hard)
+    if conditional:
+        return ("conditional-quiescence", conditional)
+    return ("verified-healthy", ["all required variables known and inside bands"])
+
+
+def _has_funded_budget(observation, bands):
+    """True when some budget is observed with runway above the enter
+    threshold, or observed with zero spend (nothing consumed yet). An
+    empty runway (no budgets passed) does not count as unfunded."""
+    entries = list(observation.get("runway", {}).values())
+    if not entries:
+        return True
+    for entry in entries:
+        if entry.get("status") != "observed":
+            continue
+        if entry.get("available", 0) <= 0:
+            continue
+        periods = entry.get("periods", float("inf"))
+        if periods == float("inf"):
+            return True
+        if periods > bands["budget_runway"]["enter"]:
+            return True
+    return False
 
 
 def construction_lineage(ctx, provider, _seen=None):
