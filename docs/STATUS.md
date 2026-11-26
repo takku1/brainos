@@ -157,4 +157,9 @@ with H1-H5 on all seeds; Track B: B38-B43 policy upgrades, ADR demo
 with disturbance-recovery arc, unified live observatory on the ADR
 policy with extended panels and init/resume/--reset, 337 tests green;
 10-min continuous run: 638 decisions over 630 ticks across a restart,
-~98% quiescence, redundant-verdict dormancy, intact journal)
+~98% quiescence, redundant-verdict dormancy, intact journal; 1-hour run:
+3600 decisions, 99.7% noop, full lifecycle, journal intact, 36MB store;
+extended run (~10k ticks/~2h wall, terminated early by scope decision,
+not by failure): 10273 decisions with 7 investigates, 1 suspend and 4
+defers, development concentrated in the first regime cycle then
+sustained quiescence, 101MB store (~10KB/tick))
